@@ -63,7 +63,7 @@ Two values can be computed:
 
 Basic use:
 
-```
+```python
 from pyxdameraulevenshtein import damerau_levenshtein_distance, normalized_damerau_levenshtein_distance
 damerau_levenshtein_distance('smtih', 'smith')
 normalized_damerau_levenshtein_distance('smtih', 'smith')
