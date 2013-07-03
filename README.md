@@ -22,11 +22,11 @@ This code requires Python 2.4+ (including Python 3) and a C compiler such as GCC
 ## INSTALL
 pyxDamerauLevenshtein is available on PyPI at https://pypi.python.org/pypi/pyxDamerauLevenshtein.
 
-Using [pip](http://www.pip-installer.org/):
+Install using [pip](http://www.pip-installer.org/):
 
 	pip install pyxDamerauLevenshtein
 
-From source:
+Install from source:
 
 	python setup.py install
 
