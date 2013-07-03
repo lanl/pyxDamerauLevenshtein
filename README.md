@@ -20,6 +20,8 @@ This implementation is based on [Michael Homer's pure Python implementation](htt
 This code requires Python 2.4+ (including Python 3) and a C compiler such as GCC. Although the code was written in Cython, Cython is not required to install for installation.
 
 ## INSTALL
+pyxDamerauLevenshtein is available on PyPI at https://pypi.python.org/pypi/pyxDamerauLevenshtein.
+
 Using [pip](http://www.pip-installer.org/):
 
 	pip install pyxDamerauLevenshtein
