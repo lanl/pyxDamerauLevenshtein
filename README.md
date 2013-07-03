@@ -61,6 +61,8 @@ Two values can be computed:
 * **Normalized Edit Distance** (`normalized_damerau_levenshtein_distance`)
  - Compute the ratio of the edit distance to the length of max(string1, string2). 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](http://docs.python.org/2/library/difflib.html#difflib.SequenceMatcher.ratio).
 
+Basic use:
+
 ```
 from pyxdameraulevenshtein import damerau_levenshtein_distance, normalized_damerau_levenshtein_distance
 damerau_levenshtein_distance('smtih', 'smith')
