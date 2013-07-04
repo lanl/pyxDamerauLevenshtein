@@ -61,7 +61,7 @@ Two values can be computed:
 * **Edit Distance** (`damerau_levenshtein_distance`)
  - Compute the raw distance between two strings (i.e., the minumum number of operations necessary to transform one string into the other).
 * **Normalized Edit Distance** (`normalized_damerau_levenshtein_distance`)
- - Compute the ratio of the edit distance to the length of max(string1, string2). 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](http://docs.python.org/2/library/difflib.html#difflib.SequenceMatcher.ratio).
+ - Compute the ratio of the edit distance to the length of `max(string1, string2)`. 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](http://docs.python.org/2/library/difflib.html#difflib.SequenceMatcher.ratio).
 
 Basic use:
 
@@ -85,7 +85,7 @@ Performance differences (on Intel i7-2600 running at 3.4Ghz):
 
 	>>> import timeit
 	>>> #this implementation:
-	... timeit.timeit("damerau_levenshtein_distance('e0zdvfb840174ut74j2v7gabx1 5bs', 'qpk5vei 4tzo0bglx8rl7e 2h4uei7')", 'from damerau_levenshtein_distance import damerau_levenshtein_distance', number=500000)
+	... timeit.timeit("damerau_levenshtein_distance('e0zdvfb840174ut74j2v7gabx1 5bs', 'qpk5vei 4tzo0bglx8rl7e 2h4uei7')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000)
 	7.417556047439575
 	>>> #Michael Homer's native Python implementation:
 	... timeit.timeit("dameraulevenshtein('e0zdvfb840174ut74j2v7gabx1 5bs', 'qpk5vei 4tzo0bglx8rl7e 2h4uei7')", 'from dameraulevenshtein import dameraulevenshtein', number=500000)
