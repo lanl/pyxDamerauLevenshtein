@@ -31,7 +31,7 @@ Install from source:
 	python setup.py install
 
 ## USING THIS CODE
-The code is called directly from Python as in examples.py:
+The code is called directly from Python as in [examples.py](examples/examples.py):
 	
 	> python examples.py
 	#edit distances (low edit distance means words are similar):
