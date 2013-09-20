@@ -28,31 +28,31 @@ import random
 import string
 import timeit
 
-print '#edit distances (low edit distance means words are similar):'
-print "damerau_levenshtein_distance('%s', '%s') = %d" % ('smtih', 'smith', damerau_levenshtein_distance('smtih', 'smith'))
-print "damerau_levenshtein_distance('%s', '%s') = %d" % ('snapple', 'apple', damerau_levenshtein_distance('snapple', 'apple'))
-print "damerau_levenshtein_distance('%s', '%s') = %d" % ('testing', 'testtn', damerau_levenshtein_distance('testing', 'testtn'))
-print "damerau_levenshtein_distance('%s', '%s') = %d" % ('saturday', 'sunday', damerau_levenshtein_distance('saturday', 'sunday'))
-print "damerau_levenshtein_distance('%s', '%s') = %d" % ('Saturday', 'saturday', damerau_levenshtein_distance('Saturday', 'saturday'))
-print "damerau_levenshtein_distance('%s', '%s') = %d" % ('orange', 'pumpkin', damerau_levenshtein_distance('orange', 'pumpkin'))
-print "damerau_levenshtein_distance('%s', '%s') = %d #unicode example\n" % ('Sjöstedt', 'Sjostedt', damerau_levenshtein_distance('Sjöstedt', 'Sjostedt')) #unicode example
+print('#edit distances (low edit distance means words are similar):')
+print("damerau_levenshtein_distance('%s', '%s') = %d" % ('smtih', 'smith', damerau_levenshtein_distance('smtih', 'smith')))
+print("damerau_levenshtein_distance('%s', '%s') = %d" % ('snapple', 'apple', damerau_levenshtein_distance('snapple', 'apple')))
+print("damerau_levenshtein_distance('%s', '%s') = %d" % ('testing', 'testtn', damerau_levenshtein_distance('testing', 'testtn')))
+print("damerau_levenshtein_distance('%s', '%s') = %d" % ('saturday', 'sunday', damerau_levenshtein_distance('saturday', 'sunday')))
+print("damerau_levenshtein_distance('%s', '%s') = %d" % ('Saturday', 'saturday', damerau_levenshtein_distance('Saturday', 'saturday')))
+print("damerau_levenshtein_distance('%s', '%s') = %d" % ('orange', 'pumpkin', damerau_levenshtein_distance('orange', 'pumpkin')))
+print("damerau_levenshtein_distance('%s', '%s') = %d #unicode example\n" % ('Sjöstedt', 'Sjostedt', damerau_levenshtein_distance('Sjöstedt', 'Sjostedt'))) #unicode example
 
-print '#normalized edit distances (low ratio means words are similar):'
-print "normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('smtih', 'smith', normalized_damerau_levenshtein_distance('smtih', 'smith'))
-print "normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('snapple', 'apple', normalized_damerau_levenshtein_distance('snapple', 'apple'))
-print "normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('testing', 'testtn', normalized_damerau_levenshtein_distance('testing', 'testtn'))
-print "normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('saturday', 'sunday', normalized_damerau_levenshtein_distance('saturday', 'sunday'))
-print "normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('Saturday', 'saturday', normalized_damerau_levenshtein_distance('Saturday', 'saturday'))
-print "normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('orange', 'pumpkin', normalized_damerau_levenshtein_distance('orange', 'pumpkin'))
-print "normalized_damerau_levenshtein_distance('%s', '%s') = %f #unicode example\n" % ('Sjöstedt', 'Sjostedt', normalized_damerau_levenshtein_distance('Sjöstedt', 'Sjostedt')) #unicode example
+print('#normalized edit distances (low ratio means words are similar):')
+print("normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('smtih', 'smith', normalized_damerau_levenshtein_distance('smtih', 'smith')))
+print("normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('snapple', 'apple', normalized_damerau_levenshtein_distance('snapple', 'apple')))
+print("normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('testing', 'testtn', normalized_damerau_levenshtein_distance('testing', 'testtn')))
+print("normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('saturday', 'sunday', normalized_damerau_levenshtein_distance('saturday', 'sunday')))
+print("normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('Saturday', 'saturday', normalized_damerau_levenshtein_distance('Saturday', 'saturday')))
+print("normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('orange', 'pumpkin', normalized_damerau_levenshtein_distance('orange', 'pumpkin')))
+print("normalized_damerau_levenshtein_distance('%s', '%s') = %f #unicode example\n" % ('Sjöstedt', 'Sjostedt', normalized_damerau_levenshtein_distance('Sjöstedt', 'Sjostedt'))) #unicode example
 
-print '#performance testing:'
+print('#performance testing:')
 
 #random words will be comprised of ascii letters, numbers, and spaces
 chars = string.ascii_letters + string.digits + ' '
-word1 = ''.join([random.choice(chars) for i in xrange(30)]) #generate a random string of characters of length 30
-word2 = ''.join([random.choice(chars) for i in xrange(30)]) #and another
-print """timeit.timeit("damerau_levenshtein_distance('%s', '%s')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = %f seconds""" % \
-	(word1, word2, timeit.timeit("damerau_levenshtein_distance('%s', '%s')" % (word1, word2), 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000))
-print """timeit.timeit("damerau_levenshtein_distance('%s', '%s')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = %f seconds #short-circuit makes this faster""" % \
-	(word1, word1, timeit.timeit("damerau_levenshtein_distance('%s', '%s')" % (word1, word1), 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000))
+word1 = ''.join([random.choice(chars) for i in range(30)]) #generate a random string of characters of length 30
+word2 = ''.join([random.choice(chars) for i in range(30)]) #and another
+print("""timeit.timeit("damerau_levenshtein_distance('%s', '%s')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = %f seconds""" % \
+	(word1, word2, timeit.timeit("damerau_levenshtein_distance('%s', '%s')" % (word1, word2), 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000)))
+print("""timeit.timeit("damerau_levenshtein_distance('%s', '%s')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = %f seconds #short-circuit makes this faster""" % \
+	(word1, word1, timeit.timeit("damerau_levenshtein_distance('%s', '%s')" % (word1, word1), 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000)))
