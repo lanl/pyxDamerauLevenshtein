@@ -57,12 +57,12 @@ cpdef Py_ssize_t damerau_levenshtein_distance(seq1, seq2):
 	s2 = to_unicode(seq2)
 
 	#possible short-circuit if words have a lot in common at the beginning (or are identical)
-	cdef Py_ssize_t last_index_in_common = 0
-	while last_index_in_common < len(s1) and last_index_in_common < len(s2) and s1[last_index_in_common] == s2[last_index_in_common]:
-		last_index_in_common += 1
+	cdef Py_ssize_t first_differing_index = 0
+	while first_differing_index < len(s1) and first_differing_index < len(s2) and s1[first_differing_index] == s2[first_differing_index]:
+		first_differing_index += 1
 	
-	s1 = s1[last_index_in_common:]
-	s2 = s2[last_index_in_common:]
+	s1 = s1[first_differing_index:]
+	s2 = s2[first_differing_index:]
 
 	if not s1:
 		return len(s2)
