@@ -1,5 +1,10 @@
 # Changes
 
+## 1.0.2 (2013-09-23)
+* Performance improvement for short-circuit.
+* Changed `unsigned int` to `Py_ssize_t`.
+* Improved readability (defined offset indices for `storage`).
+
 ## 1.0.1 (2013-09-23)
 * Fixed Python 3 unicode issue (thanks to Stefan Behnel - https://groups.google.com/d/msg/cython-users/ofT3fo48ohs/rrf3dtbHkm4J).
 * Fixed a possible memory leak (thanks to Stefan Behnel).

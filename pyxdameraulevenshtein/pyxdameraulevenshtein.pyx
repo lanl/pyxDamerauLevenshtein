@@ -23,6 +23,11 @@
 
 from libc.stdlib cimport calloc, free
 
+#these guys are used to index into storage inside damerau_levenshtein_distance()
+cdef Py_ssize_t TWO_AGO = 0
+cdef Py_ssize_t ONE_AGO = 1
+cdef Py_ssize_t THIS_ROW = 2
+
 cdef unicode to_unicode(s):
 	"""
 		Convert s to a proper unicode type (handles difference between Python 2 and 3). Code comes from
@@ -32,10 +37,10 @@ cdef unicode to_unicode(s):
 		return (<bytes>s).decode('UTF-8')
 	return s
 
-cpdef unsigned int damerau_levenshtein_distance(seq1, seq2):
+cpdef Py_ssize_t damerau_levenshtein_distance(seq1, seq2):
 	"""
 		Return the edit distance. This implementation is based on http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/
-		and runs in O(N*M) time using O(M) space. Because this returns a C unsigned int, the corresponding Python data type will be long (see
+		and runs in O(N*M) time using O(M) space. Because this returns a C Py_ssize_t, the corresponding Python data type will be long (see
 		http://docs.cython.org/src/reference/language_basics.html#automatic-type-conversion for more information).
 
 		Examples:
@@ -52,52 +57,51 @@ cpdef unsigned int damerau_levenshtein_distance(seq1, seq2):
 	s2 = to_unicode(seq2)
 
 	#possible short-circuit if words have a lot in common at the beginning (or are identical)
-	while len(s1) > 0 and len(s2) > 0 and s1[0] == s2[0]:
-		s1 = s1[1:]
-		s2 = s2[1:]
+	cdef Py_ssize_t last_index_in_common = 0
+	while last_index_in_common < len(s1) and last_index_in_common < len(s2) and s1[last_index_in_common] == s2[last_index_in_common]:
+		last_index_in_common += 1
+	
+	s1 = s1[last_index_in_common:]
+	s2 = s2[last_index_in_common:]
 
 	if not s1:
 		return len(s2)
 	if not s2:
 		return len(s1)
-
-	cdef unsigned int i, j, delete_cost, add_cost, subtract_cost, edit_distance
-	cdef unsigned int s2_length = len(s2)
-	cdef unsigned int offset = s2_length + 1
+	
+	cdef Py_ssize_t i, j
+	cdef Py_ssize_t offset = len(s2) + 1
+	cdef Py_ssize_t delete_cost, add_cost, subtract_cost, edit_distance
 
 	#storage is a 3 x (len(s2) + 1) array that stores two_ago, one_ago, and this_row
-	#multipliers:
-	#two_ago = 0
-	#one_ago = 1
-	#this_row = 2
-	cdef unsigned int *storage = <unsigned int *>calloc(3 * offset, sizeof(unsigned int))
+	cdef Py_ssize_t *storage = <Py_ssize_t *>calloc(3 * offset, sizeof(Py_ssize_t))
 	if not storage:
 		raise MemoryError()
 
 	try:
 		#initialize this_row
 		for i in xrange(1, offset):
-			storage[2 * offset + (i - 1)] = i
+			storage[THIS_ROW * offset + (i - 1)] = i
 		
 		for i in xrange(len(s1)):
 			#swap/initialize vectors
 			for j in xrange(offset):
-				storage[j] = storage[offset + j]
-				storage[offset + j] = storage[2 * offset + j]
-			for j in xrange(s2_length):
-				storage[2 * offset + j] = 0
-			storage[2 * offset + s2_length] = i + 1
+				storage[TWO_AGO * offset + j] = storage[ONE_AGO * offset + j]
+				storage[ONE_AGO * offset + j] = storage[THIS_ROW * offset + j]
+			for j in xrange(len(s2)):
+				storage[THIS_ROW * offset + j] = 0
+			storage[THIS_ROW * offset + len(s2)] = i + 1
 
 			#now compute costs
-			for j in xrange(s2_length):
-				delete_cost = storage[offset + j] + 1
-				add_cost = storage[2 * offset + (j - 1 if j > 0 else s2_length)] + 1
-				subtract_cost = storage[offset + (j - 1 if j > 0 else s2_length)] + (s1[i] != s2[j])
-				storage[2 * offset + j] = min(delete_cost, add_cost, subtract_cost)
+			for j in xrange(len(s2)):
+				delete_cost = storage[ONE_AGO * offset + j] + 1
+				add_cost = storage[THIS_ROW * offset + (j - 1 if j > 0 else len(s2))] + 1
+				subtract_cost = storage[ONE_AGO * offset + (j - 1 if j > 0 else len(s2))] + (s1[i] != s2[j])
+				storage[THIS_ROW * offset + j] = min(delete_cost, add_cost, subtract_cost)
 				#deal with transpositions
 				if (i > 0 and j > 0 and s1[i] == s2[j - 1] and s1[i - 1] == s2[j] and s1[i] != s2[j]):
-					storage[2 * offset + j] = min(storage[2 * offset + j], storage[j - 2 if j > 1 else s2_length] + 1)
-		edit_distance = storage[2 * offset + (s2_length - 1)]
+					storage[THIS_ROW * offset + j] = min(storage[THIS_ROW * offset + j], storage[TWO_AGO * offset + j - 2 if j > 1 else len(s2)] + 1)
+		edit_distance = storage[THIS_ROW * offset + (len(s2) - 1)]
 	finally:
 		#free dynamically-allocated memory
 		free(storage)
