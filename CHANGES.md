@@ -2,7 +2,7 @@
 
 ## 1.0.2 (2013-09-23)
 * Performance improvement for short-circuit.
-* Changed `unsigned int` to `Py_ssize_t`.
+* Changed `unsigned int` to `Py_ssize_t` (for 64-bit compatability).
 * Improved readability (defined offset indices for `storage`).
 
 ## 1.0.1 (2013-09-23)
