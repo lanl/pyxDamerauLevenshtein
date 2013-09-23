@@ -25,7 +25,7 @@ from distutils.core import setup, Extension
 
 setup(
 	name = 'pyxDamerauLevenshtein',
-	version = '1.1',
+	version = '1.0.1',
 	description = 'pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance.',
 	long_description = """pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance. Courtesy `Wikipedia <http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance>`_:
 
