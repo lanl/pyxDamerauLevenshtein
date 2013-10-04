@@ -1,5 +1,8 @@
 # Changes
 
+## 1.1 (2013-10-04)
+* Moving to setuptools (using [ez_setup.py](https://bitbucket.org/pypa/setuptools/downloads/ez_setup.py) to manage it).
+
 ## 1.0.2 (2013-09-23)
 * Performance improvement for short-circuit.
 * Changed `unsigned int` to `Py_ssize_t` (for 64-bit compatability).

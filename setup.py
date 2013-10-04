@@ -21,11 +21,14 @@
 	THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-from distutils.core import setup, Extension
+from ez_setup import use_setuptools
+use_setuptools()
+
+from setuptools import setup, Extension
 
 setup(
 	name = 'pyxDamerauLevenshtein',
-	version = '1.0.2',
+	version = '1.1',
 	description = 'pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance.',
 	long_description = """pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance. Courtesy `Wikipedia <http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance>`_:
 
