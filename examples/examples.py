@@ -1,4 +1,5 @@
-# coding: UTF-8
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """
 	Copyright (c) 2013, Los Alamos National Security, LLC
