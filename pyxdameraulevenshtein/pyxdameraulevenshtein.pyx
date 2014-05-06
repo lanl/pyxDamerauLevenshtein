@@ -68,7 +68,8 @@ cpdef Py_ssize_t damerau_levenshtein_distance(seq1, seq2):
 		return len(s2)
 	if not s2:
 		return len(s1)
-	
+
+	#Py_ssize_t should be used wherever we're dealing with an array index or length
 	cdef Py_ssize_t i, j
 	cdef Py_ssize_t offset = len(s2) + 1
 	cdef Py_ssize_t delete_cost, add_cost, subtract_cost, edit_distance
@@ -80,20 +81,20 @@ cpdef Py_ssize_t damerau_levenshtein_distance(seq1, seq2):
 
 	try:
 		#initialize this_row
-		for i in xrange(1, offset):
+		for i in range(1, offset):
 			storage[THIS_ROW * offset + (i - 1)] = i
 		
-		for i in xrange(len(s1)):
+		for i in range(len(s1)):
 			#swap/initialize vectors
-			for j in xrange(offset):
+			for j in range(offset):
 				storage[TWO_AGO * offset + j] = storage[ONE_AGO * offset + j]
 				storage[ONE_AGO * offset + j] = storage[THIS_ROW * offset + j]
-			for j in xrange(len(s2)):
+			for j in range(len(s2)):
 				storage[THIS_ROW * offset + j] = 0
 			storage[THIS_ROW * offset + len(s2)] = i + 1
 
 			#now compute costs
-			for j in xrange(len(s2)):
+			for j in range(len(s2)):
 				delete_cost = storage[ONE_AGO * offset + j] + 1
 				add_cost = storage[THIS_ROW * offset + (j - 1 if j > 0 else len(s2))] + 1
 				subtract_cost = storage[ONE_AGO * offset + (j - 1 if j > 0 else len(s2))] + (s1[i] != s2[j])

@@ -1,5 +1,10 @@
 # Changes
 
+## 1.2 (2014-05-06)
+* [examples.py](examples/examples.py) is now executable (`./examples.py` instead of `python examples.py`)
+* Changed `xrange` to `range` in pyx code.
+* Compiled with Cython 0.20.1.
+
 ## 1.1 (2013-10-04)
 * Moving to setuptools (using [ez_setup.py](https://bitbucket.org/pypa/setuptools/downloads/ez_setup.py) to manage it).
 
