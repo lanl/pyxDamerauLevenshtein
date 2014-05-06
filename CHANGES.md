@@ -1,7 +1,6 @@
 # Changes
 
 ## 1.2 (2014-05-06)
-* [examples.py](examples/examples.py) is now executable (`./examples.py` instead of `python examples.py`)
 * Changed `xrange` to `range` in pyx code.
 * Compiled with Cython 0.20.1.
 
