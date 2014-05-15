@@ -24,37 +24,37 @@ pyxDamerauLevenshtein is available on PyPI at https://pypi.python.org/pypi/pyxDa
 
 Install using [pip](http://www.pip-installer.org/):
 
-	pip install pyxDamerauLevenshtein
+    pip install pyxDamerauLevenshtein
 
 Install from source:
 
-	python setup.py install
+    python setup.py install
 
 ## USING THIS CODE
 The code is called directly from Python as in [examples.py](examples/examples.py):
-	
-	> python examples.py
-	#edit distances (low edit distance means words are similar):
-	damerau_levenshtein_distance('smtih', 'smith') = 1
-	damerau_levenshtein_distance('snapple', 'apple') = 2
-	damerau_levenshtein_distance('testing', 'testtn') = 2
-	damerau_levenshtein_distance('saturday', 'sunday') = 3
-	damerau_levenshtein_distance('Saturday', 'saturday') = 1
-	damerau_levenshtein_distance('orange', 'pumpkin') = 7
-	damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') = 1 #unicode example
+    
+    > python examples.py
+    #edit distances (low edit distance means words are similar):
+    damerau_levenshtein_distance('smtih', 'smith') = 1
+    damerau_levenshtein_distance('snapple', 'apple') = 2
+    damerau_levenshtein_distance('testing', 'testtn') = 2
+    damerau_levenshtein_distance('saturday', 'sunday') = 3
+    damerau_levenshtein_distance('Saturday', 'saturday') = 1
+    damerau_levenshtein_distance('orange', 'pumpkin') = 7
+    damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') = 1 #unicode example
 
-	#normalized edit distances (low ratio means words are similar):
-	normalized_damerau_levenshtein_distance('smtih', 'smith') = 0.200000
-	normalized_damerau_levenshtein_distance('snapple', 'apple') = 0.285714
-	normalized_damerau_levenshtein_distance('testing', 'testtn') = 0.285714
-	normalized_damerau_levenshtein_distance('saturday', 'sunday') = 0.375000
-	normalized_damerau_levenshtein_distance('Saturday', 'saturday') = 0.125000
-	normalized_damerau_levenshtein_distance('orange', 'pumpkin') = 1.000000
-	normalized_damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') = 0.125000 #unicode example
+    #normalized edit distances (low ratio means words are similar):
+    normalized_damerau_levenshtein_distance('smtih', 'smith') = 0.200000
+    normalized_damerau_levenshtein_distance('snapple', 'apple') = 0.285714
+    normalized_damerau_levenshtein_distance('testing', 'testtn') = 0.285714
+    normalized_damerau_levenshtein_distance('saturday', 'sunday') = 0.375000
+    normalized_damerau_levenshtein_distance('Saturday', 'saturday') = 0.125000
+    normalized_damerau_levenshtein_distance('orange', 'pumpkin') = 1.000000
+    normalized_damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') = 0.125000 #unicode example
 
-	#performance testing:
-	timeit.timeit("damerau_levenshtein_distance('P tcTpUUu2TvwH8f0RbXqgruPLwn1U', 'bhHyeluw9nh8 egCCzNJgp Snh0 Wg')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 3.567970 seconds
-	timeit.timeit("damerau_levenshtein_distance('P tcTpUUu2TvwH8f0RbXqgruPLwn1U', 'P tcTpUUu2TvwH8f0RbXqgruPLwn1U')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 0.888284 seconds #short-circuit makes this faster
+    #performance testing:
+    timeit.timeit("damerau_levenshtein_distance('P tcTpUUu2TvwH8f0RbXqgruPLwn1U', 'bhHyeluw9nh8 egCCzNJgp Snh0 Wg')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 3.567970 seconds
+    timeit.timeit("damerau_levenshtein_distance('P tcTpUUu2TvwH8f0RbXqgruPLwn1U', 'P tcTpUUu2TvwH8f0RbXqgruPLwn1U')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 0.888284 seconds #short-circuit makes this faster
 
 Two values can be computed:
 
@@ -83,13 +83,13 @@ Python's built-in [`difflib.SequenceMatcher.ratio()`](http://docs.python.org/2/l
 
 Performance differences (on Intel i7-2600 running at 3.4Ghz):
 
-	>>> import timeit
-	>>> #this implementation:
-	... timeit.timeit("damerau_levenshtein_distance('e0zdvfb840174ut74j2v7gabx1 5bs', 'qpk5vei 4tzo0bglx8rl7e 2h4uei7')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000)
-	7.417556047439575
-	>>> #Michael Homer's native Python implementation:
-	... timeit.timeit("dameraulevenshtein('e0zdvfb840174ut74j2v7gabx1 5bs', 'qpk5vei 4tzo0bglx8rl7e 2h4uei7')", 'from dameraulevenshtein import dameraulevenshtein', number=500000)
-	667.0276439189911
-	>>> #difflib
-	... timeit.timeit("difflib.SequenceMatcher(None, 'e0zdvfb840174ut74j2v7gabx1 5bs', 'qpk5vei 4tzo0bglx8rl7e 2h4uei7').ratio()", 'import difflib', number=500000)
-	135.41051697731018
+    >>> import timeit
+    >>> #this implementation:
+    ... timeit.timeit("damerau_levenshtein_distance('e0zdvfb840174ut74j2v7gabx1 5bs', 'qpk5vei 4tzo0bglx8rl7e 2h4uei7')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000)
+    7.417556047439575
+    >>> #Michael Homer's native Python implementation:
+    ... timeit.timeit("dameraulevenshtein('e0zdvfb840174ut74j2v7gabx1 5bs', 'qpk5vei 4tzo0bglx8rl7e 2h4uei7')", 'from dameraulevenshtein import dameraulevenshtein', number=500000)
+    667.0276439189911
+    >>> #difflib
+    ... timeit.timeit("difflib.SequenceMatcher(None, 'e0zdvfb840174ut74j2v7gabx1 5bs', 'qpk5vei 4tzo0bglx8rl7e 2h4uei7').ratio()", 'import difflib', number=500000)
+    135.41051697731018
