@@ -65,15 +65,15 @@ Two values can be computed:
 
 * **Edit Distance** (`damerau_levenshtein_distance`)
  - Compute the raw distance between two strings (i.e., the minumum number of operations necessary to transform one string into the other).
- 
+
 * **Normalized Edit Distance** (`normalized_damerau_levenshtein_distance`)
  - Compute the ratio of the edit distance to the length of `max(string1, string2)`. 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](http://docs.python.org/2/library/difflib.html#difflib.SequenceMatcher.ratio).
 
- * **Edit Distance against an array** (`damerau_levenshtein_distance_withNPArray`)
+* **Edit Distance against an array** (`damerau_levenshtein_distance_withNPArray`)
  - Compute the raw distance between a reference strings and a numpy array of strings. 
  Convenient (can be used with pandas) and faster than [ for ...]
 
- * **Normalized Edit Distance against an array** (`normalized_damerau_levenshtein_distance_withNPArray`)
+* **Normalized Edit Distance against an array** (`normalized_damerau_levenshtein_distance_withNPArray`)
  - Compute the normalized distance between a reference strings and a numpy array of strings. 
  0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](http://docs.python.org/2/library/difflib.html#difflib.SequenceMatcher.ratio).
  Convenient (can be used with pandas) and faster than [ for ...]
