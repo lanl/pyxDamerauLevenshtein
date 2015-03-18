@@ -22,6 +22,8 @@
 """
 
 from libc.stdlib cimport calloc, free
+cimport numpy as np
+import numpy as np
 
 # these guys are used to index into storage inside damerau_levenshtein_distance()
 cdef Py_ssize_t TWO_AGO = 0
@@ -129,3 +131,31 @@ cpdef double normalized_damerau_levenshtein_distance(seq1, seq2):
         1.0
     """
     return float(damerau_levenshtein_distance(seq1, seq2)) / max(len(to_unicode(seq1)), len(to_unicode(seq2)))
+
+
+cpdef np.ndarray[double] damerau_levenshtein_distance_withNPArray(seq1,np.ndarray seq2Array):
+    """
+        Returns an array of distances
+        1st param is the reference string
+        2nd param is an array of string to calculate against
+    """
+    cdef Py_ssize_t i, n = len(seq2Array)
+    cdef np.ndarray[double] res = np.empty(n)
+    for i in range(n):
+        res[i] = damerau_levenshtein_distance(seq1,seq2Array[i])
+    return res
+
+
+cpdef np.ndarray[double] normalized_damerau_levenshtein_distance_withNPArray(seq1,np.ndarray seq2Array):
+    """
+        Return an array of real numbers between 0.0 and 1.0, indicating the edit distance as a fraction of the longer
+        string. 0.0 means that the sequences are identical, while 1.0 means they have nothing in common.
+
+        1st param is the reference string
+        2nd param is an array of string to calculate against
+    """
+    cdef Py_ssize_t i, n = len(seq2Array)
+    cdef np.ndarray[double] res = np.empty(n)
+    for i in range(n):
+        res[i] = float( damerau_levenshtein_distance(seq1,seq2Array[i]) ) / max( len(to_unicode(seq1)), len(to_unicode(seq2Array[i])) )
+    return res
