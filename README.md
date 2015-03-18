@@ -52,6 +52,11 @@ The code is called directly from Python as in [examples.py](examples/examples.py
     normalized_damerau_levenshtein_distance('orange', 'pumpkin') = 1.000000
     normalized_damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') = 0.125000 #unicode example
 
+    #against a numpy array of strings
+    myArray = np.array( ["test1","test12","test123"], dtype='S')
+    damerau_levenshtein_distance_withNPArray("test",myArray)
+    #expect [ 1, 2, 3 ]
+
     #performance testing:
     timeit.timeit("damerau_levenshtein_distance('P tcTpUUu2TvwH8f0RbXqgruPLwn1U', 'bhHyeluw9nh8 egCCzNJgp Snh0 Wg')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 3.567970 seconds
     timeit.timeit("damerau_levenshtein_distance('P tcTpUUu2TvwH8f0RbXqgruPLwn1U', 'P tcTpUUu2TvwH8f0RbXqgruPLwn1U')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 0.888284 seconds #short-circuit makes this faster
@@ -60,8 +65,18 @@ Two values can be computed:
 
 * **Edit Distance** (`damerau_levenshtein_distance`)
  - Compute the raw distance between two strings (i.e., the minumum number of operations necessary to transform one string into the other).
+ 
 * **Normalized Edit Distance** (`normalized_damerau_levenshtein_distance`)
  - Compute the ratio of the edit distance to the length of `max(string1, string2)`. 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](http://docs.python.org/2/library/difflib.html#difflib.SequenceMatcher.ratio).
+
+ * **Edit Distance against an array** (`damerau_levenshtein_distance_withNPArray`)
+ - Compute the raw distance between a reference strings and a numpy array of strings. 
+ Convenient (can be used with pandas) and faster than [ for ...]
+
+ * **Normalized Edit Distance against an array** (`normalized_damerau_levenshtein_distance_withNPArray`)
+ - Compute the normalized distance between a reference strings and a numpy array of strings. 
+ 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](http://docs.python.org/2/library/difflib.html#difflib.SequenceMatcher.ratio).
+ Convenient (can be used with pandas) and faster than [ for ...]
 
 Basic use:
 
@@ -69,6 +84,12 @@ Basic use:
 from pyxdameraulevenshtein import damerau_levenshtein_distance, normalized_damerau_levenshtein_distance
 damerau_levenshtein_distance('smtih', 'smith')
 normalized_damerau_levenshtein_distance('smtih', 'smith')
+
+from pyxdameraulevenshtein import damerau_levenshtein_distance_withNPArray, normalized_damerau_levenshtein_distance_withNPArray
+import numpy as np
+l_array = np.array(["test1","test12","test123" ], dtype='S')
+damerau_levenshtein_distance_withNPArray("test",l_array)
+# expectedResult [ 1, 2, 3 ] 
 ```
 
 ## DIFFERENCES

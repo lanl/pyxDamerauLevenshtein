@@ -133,14 +133,14 @@ cpdef double normalized_damerau_levenshtein_distance(seq1, seq2):
     return float(damerau_levenshtein_distance(seq1, seq2)) / max(len(to_unicode(seq1)), len(to_unicode(seq2)))
 
 
-cpdef np.ndarray[double] damerau_levenshtein_distance_withNPArray(seq1,np.ndarray seq2Array):
+cpdef np.ndarray[long] damerau_levenshtein_distance_withNPArray(seq1,np.ndarray seq2Array):
     """
         Returns an array of distances
         1st param is the reference string
-        2nd param is an array of string to calculate against
+        2nd param is a numpy array of strings to calculate against
     """
     cdef Py_ssize_t i, n = len(seq2Array)
-    cdef np.ndarray[double] res = np.empty(n)
+    cdef np.ndarray[long] res = np.empty(n,dtype=long)
     for i in range(n):
         res[i] = damerau_levenshtein_distance(seq1,seq2Array[i])
     return res
@@ -152,7 +152,7 @@ cpdef np.ndarray[double] normalized_damerau_levenshtein_distance_withNPArray(seq
         string. 0.0 means that the sequences are identical, while 1.0 means they have nothing in common.
 
         1st param is the reference string
-        2nd param is an array of string to calculate against
+        2nd param is a numpy array of strings to calculate against
     """
     cdef Py_ssize_t i, n = len(seq2Array)
     cdef np.ndarray[double] res = np.empty(n)
