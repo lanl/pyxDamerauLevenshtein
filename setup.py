@@ -25,10 +25,12 @@ from ez_setup import use_setuptools
 use_setuptools()
 
 from setuptools import setup, Extension
+#from Cython.Build import cythonize
+import numpy
 
 setup(
     name='pyxDamerauLevenshtein',
-    version='1.2',
+    version='1.2.1',
     description='pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance.',
     long_description="""pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance. Courtesy `Wikipedia <http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance>`_:
 
@@ -66,5 +68,9 @@ For more information on pyxDamerauLevenshtein, visit the `GitHub project page <h
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Text Processing :: Linguistic',
     ],
-    ext_modules=[Extension('pyxdameraulevenshtein', ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'])],
+    ext_modules=[
+        Extension('pyxdameraulevenshtein', 
+            ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'],
+            include_dirs=[numpy.get_include()])
+        ],
 )

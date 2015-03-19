@@ -24,10 +24,17 @@
     THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-from pyxdameraulevenshtein import damerau_levenshtein_distance, normalized_damerau_levenshtein_distance
+from pyxdameraulevenshtein import damerau_levenshtein_distance, normalized_damerau_levenshtein_distance, damerau_levenshtein_distance_withNPArray, normalized_damerau_levenshtein_distance_withNPArray
 import random
 import string
 import timeit
+import numpy as np
+import time
+
+chars = string.ascii_letters + string.digits + ' '
+def generateWord():
+  return ''.join([random.choice(chars) for i in range(random.randint(5,30))])
+
 
 print('#edit distances (low edit distance means words are similar):')
 print("damerau_levenshtein_distance('%s', '%s') = %d" % ('smtih', 'smith', damerau_levenshtein_distance('smtih', 'smith')))
@@ -47,6 +54,32 @@ print("normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('Saturday', 
 print("normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('orange', 'pumpkin', normalized_damerau_levenshtein_distance('orange', 'pumpkin')))
 print("normalized_damerau_levenshtein_distance('%s', '%s') = %f #unicode example\n" % ('Sjöstedt', 'Sjostedt', normalized_damerau_levenshtein_distance('Sjöstedt', 'Sjostedt')))  # unicode example
 
+#
+print('#distance from a reference to an array:')
+l_arrayLength = 100000
+myArray = np.array([ generateWord() for i in range(l_arrayLength) ],dtype='S')
+myRef = generateWord()
+startV = time.time()
+myRes = damerau_levenshtein_distance_withNPArray(myRef,myArray)
+endV = time.time()
+startR = time.time()
+myExpected = [ damerau_levenshtein_distance(myRef,w) for w in myArray ]
+endR = time.time()
+assert( len(myRes)==l_arrayLength )
+assert( (myRes == myExpected).all() )
+print("Source \"%s\" against Array[%d]" % (myRef,len(myArray)))
+print("Array calculus took %f s against %f s" % (endV-startV,endR-startR))
+#
+print("")
+print('#normalized distance from a reference to an array:')
+myRes = normalized_damerau_levenshtein_distance_withNPArray(myRef,myArray)
+myExpected = [ normalized_damerau_levenshtein_distance(myRef,w) for w in myArray ]
+assert(len(myRes)==l_arrayLength)
+assert( (myRes == myExpected).all() )
+print("Source \"%s\" against Array[%d]" % (myRef,len(myArray)))
+
+
+print("")
 print('#performance testing:')
 
 # random words will be comprised of ascii letters, numbers, and spaces
@@ -57,3 +90,13 @@ print("""timeit.timeit("damerau_levenshtein_distance('%s', '%s')", 'from pyxdame
       (word1, word2, timeit.timeit("damerau_levenshtein_distance('%s', '%s')" % (word1, word2), 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000)))
 print("""timeit.timeit("damerau_levenshtein_distance('%s', '%s')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = %f seconds #short-circuit makes this faster""" %
       (word1, word1, timeit.timeit("damerau_levenshtein_distance('%s', '%s')" % (word1, word1), 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000)))
+
+
+# vector tests
+#t1 = timeit.timeit('"damerau_levenshtein_distance_withNPArray(myRef,myArray)"','from pyxdameraulevenshtein import damerau_levenshtein_distance_withNPArray' , number=500000)
+#print("With Array " + str(t1))
+#t2 = timeit.timeit('"[ damerau_levenshtein_distance(myRef,w) for w in myArray]"','from pyxdameraulevenshtein import damerau_levenshtein_distance' , number=500000)
+#print("Raw " + str(t2))
+#print("""timeit.timeit("damerau_levenshtein_distance_withArray('%s', '%s')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance_withArray', number=500000) = %f seconds""" %
+#      (myRef, myArray, timeit.timeit("damerau_levenshtein_distance_withArray('%s', '%s')" % (myRef, myArray), 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000)))
+
