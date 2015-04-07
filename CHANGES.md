@@ -1,6 +1,6 @@
 # Changes
 
-## 1.3 (2015-04-08)
+## 1.3.1 (2015-04-07)
 * [@ovarene](https://github.com/ovarene) added the ability to compute the edit distance between a string and each string in a [NumPy](http://www.numpy.org/) array in [this PR](https://github.com/gfairchild/pyxDamerauLevenshtein/pull/3).
 * Compiled with Cython 0.22.
 
