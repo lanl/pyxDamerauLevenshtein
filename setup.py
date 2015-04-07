@@ -67,6 +67,9 @@ For more information on pyxDamerauLevenshtein, visit the `GitHub project page <h
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Text Processing :: Linguistic',
     ],
+    install_requires=[
+        'numpy',
+    ],
     ext_modules=[
         Extension('pyxdameraulevenshtein',
                   ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'],
