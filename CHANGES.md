@@ -1,5 +1,8 @@
 # Changes
 
+## 1.3.2 (2015-05-19)
+* [@mittagessen](https://github.com/mittagessen) fixed a bug in `setup.py` that assumed NumPy was installed in [this PR](https://github.com/gfairchild/pyxDamerauLevenshtein/pull/5).
+
 ## 1.3.1 (2015-04-07)
 * [@ovarene](https://github.com/ovarene) added the ability to compute the edit distance between a string and each string in a [NumPy](http://www.numpy.org/) array in [this PR](https://github.com/gfairchild/pyxDamerauLevenshtein/pull/3).
 * Compiled with Cython 0.22.

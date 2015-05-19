@@ -32,7 +32,7 @@ def setup_package():
 
     metadata = dict(
         name='pyxDamerauLevenshtein',
-        version='1.3.1',
+        version='1.3.2',
         description="""pyxDamerauLevenshtein implements the Damerau-Levenshtein
         (DL) edit distance algorithm for Python in Cython for high
         performance.""",
