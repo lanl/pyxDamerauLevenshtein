@@ -28,36 +28,20 @@ from setuptools import setup, Extension
 
 use_setuptools()
 
+
 def setup_package():
 
     metadata = dict(
         name='pyxDamerauLevenshtein',
         version='1.3.2',
-        description="""pyxDamerauLevenshtein implements the Damerau-Levenshtein
-        (DL) edit distance algorithm for Python in Cython for high
-        performance.""",
-        long_description="""pyxDamerauLevenshtein implements the
-        Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython
-        for high performance. Courtesy `Wikipedia
-        <http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance>`_:
+        description="""pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance.""",
+        long_description="""pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance. Courtesy `Wikipedia <http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance>`_:
 
-        In information theory and computer science, the Damerau-Levenshtein
-        distance (named after Frederick J. Damerau and Vladimir I. Levenshtein)
-        is a "distance" (string metric) between two strings, i.e., finite
-        sequence of symbols, given by counting the minimum number of operations
-        needed to transform one string into the other, where an operation is
-        defined as an insertion, deletion, or substitution of a single
-        character, or a transposition of two adjacent characters.
+    In information theory and computer science, the Damerau-Levenshtein distance (named after Frederick J. Damerau and Vladimir I. Levenshtein) is a "distance" (string metric) between two strings, i.e., finite sequence of symbols, given by counting the minimum number of operations needed to transform one string into the other, where an operation is defined as an insertion, deletion, or substitution of a single character, or a transposition of two adjacent characters.
 
-        This implementation is based on `Michael Homer's pure Python
-        implementation
-        <http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/>`_.
-        It runs in ``O(N*M)`` time using ``O(M)`` space. It supports unicode
-        characters.
+This implementation is based on `Michael Homer's pure Python implementation <http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/>`_. It runs in ``O(N*M)`` time using ``O(M)`` space. It supports unicode characters.
 
-        For more information on pyxDamerauLevenshtein, visit the `GitHub
-        project page
-        <https://github.com/gfairchild/pyxDamerauLevenshtein>`_.""",
+For more information on pyxDamerauLevenshtein, visit the `GitHub project page <https://github.com/gfairchild/pyxDamerauLevenshtein>`_.""",
         author='Geoffrey Fairchild',
         author_email='mail@gfairchild.com',
         maintainer='Geoffrey Fairchild',
@@ -91,8 +75,8 @@ def setup_package():
         setup_requires=['numpy'],
     )
     if len(sys.argv) >= 2 and ('--help' in sys.argv[1:] or
-        sys.argv[1] in ('--help-commands', 'egg_info', '--version',
-                        'clean')):
+                               sys.argv[1] in ('--help-commands', 'egg_info', '--version',
+                                               'clean')):
         # For these actions, NumPy is not required.
         #
         # They are required to succeed without Numpy for example when
@@ -102,8 +86,8 @@ def setup_package():
     else:
         import numpy
         metadata['ext_modules'] = [Extension('pyxdameraulevenshtein',
-            ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'],
-            include_dirs=[numpy.get_include()])]
+                                             ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'],
+                                             include_dirs=[numpy.get_include()])]
 
     setup(**metadata)
 
