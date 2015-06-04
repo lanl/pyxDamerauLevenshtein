@@ -17,7 +17,7 @@ pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algo
 This implementation is based on [Michael Homer's pure Python implementation](http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/). It runs in `O(N*M)` time using `O(M)` space. It supports unicode characters.
 
 ## REQUIREMENTS
-This code requires Python 2.4+ (including Python 3) and a C compiler such as GCC. Although the code was written in Cython, Cython is not required for installation.
+This code requires Python 2.4+ (including Python 3), [NumPy](http://www.numpy.org/), and a C compiler such as GCC. Although the code was written in Cython, Cython is not required for installation.
 
 ## INSTALL
 pyxDamerauLevenshtein is available on PyPI at https://pypi.python.org/pypi/pyxDamerauLevenshtein.
