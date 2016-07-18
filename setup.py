@@ -24,72 +24,68 @@
 import sys
 
 from ez_setup import use_setuptools
-from setuptools import setup, Extension
-
 use_setuptools()
 
+from setuptools import setup, Extension
 
-def setup_package():
+metadata = dict(
+    name='pyxDamerauLevenshtein',
+    version='1.4',
+    description="""pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance.""",
+    long_description="""pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance. Courtesy `Wikipedia <http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance>`_:
 
-    metadata = dict(
-        name='pyxDamerauLevenshtein',
-        version='1.3.2',
-        description="""pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance.""",
-        long_description="""pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance. Courtesy `Wikipedia <http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance>`_:
+In information theory and computer science, the Damerau-Levenshtein distance (named after Frederick J. Damerau and Vladimir I. Levenshtein) is a "distance" (string metric) between two strings, i.e., finite sequence of symbols, given by counting the minimum number of operations needed to transform one string into the other, where an operation is defined as an insertion, deletion, or substitution of a single character, or a transposition of two adjacent characters.
 
-    In information theory and computer science, the Damerau-Levenshtein distance (named after Frederick J. Damerau and Vladimir I. Levenshtein) is a "distance" (string metric) between two strings, i.e., finite sequence of symbols, given by counting the minimum number of operations needed to transform one string into the other, where an operation is defined as an insertion, deletion, or substitution of a single character, or a transposition of two adjacent characters.
-
-This implementation is based on `Michael Homer's pure Python implementation <http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/>`_. It runs in ``O(N*M)`` time using ``O(M)`` space. It supports unicode characters.
+This implementation is based on `Michael Homer's pure Python implementation <http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/>`_, which implements the `optimal string alignment distance algorithm <https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance>`_. It runs in ``O(N*M)`` time using ``O(M)`` space. It supports unicode characters.
 
 For more information on pyxDamerauLevenshtein, visit the `GitHub project page <https://github.com/gfairchild/pyxDamerauLevenshtein>`_.""",
-        author='Geoffrey Fairchild',
-        author_email='mail@gfairchild.com',
-        maintainer='Geoffrey Fairchild',
-        maintainer_email='mail@gfairchild.com',
-        url='https://github.com/gfairchild/pyxDamerauLevenshtein',
-        license='BSD 3-Clause License',
-        classifiers=[
-            'Development Status :: 5 - Production/Stable',
-            'Intended Audience :: Developers',
-            'Intended Audience :: Education',
-            'Intended Audience :: Science/Research',
-            'License :: OSI Approved :: BSD License',
-            'Operating System :: OS Independent',
-            'Programming Language :: Cython',
-            'Programming Language :: Python :: 2',
-            'Programming Language :: Python :: 2.4',
-            'Programming Language :: Python :: 2.5',
-            'Programming Language :: Python :: 2.6',
-            'Programming Language :: Python :: 2.7',
-            'Programming Language :: Python :: 3',
-            'Programming Language :: Python :: 3.0',
-            'Programming Language :: Python :: 3.1',
-            'Programming Language :: Python :: 3.2',
-            'Programming Language :: Python :: 3.3',
-            'Programming Language :: Python :: 3.4',
-            'Topic :: Scientific/Engineering :: Bio-Informatics',
-            'Topic :: Scientific/Engineering :: Information Analysis',
-            'Topic :: Text Processing :: Linguistic',
-        ],
-        install_requires=['numpy'],
-        setup_requires=['numpy'],
-    )
-    if len(sys.argv) >= 2 and ('--help' in sys.argv[1:] or
-                               sys.argv[1] in ('--help-commands', 'egg_info', '--version',
-                                               'clean')):
-        # For these actions, NumPy is not required.
-        #
-        # They are required to succeed without Numpy for example when
-        # pip is used to install Scipy when Numpy is not yet present in
-        # the system.
-        pass
-    else:
-        import numpy
-        metadata['ext_modules'] = [Extension('pyxdameraulevenshtein',
-                                             ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'],
-                                             include_dirs=[numpy.get_include()])]
+    author='Geoffrey Fairchild',
+    author_email='mail@gfairchild.com',
+    maintainer='Geoffrey Fairchild',
+    maintainer_email='mail@gfairchild.com',
+    url='https://github.com/gfairchild/pyxDamerauLevenshtein',
+    license='BSD 3-Clause License',
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Education',
+        'Intended Audience :: Science/Research',
+        'License :: OSI Approved :: BSD License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Cython',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.4',
+        'Programming Language :: Python :: 2.5',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.0',
+        'Programming Language :: Python :: 3.1',
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Topic :: Scientific/Engineering :: Bio-Informatics',
+        'Topic :: Scientific/Engineering :: Information Analysis',
+        'Topic :: Text Processing :: Linguistic',
+    ],
+    install_requires=['numpy'],
+    setup_requires=['numpy'],
+)
 
-    setup(**metadata)
+if len(sys.argv) >= 2 and ('--help' in sys.argv[1:] or
+                           sys.argv[1] in ('--help-commands', 'egg_info', '--version',
+                                           'clean')):
+    # For these actions, NumPy is not required.
+    #
+    # They are required to succeed without NumPy. For example, when
+    # pip is used to install SciPy when NumPy is not yet present in
+    # the system.
+    pass
+else:
+    import numpy
+    metadata['ext_modules'] = [Extension('pyxdameraulevenshtein',
+                                         ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'],
+                                         include_dirs=[numpy.get_include()])]
 
-if __name__ == '__main__':
-    setup_package()
+setup(**metadata)

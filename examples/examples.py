@@ -24,80 +24,57 @@
     THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-from pyxdameraulevenshtein import damerau_levenshtein_distance, normalized_damerau_levenshtein_distance, damerau_levenshtein_distance_withNPArray, normalized_damerau_levenshtein_distance_withNPArray
+from pyxdameraulevenshtein import damerau_levenshtein_distance, normalized_damerau_levenshtein_distance, damerau_levenshtein_distance_ndarray, normalized_damerau_levenshtein_distance_ndarray
 import random
 import string
 import timeit
 import numpy as np
 import time
 
-chars = string.ascii_letters + string.digits + ' '
+print('# edit distances (low edit distance means words are more similar):')
+print("damerau_levenshtein_distance('{}', '{}') = {}".format('smtih', 'smith', damerau_levenshtein_distance('smtih', 'smith')))
+assert(damerau_levenshtein_distance('smtih', 'smith') == 1)
+print("damerau_levenshtein_distance('{}', '{}') = {}".format('snapple', 'apple', damerau_levenshtein_distance('snapple', 'apple')))
+assert(damerau_levenshtein_distance('snapple', 'apple') == 2)
+print("damerau_levenshtein_distance('{}', '{}') = {}".format('testing', 'testtn', damerau_levenshtein_distance('testing', 'testtn')))
+assert(damerau_levenshtein_distance('testing', 'testtn') == 2)
+print("damerau_levenshtein_distance('{}', '{}') = {}".format('saturday', 'sunday', damerau_levenshtein_distance('saturday', 'sunday')))
+assert(damerau_levenshtein_distance('saturday', 'sunday') == 3)
+print("damerau_levenshtein_distance('{}', '{}') = {}".format('Saturday', 'saturday', damerau_levenshtein_distance('Saturday', 'saturday')))
+assert(damerau_levenshtein_distance('Saturday', 'saturday') == 1)
+print("damerau_levenshtein_distance('{}', '{}') = {}".format('orange', 'pumpkin', damerau_levenshtein_distance('orange', 'pumpkin')))
+assert(damerau_levenshtein_distance('orange', 'pumpkin') == 7)
+print("damerau_levenshtein_distance('{}', '{}') = {}".format('gifts', 'profit', damerau_levenshtein_distance('gifts', 'profit')))
+assert(damerau_levenshtein_distance('gifts', 'profit') == 5)
+print("damerau_levenshtein_distance('{}', '{}') = {}  # unicode example\n".format('Sjöstedt', 'Sjostedt', damerau_levenshtein_distance('Sjöstedt', 'Sjostedt')))  # unicode example
+assert(damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') == 1)
 
+print('# normalized edit distances (low ratio means words are similar):')
+print("normalized_damerau_levenshtein_distance('{}', '{}') = {}".format('smtih', 'smith', normalized_damerau_levenshtein_distance('smtih', 'smith')))
+print("normalized_damerau_levenshtein_distance('{}', '{}') = {}".format('snapple', 'apple', normalized_damerau_levenshtein_distance('snapple', 'apple')))
+print("normalized_damerau_levenshtein_distance('{}', '{}') = {}".format('testing', 'testtn', normalized_damerau_levenshtein_distance('testing', 'testtn')))
+print("normalized_damerau_levenshtein_distance('{}', '{}') = {}".format('saturday', 'sunday', normalized_damerau_levenshtein_distance('saturday', 'sunday')))
+print("normalized_damerau_levenshtein_distance('{}', '{}') = {}".format('Saturday', 'saturday', normalized_damerau_levenshtein_distance('Saturday', 'saturday')))
+print("normalized_damerau_levenshtein_distance('{}', '{}') = {}".format('orange', 'pumpkin', normalized_damerau_levenshtein_distance('orange', 'pumpkin')))
+print("normalized_damerau_levenshtein_distance('{}', '{}') = {}".format('gifts', 'profit', normalized_damerau_levenshtein_distance('gifts', 'profit')))
+print("normalized_damerau_levenshtein_distance('{}', '{}') = {}  # unicode example\n".format('Sjöstedt', 'Sjostedt', normalized_damerau_levenshtein_distance('Sjöstedt', 'Sjostedt')))  # unicode example
 
-def generateWord():
-    return ''.join([random.choice(chars) for i in range(random.randint(5, 30))])
+print('# edit distances for a single sequence against an array of sequences')
+array = np.array(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
+print("damerau_levenshtein_distance_ndarray('{}', '{}') = {}".format('Saturday', array, damerau_levenshtein_distance_ndarray('Saturday', array)))
+print("normalized_damerau_levenshtein_distance_ndarray('{}', '{}') = {}\n".format('Saturday', array, normalized_damerau_levenshtein_distance_ndarray('Saturday', array)))
 
-
-print('#edit distances (low edit distance means words are similar):')
-print("damerau_levenshtein_distance('%s', '%s') = %d" % ('smtih', 'smith', damerau_levenshtein_distance('smtih', 'smith')))
-print("damerau_levenshtein_distance('%s', '%s') = %d" % ('snapple', 'apple', damerau_levenshtein_distance('snapple', 'apple')))
-print("damerau_levenshtein_distance('%s', '%s') = %d" % ('testing', 'testtn', damerau_levenshtein_distance('testing', 'testtn')))
-print("damerau_levenshtein_distance('%s', '%s') = %d" % ('saturday', 'sunday', damerau_levenshtein_distance('saturday', 'sunday')))
-print("damerau_levenshtein_distance('%s', '%s') = %d" % ('Saturday', 'saturday', damerau_levenshtein_distance('Saturday', 'saturday')))
-print("damerau_levenshtein_distance('%s', '%s') = %d" % ('orange', 'pumpkin', damerau_levenshtein_distance('orange', 'pumpkin')))
-print("damerau_levenshtein_distance('%s', '%s') = %d #unicode example\n" % ('Sjöstedt', 'Sjostedt', damerau_levenshtein_distance('Sjöstedt', 'Sjostedt')))  # unicode example
-
-print('#normalized edit distances (low ratio means words are similar):')
-print("normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('smtih', 'smith', normalized_damerau_levenshtein_distance('smtih', 'smith')))
-print("normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('snapple', 'apple', normalized_damerau_levenshtein_distance('snapple', 'apple')))
-print("normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('testing', 'testtn', normalized_damerau_levenshtein_distance('testing', 'testtn')))
-print("normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('saturday', 'sunday', normalized_damerau_levenshtein_distance('saturday', 'sunday')))
-print("normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('Saturday', 'saturday', normalized_damerau_levenshtein_distance('Saturday', 'saturday')))
-print("normalized_damerau_levenshtein_distance('%s', '%s') = %f" % ('orange', 'pumpkin', normalized_damerau_levenshtein_distance('orange', 'pumpkin')))
-print("normalized_damerau_levenshtein_distance('%s', '%s') = %f #unicode example\n" % ('Sjöstedt', 'Sjostedt', normalized_damerau_levenshtein_distance('Sjöstedt', 'Sjostedt')))  # unicode example
-
-#
-print('#distance from a reference to an array:')
-l_arrayLength = 100000
-myArray = np.array([generateWord() for i in range(l_arrayLength)], dtype='S')
-myRef = generateWord()
-startV = time.time()
-myRes = damerau_levenshtein_distance_withNPArray(myRef, myArray)
-endV = time.time()
-startR = time.time()
-myExpected = [damerau_levenshtein_distance(myRef, w) for w in myArray]
-endR = time.time()
-assert(len(myRes) == l_arrayLength)
-assert((myRes == myExpected).all())
-print("Source \"%s\" against Array[%d]" % (myRef, len(myArray)))
-print("Array calculus took %f s against %f s" % (endV - startV, endR - startR))
-#
-print("")
-print('#normalized distance from a reference to an array:')
-myRes = normalized_damerau_levenshtein_distance_withNPArray(myRef, myArray)
-myExpected = [normalized_damerau_levenshtein_distance(myRef, w) for w in myArray]
-assert(len(myRes) == l_arrayLength)
-assert((myRes == myExpected).all())
-print("Source \"%s\" against Array[%d]" % (myRef, len(myArray)))
-
-
-print("")
-print('#performance testing:')
+print('# normalized edit distances for a single sequence against an array of sequences - unicode')
+array = np.array(['Sjöstedt', 'Sjostedt', 'Söstedt', 'Sjöedt'])
+print("damerau_levenshtein_distance_ndarray('{}', '{}') = {}".format('Sjöstedt', array, damerau_levenshtein_distance_ndarray('Sjöstedt', array)))
+print("normalized_damerau_levenshtein_distance_ndarray('{}', '{}') = {}\n".format('Sjöstedt', array, normalized_damerau_levenshtein_distance_ndarray('Sjöstedt', array)))
 
 # random words will be comprised of ascii letters, numbers, and spaces
+print('# performance testing:')
 chars = string.ascii_letters + string.digits + ' '
 word1 = ''.join([random.choice(chars) for i in range(30)])  # generate a random string of characters of length 30
 word2 = ''.join([random.choice(chars) for i in range(30)])  # and another
-print("""timeit.timeit("damerau_levenshtein_distance('%s', '%s')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = %f seconds""" %
-      (word1, word2, timeit.timeit("damerau_levenshtein_distance('%s', '%s')" % (word1, word2), 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000)))
-print("""timeit.timeit("damerau_levenshtein_distance('%s', '%s')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = %f seconds #short-circuit makes this faster""" %
-      (word1, word1, timeit.timeit("damerau_levenshtein_distance('%s', '%s')" % (word1, word1), 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000)))
-
-
-# vector tests
-#t1 = timeit.timeit('"damerau_levenshtein_distance_withNPArray(myRef,myArray)"','from pyxdameraulevenshtein import damerau_levenshtein_distance_withNPArray' , number=500000)
-#print("With Array " + str(t1))
-#t2 = timeit.timeit('"[ damerau_levenshtein_distance(myRef,w) for w in myArray]"','from pyxdameraulevenshtein import damerau_levenshtein_distance' , number=500000)
-#print("Raw " + str(t2))
-# print("""timeit.timeit("damerau_levenshtein_distance_withArray('%s', '%s')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance_withArray', number=500000) = %f seconds""" %
-#      (myRef, myArray, timeit.timeit("damerau_levenshtein_distance_withArray('%s', '%s')" % (myRef, myArray), 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000)))
+print("""timeit.timeit("damerau_levenshtein_distance('{}', '{}')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = {} seconds"""
+      .format(word1, word2, timeit.timeit("damerau_levenshtein_distance('{}', '{}')".format(word1, word2), 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000)))
+print("""timeit.timeit("damerau_levenshtein_distance('{}', '{}')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = {} seconds  # short-circuit makes this faster"""
+      .format(word1, word1, timeit.timeit("damerau_levenshtein_distance('{}', '{}')".format(word1, word1), 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000)))

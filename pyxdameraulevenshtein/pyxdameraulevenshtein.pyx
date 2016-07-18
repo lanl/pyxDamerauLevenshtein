@@ -21,29 +21,39 @@
     THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
+from cpython.version cimport PY_MAJOR_VERSION
 from libc.stdlib cimport calloc, free
-cimport numpy as np
 import numpy as np
+cimport numpy as np
 
 # these guys are used to index into storage inside damerau_levenshtein_distance()
 cdef Py_ssize_t TWO_AGO = 0
 cdef Py_ssize_t ONE_AGO = 1
 cdef Py_ssize_t THIS_ROW = 2
 
-cdef unicode to_unicode(s):
+cdef unicode _to_unicode(s):
     """
-        Convert s to a proper unicode type (handles difference between Python 2 and 3). Code comes from
-        https://groups.google.com/d/msg/cython-users/ofT3fo48ohs/rrf3dtbHkm4J
+        Convert s to a proper unicode type, handling the differences between Python 2 and 3. This code
+        comes from http://docs.cython.org/src/tutorial/strings.html#accepting-strings-from-python-code.
     """
-    if isinstance(s, bytes):
-        return (< bytes > s).decode('UTF-8')
-    return s
+    if type(s) is unicode:
+        # fast path for most common case(s)
+        return <unicode>s
+    elif PY_MAJOR_VERSION < 3 and isinstance(s, bytes):
+        # only accept byte strings in Python 2.x, not in Py3
+        return (<bytes>s).decode('UTF-8')
+    elif isinstance(s, unicode):
+        # this works for NumPy strings
+        return unicode(s)
+    raise TypeError('string [{}] has an unrecognized type of [{}]'.format(type(s)))
 
-cpdef Py_ssize_t damerau_levenshtein_distance(seq1, seq2):
+
+cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
     """
         Return the edit distance. This implementation is based on http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/
-        and runs in O(N*M) time using O(M) space. Because this returns a C Py_ssize_t, the corresponding Python data type will be long (see
-        http://docs.cython.org/src/reference/language_basics.html#automatic-type-conversion for more information).
+        and runs in O(N*M) time using O(M) space. This code implements the "optimal string alignment distance" algorithm, as described
+        by Wikipedia here: https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance
+
 
         Examples:
 
@@ -54,9 +64,8 @@ cpdef Py_ssize_t damerau_levenshtein_distance(seq1, seq2):
         >>> damerau_levenshtein_distance('orange', 'pumpkin')
         7
     """
-
-    s1 = to_unicode(seq1)
-    s2 = to_unicode(seq2)
+    s1 = _to_unicode(seq1)
+    s2 = _to_unicode(seq2)
 
     # possible short-circuit if words have a lot in common at the beginning (or are identical)
     cdef Py_ssize_t first_differing_index = 0
@@ -74,10 +83,10 @@ cpdef Py_ssize_t damerau_levenshtein_distance(seq1, seq2):
     # Py_ssize_t should be used wherever we're dealing with an array index or length
     cdef Py_ssize_t i, j
     cdef Py_ssize_t offset = len(s2) + 1
-    cdef Py_ssize_t delete_cost, add_cost, subtract_cost, edit_distance
+    cdef unsigned long delete_cost, add_cost, subtract_cost, edit_distance
 
     # storage is a 3 x (len(s2) + 1) array that stores two_ago, one_ago, and this_row
-    cdef Py_ssize_t * storage = <Py_ssize_t * >calloc(3 * offset, sizeof(Py_ssize_t))
+    cdef unsigned long * storage = <unsigned long * >calloc(3 * offset, sizeof(unsigned long))
     if not storage:
         raise MemoryError()
 
@@ -111,7 +120,8 @@ cpdef Py_ssize_t damerau_levenshtein_distance(seq1, seq2):
 
     return edit_distance
 
-cpdef double normalized_damerau_levenshtein_distance(seq1, seq2):
+
+cpdef float normalized_damerau_levenshtein_distance(seq1, seq2):
     """
         Return a real number between 0.0 and 1.0, indicating the edit distance as a fraction of the longer
         string. 0.0 means that the sequences are identical, while 1.0 means they have nothing in common.
@@ -130,32 +140,22 @@ cpdef double normalized_damerau_levenshtein_distance(seq1, seq2):
         >>> normalized_damerau_levenshtein_distance('orange', 'pumpkin')
         1.0
     """
-    return float(damerau_levenshtein_distance(seq1, seq2)) / max(len(to_unicode(seq1)), len(to_unicode(seq2)))
+    return float(damerau_levenshtein_distance(seq1, seq2)) / max(len(_to_unicode(seq1)), len(_to_unicode(seq2)))
 
 
-cpdef np.ndarray[long] damerau_levenshtein_distance_withNPArray(seq1, np.ndarray seq2Array):
+cpdef np.ndarray[np.uint32_t, ndim=1] damerau_levenshtein_distance_ndarray(seq, np.ndarray array):
     """
-        Returns an array of distances
-        1st param is the reference string
-        2nd param is a numpy array of strings to calculate against
+        For each element in the array, compute the DL distance between it and seq. An array of distances will
+        be returned, 1 for each element in the array.
     """
-    cdef Py_ssize_t i, n = len(seq2Array)
-    cdef np.ndarray[long] res = np.empty(n, dtype=long)
-    for i in range(n):
-        res[i] = damerau_levenshtein_distance(seq1, seq2Array[i])
-    return res
+    dl = np.vectorize(damerau_levenshtein_distance, otypes=[np.uint32])
+    return dl(seq, array)
 
 
-cpdef np.ndarray[double] normalized_damerau_levenshtein_distance_withNPArray(seq1, np.ndarray seq2Array):
+cpdef np.ndarray[np.float32_t, ndim=1] normalized_damerau_levenshtein_distance_ndarray(seq, np.ndarray array):
     """
-        Return an array of real numbers between 0.0 and 1.0, indicating the edit distance as a fraction of the longer
-        string. 0.0 means that the sequences are identical, while 1.0 means they have nothing in common.
-
-        1st param is the reference string
-        2nd param is a numpy array of strings to calculate against
+        For each element in the array, compute the normalized DL distance between it and seq. An array of
+        normalized distances will be returned, 1 for each element in the array.
     """
-    cdef Py_ssize_t i, n = len(seq2Array)
-    cdef np.ndarray[double] res = np.empty(n)
-    for i in range(n):
-        res[i] = float(damerau_levenshtein_distance(seq1, seq2Array[i])) / max(len(to_unicode(seq1)), len(to_unicode(seq2Array[i])))
-    return res
+    ndl = np.vectorize(normalized_damerau_levenshtein_distance, otypes=[np.float32])
+    return ndl(seq, array)

@@ -14,7 +14,7 @@ pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algo
 
 > In information theory and computer science, the Damerau-Levenshtein distance (named after Frederick J. Damerau and Vladimir I. Levenshtein) is a "distance" (string metric) between two strings, i.e., finite sequence of symbols, given by counting the minimum number of operations needed to transform one string into the other, where an operation is defined as an insertion, deletion, or substitution of a single character, or a transposition of two adjacent characters.
 
-This implementation is based on [Michael Homer's pure Python implementation](http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/). It runs in `O(N*M)` time using `O(M)` space. It supports unicode characters.
+This implementation is based on [Michael Homer's pure Python implementation](http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/), which implements the [optimal string alignment distance algorithm](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance). It runs in `O(N*M)` time using `O(M)` space. It supports unicode characters.
 
 ## REQUIREMENTS
 This code requires Python 2.4+ (including Python 3), [NumPy](http://www.numpy.org/), and a C compiler such as GCC. Although the code was written in Cython, Cython is not required for installation.
@@ -34,62 +34,64 @@ Install from source:
 The code is called directly from Python as in [examples.py](examples/examples.py):
     
     > python examples.py
-    #edit distances (low edit distance means words are similar):
+    # edit distances (low edit distance means words are more similar):
     damerau_levenshtein_distance('smtih', 'smith') = 1
     damerau_levenshtein_distance('snapple', 'apple') = 2
     damerau_levenshtein_distance('testing', 'testtn') = 2
     damerau_levenshtein_distance('saturday', 'sunday') = 3
     damerau_levenshtein_distance('Saturday', 'saturday') = 1
     damerau_levenshtein_distance('orange', 'pumpkin') = 7
-    damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') = 1 #unicode example
+    damerau_levenshtein_distance('gifts', 'profit') = 5
+    damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') = 1  # unicode example
 
-    #normalized edit distances (low ratio means words are similar):
-    normalized_damerau_levenshtein_distance('smtih', 'smith') = 0.200000
-    normalized_damerau_levenshtein_distance('snapple', 'apple') = 0.285714
-    normalized_damerau_levenshtein_distance('testing', 'testtn') = 0.285714
-    normalized_damerau_levenshtein_distance('saturday', 'sunday') = 0.375000
-    normalized_damerau_levenshtein_distance('Saturday', 'saturday') = 0.125000
-    normalized_damerau_levenshtein_distance('orange', 'pumpkin') = 1.000000
-    normalized_damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') = 0.125000 #unicode example
+    # normalized edit distances (low ratio means words are similar):
+    normalized_damerau_levenshtein_distance('smtih', 'smith') = 0.20000000298023224
+    normalized_damerau_levenshtein_distance('snapple', 'apple') = 0.2857142984867096
+    normalized_damerau_levenshtein_distance('testing', 'testtn') = 0.2857142984867096
+    normalized_damerau_levenshtein_distance('saturday', 'sunday') = 0.375
+    normalized_damerau_levenshtein_distance('Saturday', 'saturday') = 0.125
+    normalized_damerau_levenshtein_distance('orange', 'pumpkin') = 1.0
+    normalized_damerau_levenshtein_distance('gifts', 'profit') = 0.8333333134651184
+    normalized_damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') = 0.125  # unicode example
 
-    #against a numpy array of strings
-    myArray = np.array( ["test1","test12","test123"], dtype='S')
-    damerau_levenshtein_distance_withNPArray("test",myArray)
-    #expect [ 1, 2, 3 ]
+    # edit distances for a single sequence against an array of sequences
+    damerau_levenshtein_distance_ndarray('Saturday', '['Sunday' 'Monday' 'Tuesday' 'Wednesday' 'Thursday' 'Friday' 'Saturday']') = [3 5 5 6 4 5 0]
+    normalized_damerau_levenshtein_distance_ndarray('Saturday', '['Sunday' 'Monday' 'Tuesday' 'Wednesday' 'Thursday' 'Friday' 'Saturday']') = [ 0.375       0.625       0.625       0.66666669  0.5         0.625       0.        ]
 
-    #performance testing:
-    timeit.timeit("damerau_levenshtein_distance('P tcTpUUu2TvwH8f0RbXqgruPLwn1U', 'bhHyeluw9nh8 egCCzNJgp Snh0 Wg')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 3.567970 seconds
-    timeit.timeit("damerau_levenshtein_distance('P tcTpUUu2TvwH8f0RbXqgruPLwn1U', 'P tcTpUUu2TvwH8f0RbXqgruPLwn1U')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 0.888284 seconds #short-circuit makes this faster
+    # normalized edit distances for a single sequence against an array of sequences - unicode
+    damerau_levenshtein_distance_ndarray('Sjöstedt', '['Sjöstedt' 'Sjostedt' 'Söstedt' 'Sjöedt']') = [0 1 1 2]
+    normalized_damerau_levenshtein_distance_ndarray('Sjöstedt', '['Sjöstedt' 'Sjostedt' 'Söstedt' 'Sjöedt']') = [ 0.     0.125  0.125  0.25 ]
+
+    # performance testing:
+    timeit.timeit("damerau_levenshtein_distance('4dWdCKSEgeeYiGxn0hkXp4eC1ssorp', 'fzLv 8GIQaJ0L7BntQtcYcGW4zfEHB')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 5.656925692001096 seconds
+    timeit.timeit("damerau_levenshtein_distance('4dWdCKSEgeeYiGxn0hkXp4eC1ssorp', '4dWdCKSEgeeYiGxn0hkXp4eC1ssorp')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 0.11744023199935327 seconds  # short-circuit makes this faster
 
 Two values can be computed:
 
-* **Edit Distance** (`damerau_levenshtein_distance`)
+* **Edit distance** (`damerau_levenshtein_distance`)
  - Compute the raw distance between two strings (i.e., the minumum number of operations necessary to transform one string into the other).
 
-* **Normalized Edit Distance** (`normalized_damerau_levenshtein_distance`)
+* **Normalized edit distance** (`normalized_damerau_levenshtein_distance`)
  - Compute the ratio of the edit distance to the length of `max(string1, string2)`. 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](http://docs.python.org/2/library/difflib.html#difflib.SequenceMatcher.ratio).
 
-* **Edit Distance against an array** (`damerau_levenshtein_distance_withNPArray`)
- - Compute the raw distance between a reference strings and a numpy array of strings. 
- Convenient (can be used with pandas) and faster than [ for ...]
+* **Edit distance against an array** (`damerau_levenshtein_distance_ndarray`)
+ - Compute the raw distance between a reference strings and a NumPy array of strings.
 
-* **Normalized Edit Distance against an array** (`normalized_damerau_levenshtein_distance_withNPArray`)
- - Compute the normalized distance between a reference strings and a numpy array of strings. 
- 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](http://docs.python.org/2/library/difflib.html#difflib.SequenceMatcher.ratio).
- Convenient (can be used with pandas) and faster than [ for ...]
+* **Normalized edit distance against an array** (`normalized_damerau_levenshtein_distance_ndarray`)
+ - Compute the normalized distance between a reference string and a NumPy array of strings.
 
 Basic use:
 
 ```python
 from pyxdameraulevenshtein import damerau_levenshtein_distance, normalized_damerau_levenshtein_distance
-damerau_levenshtein_distance('smtih', 'smith')
-normalized_damerau_levenshtein_distance('smtih', 'smith')
+damerau_levenshtein_distance('smtih', 'smith')  # expected result: 1
+normalized_damerau_levenshtein_distance('smtih', 'smith')  # expected result: 0.2
 
-from pyxdameraulevenshtein import damerau_levenshtein_distance_withNPArray, normalized_damerau_levenshtein_distance_withNPArray
+from pyxdameraulevenshtein import damerau_levenshtein_distance_ndarray, normalized_damerau_levenshtein_distance_ndarray
 import numpy as np
-l_array = np.array(["test1","test12","test123" ], dtype='S')
-damerau_levenshtein_distance_withNPArray("test",l_array)
-# expectedResult [ 1, 2, 3 ] 
+array = np.array(['test1', 'test12', 'test123'])
+damerau_levenshtein_distance_ndarray('test', array)  # expected result: [1, 2, 3]
+normalized_damerau_levenshtein_distance_ndarray('test', array)  # expected result: [0.2, 0.33333334, 0.42857143]
 ```
 
 ## DIFFERENCES
