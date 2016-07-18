@@ -66,7 +66,7 @@ The code is called directly from Python as in [examples.py](examples/examples.py
     timeit.timeit("damerau_levenshtein_distance('rsDbobSr1ojEAcBYNgwbgNmy9Uealk', '4JgqDXWA SBOCCIZDD1YIzfoCAy6ve')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 5.760512476997974 seconds
     timeit.timeit("damerau_levenshtein_distance('rsDbobSr1ojEAcBYNgwbgNmy9Uealk', 'rsDbobSr1ojEAcBYNgwbgNmy9Uealk')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 0.1195698640003684 seconds  # short-circuit makes this faster
 
-Two values can be computed:
+The following methods are available:
 
 * **Edit distance** (`damerau_levenshtein_distance`)
  - Compute the raw distance between two strings (i.e., the minumum number of operations necessary to transform one string into the other).
