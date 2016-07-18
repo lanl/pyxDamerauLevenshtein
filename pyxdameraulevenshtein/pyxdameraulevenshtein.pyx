@@ -85,13 +85,13 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
     cdef Py_ssize_t offset = len(s2) + 1
     cdef unsigned long delete_cost, add_cost, subtract_cost, edit_distance
 
-    # storage is a 3 x (len(s2) + 1) array that stores two_ago, one_ago, and this_row
+    # storage is a 3 x (len(s2) + 1) array that stores TWO_AGO, ONE_AGO, and THIS_ROW
     cdef unsigned long * storage = <unsigned long * >calloc(3 * offset, sizeof(unsigned long))
     if not storage:
         raise MemoryError()
 
     try:
-        # initialize this_row
+        # initialize THIS_ROW
         for i in range(1, offset):
             storage[THIS_ROW * offset + (i - 1)] = i
 
