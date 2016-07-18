@@ -61,13 +61,13 @@ print("normalized_damerau_levenshtein_distance('{}', '{}') = {}  # unicode examp
 
 print('# edit distances for a single sequence against an array of sequences')
 array = np.array(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
-print("damerau_levenshtein_distance_ndarray('{}', '{}') = {}".format('Saturday', array, damerau_levenshtein_distance_ndarray('Saturday', array)))
-print("normalized_damerau_levenshtein_distance_ndarray('{}', '{}') = {}\n".format('Saturday', array, normalized_damerau_levenshtein_distance_ndarray('Saturday', array)))
+print("damerau_levenshtein_distance_ndarray('{}', np.array({})) = {}".format('Saturday', array, damerau_levenshtein_distance_ndarray('Saturday', array)))
+print("normalized_damerau_levenshtein_distance_ndarray('{}', np.array({})) = {}\n".format('Saturday', array, normalized_damerau_levenshtein_distance_ndarray('Saturday', array)))
 
 print('# normalized edit distances for a single sequence against an array of sequences - unicode')
 array = np.array(['Sjöstedt', 'Sjostedt', 'Söstedt', 'Sjöedt'])
-print("damerau_levenshtein_distance_ndarray('{}', '{}') = {}".format('Sjöstedt', array, damerau_levenshtein_distance_ndarray('Sjöstedt', array)))
-print("normalized_damerau_levenshtein_distance_ndarray('{}', '{}') = {}\n".format('Sjöstedt', array, normalized_damerau_levenshtein_distance_ndarray('Sjöstedt', array)))
+print("damerau_levenshtein_distance_ndarray('{}', np.array({})) = {}".format('Sjöstedt', array, damerau_levenshtein_distance_ndarray('Sjöstedt', array)))
+print("normalized_damerau_levenshtein_distance_ndarray('{}', np.array({})) = {}\n".format('Sjöstedt', array, normalized_damerau_levenshtein_distance_ndarray('Sjöstedt', array)))
 
 # random words will be comprised of ascii letters, numbers, and spaces
 print('# performance testing:')

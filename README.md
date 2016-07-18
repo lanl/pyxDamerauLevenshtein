@@ -55,16 +55,16 @@ The code is called directly from Python as in [examples.py](examples/examples.py
     normalized_damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') = 0.125  # unicode example
 
     # edit distances for a single sequence against an array of sequences
-    damerau_levenshtein_distance_ndarray('Saturday', '['Sunday' 'Monday' 'Tuesday' 'Wednesday' 'Thursday' 'Friday' 'Saturday']') = [3 5 5 6 4 5 0]
-    normalized_damerau_levenshtein_distance_ndarray('Saturday', '['Sunday' 'Monday' 'Tuesday' 'Wednesday' 'Thursday' 'Friday' 'Saturday']') = [ 0.375       0.625       0.625       0.66666669  0.5         0.625       0.        ]
+    damerau_levenshtein_distance_ndarray('Saturday', np.array(['Sunday' 'Monday' 'Tuesday' 'Wednesday' 'Thursday' 'Friday' 'Saturday'])) = [3 5 5 6 4 5 0]
+    normalized_damerau_levenshtein_distance_ndarray('Saturday', np.array(['Sunday' 'Monday' 'Tuesday' 'Wednesday' 'Thursday' 'Friday' 'Saturday'])) = [ 0.375       0.625       0.625       0.66666669  0.5         0.625       0.        ]
 
     # normalized edit distances for a single sequence against an array of sequences - unicode
-    damerau_levenshtein_distance_ndarray('Sjöstedt', '['Sjöstedt' 'Sjostedt' 'Söstedt' 'Sjöedt']') = [0 1 1 2]
-    normalized_damerau_levenshtein_distance_ndarray('Sjöstedt', '['Sjöstedt' 'Sjostedt' 'Söstedt' 'Sjöedt']') = [ 0.     0.125  0.125  0.25 ]
+    damerau_levenshtein_distance_ndarray('Sjöstedt', np.array(['Sjöstedt' 'Sjostedt' 'Söstedt' 'Sjöedt'])) = [0 1 1 2]
+    normalized_damerau_levenshtein_distance_ndarray('Sjöstedt', np.array(['Sjöstedt' 'Sjostedt' 'Söstedt' 'Sjöedt'])) = [ 0.     0.125  0.125  0.25 ]
 
     # performance testing:
-    timeit.timeit("damerau_levenshtein_distance('4dWdCKSEgeeYiGxn0hkXp4eC1ssorp', 'fzLv 8GIQaJ0L7BntQtcYcGW4zfEHB')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 5.656925692001096 seconds
-    timeit.timeit("damerau_levenshtein_distance('4dWdCKSEgeeYiGxn0hkXp4eC1ssorp', '4dWdCKSEgeeYiGxn0hkXp4eC1ssorp')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 0.11744023199935327 seconds  # short-circuit makes this faster
+    timeit.timeit("damerau_levenshtein_distance('rsDbobSr1ojEAcBYNgwbgNmy9Uealk', '4JgqDXWA SBOCCIZDD1YIzfoCAy6ve')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 5.760512476997974 seconds
+    timeit.timeit("damerau_levenshtein_distance('rsDbobSr1ojEAcBYNgwbgNmy9Uealk', 'rsDbobSr1ojEAcBYNgwbgNmy9Uealk')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 0.1195698640003684 seconds  # short-circuit makes this faster
 
 Two values can be computed:
 
