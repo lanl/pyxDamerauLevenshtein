@@ -52,8 +52,7 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
     """
         Return the edit distance. This implementation is based on http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/
         and runs in O(N*M) time using O(M) space. This code implements the "optimal string alignment distance" algorithm, as described
-        by Wikipedia here: https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance
-
+        in Wikipedia here: https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance
 
         Examples:
 
