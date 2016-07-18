@@ -75,7 +75,7 @@ Two values can be computed:
  - Compute the ratio of the edit distance to the length of `max(string1, string2)`. 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](http://docs.python.org/2/library/difflib.html#difflib.SequenceMatcher.ratio).
 
 * **Edit distance against an array** (`damerau_levenshtein_distance_ndarray`)
- - Compute the raw distance between a reference strings and a NumPy array of strings.
+ - Compute the raw distance between a reference string and a NumPy array of strings.
 
 * **Normalized edit distance against an array** (`normalized_damerau_levenshtein_distance_ndarray`)
  - Compute the normalized distance between a reference string and a NumPy array of strings.
