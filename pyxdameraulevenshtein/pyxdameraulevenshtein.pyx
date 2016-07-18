@@ -132,10 +132,8 @@ cpdef float normalized_damerau_levenshtein_distance(seq1, seq2):
 
         >>> normalized_damerau_levenshtein_distance('smtih', 'smith')
         0.2
-
         >>> normalized_damerau_levenshtein_distance('saturday', 'sunday')
         0.375
-
         >>> normalized_damerau_levenshtein_distance('orange', 'pumpkin')
         1.0
     """
