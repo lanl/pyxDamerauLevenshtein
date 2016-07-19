@@ -1,5 +1,7 @@
 # pyxDamerauLevenshtein
 
+[![Build Status](https://travis-ci.org/gfairchild/pyxDamerauLevenshtein.svg?branch=master)](https://travis-ci.org/gfairchild/pyxDamerauLevenshtein)
+
 ## AUTHOR
 Geoffrey Fairchild
 * [http://www.gfairchild.com/](http://www.gfairchild.com/)
