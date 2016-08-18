@@ -17,28 +17,51 @@
     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
     SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-    THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+    USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import sys
 
 from ez_setup import use_setuptools
+
 use_setuptools()
 
 from setuptools import setup, Extension
+from setuptools.command.build_ext import build_ext as _build_ext
+
+
+class build_ext(_build_ext):
+    def finalize_options(self):
+        _build_ext.finalize_options(self)
+        __builtins__.__NUMPY_SETUP__ = False
+        import numpy
+        self.include_dirs.append(numpy.get_include())
+
 
 metadata = dict(
     name='pyxDamerauLevenshtein',
     version='1.4.1',
-    description="""pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance.""",
-    long_description="""pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance. Courtesy `Wikipedia <http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance>`_:
-
-In information theory and computer science, the Damerau-Levenshtein distance (named after Frederick J. Damerau and Vladimir I. Levenshtein) is a "distance" (string metric) between two strings, i.e., finite sequence of symbols, given by counting the minimum number of operations needed to transform one string into the other, where an operation is defined as an insertion, deletion, or substitution of a single character, or a transposition of two adjacent characters.
-
-This implementation is based on `Michael Homer's pure Python implementation <http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/>`_, which implements the `optimal string alignment distance algorithm <https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance>`_. It runs in ``O(N*M)`` time using ``O(M)`` space. It supports unicode characters.
-
-For more information on pyxDamerauLevenshtein, visit the `GitHub project page <https://github.com/gfairchild/pyxDamerauLevenshtein>`_.""",
+    description='pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit '
+                'distance algorithm for Python in Cython for high performance.',
+    long_description='pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) '
+                     'edit distance algorithm for Python in Cython for high performance. '
+                     'Courtesy `Wikipedia <http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance>`_: '
+                     'In information theory and computer science, the '
+                     'Damerau-Levenshtein distance (named after Frederick J. Damerau and '
+                     'Vladimir I. Levenshtein) is a "distance" (string metric) between '
+                     'two strings, i.e., finite sequence of symbols, given by counting '
+                     'the minimum number of operations needed to transform one string '
+                     'into the other, where an operation is defined as an insertion, '
+                     'deletion, or substitution of a single character, or a '
+                     'transposition of two adjacent characters. This implementation is '
+                     'based on `Michael Homer\'s pure Python implementation '
+                     '<http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/>`_, '
+                     'which implements the `optimal string alignment distance algorithm '
+                     '<https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance>`_. '
+                     'It runs in ``O(N*M)`` time using ``O(M)`` space. It supports '
+                     'unicode characters. For more information on pyxDamerauLevenshtein, '
+                     'visit the `GitHub project page <https://github.com/gfairchild/pyxDamerauLevenshtein>`_.',
     author='Geoffrey Fairchild',
     author_email='mail@gfairchild.com',
     maintainer='Geoffrey Fairchild',
@@ -64,24 +87,18 @@ For more information on pyxDamerauLevenshtein, visit the `GitHub project page <h
         'Topic :: Scientific/Engineering :: Bio-Informatics',
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Text Processing :: Linguistic',
-    ],
-    install_requires=['numpy'],
-    setup_requires=['numpy'],
+    ]
 )
 
 if len(sys.argv) >= 2 and ('--help' in sys.argv[1:] or
-                           sys.argv[1] in ('--help-commands', 'egg_info', '--version',
-                                           'clean')):
-    # For these actions, NumPy is not required.
-    #
-    # They are required to succeed without NumPy. For example, when
-    # pip is used to install SciPy when NumPy is not yet present in
-    # the system.
-    pass
+                                   sys.argv[1] in ('--help-commands', 'egg_info', '--version',
+                                                   'clean')):
+    setup(**metadata)
 else:
-    import numpy
-    metadata['ext_modules'] = [Extension('pyxdameraulevenshtein',
-                                         ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'],
-                                         include_dirs=[numpy.get_include()])]
-
-setup(**metadata)
+    setup(
+        setup_requires=['numpy'],
+        install_requires=['numpy'],
+        cmdclass={'build_ext': build_ext},
+        ext_modules=[Extension('pyxdameraulevenshtein', ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'])],
+        **metadata
+    )
