@@ -1,4 +1,4 @@
-## Primary maintainer
+## Maintainer
 
 Geoffrey Fairchild
 * [http://www.gfairchild.com/](http://www.gfairchild.com/)
