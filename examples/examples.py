@@ -33,21 +33,13 @@ import time
 
 print('# edit distances (low edit distance means words are more similar):')
 print("damerau_levenshtein_distance('{}', '{}') = {}".format('smtih', 'smith', damerau_levenshtein_distance('smtih', 'smith')))
-assert(damerau_levenshtein_distance('smtih', 'smith') == 1)
 print("damerau_levenshtein_distance('{}', '{}') = {}".format('snapple', 'apple', damerau_levenshtein_distance('snapple', 'apple')))
-assert(damerau_levenshtein_distance('snapple', 'apple') == 2)
 print("damerau_levenshtein_distance('{}', '{}') = {}".format('testing', 'testtn', damerau_levenshtein_distance('testing', 'testtn')))
-assert(damerau_levenshtein_distance('testing', 'testtn') == 2)
 print("damerau_levenshtein_distance('{}', '{}') = {}".format('saturday', 'sunday', damerau_levenshtein_distance('saturday', 'sunday')))
-assert(damerau_levenshtein_distance('saturday', 'sunday') == 3)
 print("damerau_levenshtein_distance('{}', '{}') = {}".format('Saturday', 'saturday', damerau_levenshtein_distance('Saturday', 'saturday')))
-assert(damerau_levenshtein_distance('Saturday', 'saturday') == 1)
 print("damerau_levenshtein_distance('{}', '{}') = {}".format('orange', 'pumpkin', damerau_levenshtein_distance('orange', 'pumpkin')))
-assert(damerau_levenshtein_distance('orange', 'pumpkin') == 7)
 print("damerau_levenshtein_distance('{}', '{}') = {}".format('gifts', 'profit', damerau_levenshtein_distance('gifts', 'profit')))
-assert(damerau_levenshtein_distance('gifts', 'profit') == 5)
 print("damerau_levenshtein_distance('{}', '{}') = {}  # unicode example\n".format('Sjöstedt', 'Sjostedt', damerau_levenshtein_distance('Sjöstedt', 'Sjostedt')))  # unicode example
-assert(damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') == 1)
 
 print('# normalized edit distances (low ratio means words are similar):')
 print("normalized_damerau_levenshtein_distance('{}', '{}') = {}".format('smtih', 'smith', normalized_damerau_levenshtein_distance('smtih', 'smith')))
