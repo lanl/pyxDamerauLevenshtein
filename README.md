@@ -93,7 +93,7 @@ normalized_damerau_levenshtein_distance_ndarray('test', array)  # expected resul
 ## DIFFERENCES
 Other Python DL implementations:
 
-* [Michael Homer's native Python code](http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/)
+* [Michael Homer's native Python code](https://web.archive.org/web/20150909134357/http://mwh.geek.nz:80/2009/04/26/python-damerau-levenshtein-distance/)
 * [jellyfish](https://github.com/sunlightlabs/jellyfish)
 
 pyxDamerauLevenshtein differs from other Python implementations in that it is both fast via Cython *and* supports unicode. Michael Homer's implementation is fast for Python, but it is *two orders of magnitude* slower than this Cython implementation. jellyfish provides C implementations for a variety of string comparison metrics, but [it is unlikely to support unicode in the near future](https://github.com/sunlightlabs/jellyfish/issues/1).
