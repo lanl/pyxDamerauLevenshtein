@@ -45,7 +45,7 @@ cdef unicode _to_unicode(s):
     elif isinstance(s, unicode):
         # this works for NumPy strings
         return unicode(s)
-    raise TypeError('string [{}] has an unrecognized type of [{}]'.format(type(s)))
+    raise TypeError('string [{}] has an unrecognized type of [{}]'.format(s, type(s)))
 
 
 cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
@@ -63,8 +63,12 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
         >>> damerau_levenshtein_distance('orange', 'pumpkin')
         7
     """
-    s1 = _to_unicode(seq1)
-    s2 = _to_unicode(seq2)
+    if (isinstance(seq1, list) or isinstance(seq1, tuple)) and (isinstance(seq2, list) or isinstance(seq2, tuple)):
+        s1 = seq1
+        s2 = seq2
+    else:
+        s1 = _to_unicode(seq1)
+        s2 = _to_unicode(seq2)
 
     # possible short-circuit if words have a lot in common at the beginning (or are identical)
     cdef Py_ssize_t first_differing_index = 0
@@ -137,7 +141,12 @@ cpdef float normalized_damerau_levenshtein_distance(seq1, seq2):
         >>> normalized_damerau_levenshtein_distance('orange', 'pumpkin')
         1.0
     """
-    return float(damerau_levenshtein_distance(seq1, seq2)) / max(len(_to_unicode(seq1)), len(_to_unicode(seq2)))
+    if (isinstance(seq1, list) or isinstance(seq1, tuple)) and (isinstance(seq2, list) or isinstance(seq2, tuple)):
+        n = max(len(seq1), len(seq2))
+    else:
+        n = max(len(_to_unicode(seq1)), len(_to_unicode(seq2)))
+
+    return float(damerau_levenshtein_distance(seq1, seq2)) / n
 
 
 cpdef np.ndarray[np.uint32_t, ndim=1] damerau_levenshtein_distance_ndarray(seq, np.ndarray array):

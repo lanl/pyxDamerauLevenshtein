@@ -21,6 +21,9 @@ class TestDamerauLevenshtien(unittest.TestCase):
         assert damerau_levenshtein_distance('orange', 'pumpkin') == 7
         assert damerau_levenshtein_distance('gifts', 'profit') == 5
         assert damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') == 1
+        assert damerau_levenshtein_distance([1, 2, 3], [1, 3, 2]) == 1
+        assert damerau_levenshtein_distance((1, 2, 3), (1, 3, 2)) == 1
+        assert damerau_levenshtein_distance((1, 2, 3), [1, 3, 2]) == 1
 
     def test_normalized_damerau_levenshtein_distance(self):
         assert normalized_damerau_levenshtein_distance('smtih', 'smith') == 0.20000000298023224
@@ -31,6 +34,7 @@ class TestDamerauLevenshtien(unittest.TestCase):
         assert normalized_damerau_levenshtein_distance('orange', 'pumpkin') == 1.0
         assert normalized_damerau_levenshtein_distance('gifts', 'profit') == 0.8333333134651184
         assert normalized_damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') == 0.125
+        assert np.isclose(normalized_damerau_levenshtein_distance([1, 2, 3], [1, 3, 2]), 1.0/3.0)
 
     def test_damerau_levenshtein_distance_ndarray(self):
         assert damerau_levenshtein_distance_ndarray(
