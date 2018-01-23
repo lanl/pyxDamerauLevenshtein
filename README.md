@@ -13,7 +13,7 @@ pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algo
 This implementation is based on [Michael Homer's pure Python implementation](https://web.archive.org/web/20150909134357/http://mwh.geek.nz:80/2009/04/26/python-damerau-levenshtein-distance/), which implements the [optimal string alignment distance algorithm](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance). It runs in `O(N*M)` time using `O(M)` space. It supports unicode characters.
 
 ## REQUIREMENTS
-This code requires Python 2.6+ (including Python 3.2+), [NumPy](http://www.numpy.org/), and a C compiler such as GCC. Although the code was written in Cython, Cython is not required for installation.
+This code requires Python 2.6, 2.7 or Python 3.4+, [NumPy](http://www.numpy.org/), and a C compiler such as GCC. Although the code was written in Cython, Cython is not required for installation.
 
 ## INSTALL
 pyxDamerauLevenshtein is available on PyPI at https://pypi.python.org/pypi/pyxDamerauLevenshtein.
@@ -39,6 +39,7 @@ The code is called directly from Python as in [examples.py](examples/examples.py
     damerau_levenshtein_distance('orange', 'pumpkin') = 7
     damerau_levenshtein_distance('gifts', 'profit') = 5
     damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') = 1  # unicode example
+    damerau_levenshtein_distance([1, 2, 3], [1, 3, 2]) = 1   # also works with non-string data
 
     # normalized edit distances (low ratio means words are similar):
     normalized_damerau_levenshtein_distance('smtih', 'smith') = 0.20000000298023224
@@ -49,6 +50,7 @@ The code is called directly from Python as in [examples.py](examples/examples.py
     normalized_damerau_levenshtein_distance('orange', 'pumpkin') = 1.0
     normalized_damerau_levenshtein_distance('gifts', 'profit') = 0.8333333134651184
     normalized_damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') = 0.125  # unicode example
+    normalized_damerau_levenshtein_distance([1, 2, 3], [1, 3, 2]) = 0.3333...  # also works with non-string data
 
     # edit distances for a single sequence against an array of sequences
     damerau_levenshtein_distance_ndarray('Saturday', np.array(['Sunday' 'Monday' 'Tuesday' 'Wednesday' 'Thursday' 'Friday' 'Saturday'])) = [3 5 5 6 4 5 0]
