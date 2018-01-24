@@ -63,7 +63,7 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
         >>> damerau_levenshtein_distance('orange', 'pumpkin')
         7
     """
-    if (isinstance(seq1, list) or isinstance(seq1, tuple)) and (isinstance(seq2, list) or isinstance(seq2, tuple)):
+    if isinstance(seq1, (list, tuple)) and isinstance(seq2, (list, tuple)):
         s1 = seq1
         s2 = seq2
     else:
@@ -141,12 +141,12 @@ cpdef float normalized_damerau_levenshtein_distance(seq1, seq2):
         >>> normalized_damerau_levenshtein_distance('orange', 'pumpkin')
         1.0
     """
-    if (isinstance(seq1, list) or isinstance(seq1, tuple)) and (isinstance(seq2, list) or isinstance(seq2, tuple)):
+    if isinstance(seq1, (list, tuple)) and isinstance(seq2, (list, tuple)):
         n = max(len(seq1), len(seq2))
     else:
         n = max(len(_to_unicode(seq1)), len(_to_unicode(seq2)))
 
-    return float(damerau_levenshtein_distance(seq1, seq2)) / n
+    return float(damerau_levenshtein_distance(seq1, seq2)) / max(n, 1)   # prevent division by zero for empty inputs
 
 
 cpdef np.ndarray[np.uint32_t, ndim=1] damerau_levenshtein_distance_ndarray(seq, np.ndarray array):
