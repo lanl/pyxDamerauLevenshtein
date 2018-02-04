@@ -52,7 +52,7 @@ metadata = dict(
                      'deletion, or substitution of a single character, or a '
                      'transposition of two adjacent characters. This implementation is '
                      'based on `Michael Homer\'s pure Python implementation '
-                     '<http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/>`_, '
+                     '<https://web.archive.org/web/20150909134357/http://mwh.geek.nz:80/2009/04/26/python-damerau-levenshtein-distance/>`_, '
                      'which implements the `optimal string alignment distance algorithm '
                      '<https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance>`_. '
                      'It runs in ``O(N*M)`` time using ``O(M)`` space. It supports '
