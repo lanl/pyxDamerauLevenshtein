@@ -1,11 +1,12 @@
 # Changes
 
-## 1.5 (2017-01-24)
+## 1.5 (2018-02-04)
 
-* allow arbitrary non-string data as input
-* dropped support of EOL Python versions (2.6, 3.2 and 3.3)
-* fixed a possible division-by-zero exception
-* fixed a formatting error in an exception message
+* Allow tuples and lists as input. (courtesy @internaut)
+* Dropped support of EOL Python versions (2.6, 3.2, and 3.3). (courtesy @internaut)
+* Fixed a possible division-by-zero exception. (courtesy @internaut)
+* Fixed a formatting error in an exception message. (courtesy @internaut)
+* Compiled with Cython 0.27.3.
 
 ## 1.4.1 (2016-07-18)
 * Clarified that this implementation is of the [optimal string alignment distance algorithm](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance) (see [this issue](https://github.com/gfairchild/pyxDamerauLevenshtein/issues/6) for more information).

@@ -17,8 +17,8 @@
     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
     SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-    THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 from cpython.version cimport PY_MAJOR_VERSION
@@ -50,9 +50,10 @@ cdef unicode _to_unicode(s):
 
 cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
     """
-        Return the edit distance. This implementation is based on http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/
-        and runs in O(N*M) time using O(M) space. This code implements the "optimal string alignment distance" algorithm, as described
-        in Wikipedia here: https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance
+        Return the edit distance. This implementation is based on Michael Homer's implementation
+        (http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/) and runs in O(N*M) time using O(M) space.
+        This code implements the "optimal string alignment distance" algorithm, as described in Wikipedia here:
+        https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance
 
         Examples:
 
@@ -72,7 +73,9 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
 
     # possible short-circuit if words have a lot in common at the beginning (or are identical)
     cdef Py_ssize_t first_differing_index = 0
-    while first_differing_index < len(s1) and first_differing_index < len(s2) and s1[first_differing_index] == s2[first_differing_index]:
+    while first_differing_index < len(s1) and \
+          first_differing_index < len(s2) and \
+          s1[first_differing_index] == s2[first_differing_index]:
         first_differing_index += 1
 
     s1 = s1[first_differing_index:]
@@ -114,8 +117,9 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
                 subtract_cost = storage[ONE_AGO * offset + (j - 1 if j > 0 else len(s2))] + (s1[i] != s2[j])
                 storage[THIS_ROW * offset + j] = min(delete_cost, add_cost, subtract_cost)
                 # deal with transpositions
-                if (i > 0 and j > 0 and s1[i] == s2[j - 1] and s1[i - 1] == s2[j] and s1[i] != s2[j]):
-                    storage[THIS_ROW * offset + j] = min(storage[THIS_ROW * offset + j], storage[TWO_AGO * offset + j - 2 if j > 1 else len(s2)] + 1)
+                if i > 0 and j > 0 and s1[i] == s2[j - 1] and s1[i - 1] == s2[j] and s1[i] != s2[j]:
+                    storage[THIS_ROW * offset + j] = min(storage[THIS_ROW * offset + j],
+                                                         storage[TWO_AGO * offset + j - 2 if j > 1 else len(s2)] + 1)
         edit_distance = storage[THIS_ROW * offset + (len(s2) - 1)]
     finally:
         # free dynamically-allocated memory
@@ -146,7 +150,8 @@ cpdef float normalized_damerau_levenshtein_distance(seq1, seq2):
     else:
         n = max(len(_to_unicode(seq1)), len(_to_unicode(seq2)))
 
-    return float(damerau_levenshtein_distance(seq1, seq2)) / max(n, 1)   # prevent division by zero for empty inputs
+    # prevent division by zero for empty inputs
+    return float(damerau_levenshtein_distance(seq1, seq2)) / max(n, 1)
 
 
 cpdef np.ndarray[np.uint32_t, ndim=1] damerau_levenshtein_distance_ndarray(seq, np.ndarray array):

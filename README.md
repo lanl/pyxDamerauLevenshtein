@@ -27,56 +27,20 @@ Install from source:
     python setup.py install
 
 ## USING THIS CODE
-The code is called directly from Python as in [examples.py](examples/examples.py):
-    
-    > python examples.py
-    # edit distances (low edit distance means words are more similar):
-    damerau_levenshtein_distance('smtih', 'smith') = 1
-    damerau_levenshtein_distance('snapple', 'apple') = 2
-    damerau_levenshtein_distance('testing', 'testtn') = 2
-    damerau_levenshtein_distance('saturday', 'sunday') = 3
-    damerau_levenshtein_distance('Saturday', 'saturday') = 1
-    damerau_levenshtein_distance('orange', 'pumpkin') = 7
-    damerau_levenshtein_distance('gifts', 'profit') = 5
-    damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') = 1  # unicode example
-    damerau_levenshtein_distance([1, 2, 3], [1, 3, 2]) = 1   # also works with non-string data
-
-    # normalized edit distances (low ratio means words are similar):
-    normalized_damerau_levenshtein_distance('smtih', 'smith') = 0.20000000298023224
-    normalized_damerau_levenshtein_distance('snapple', 'apple') = 0.2857142984867096
-    normalized_damerau_levenshtein_distance('testing', 'testtn') = 0.2857142984867096
-    normalized_damerau_levenshtein_distance('saturday', 'sunday') = 0.375
-    normalized_damerau_levenshtein_distance('Saturday', 'saturday') = 0.125
-    normalized_damerau_levenshtein_distance('orange', 'pumpkin') = 1.0
-    normalized_damerau_levenshtein_distance('gifts', 'profit') = 0.8333333134651184
-    normalized_damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') = 0.125  # unicode example
-    normalized_damerau_levenshtein_distance([1, 2, 3], [1, 3, 2]) = 0.3333...  # also works with non-string data
-
-    # edit distances for a single sequence against an array of sequences
-    damerau_levenshtein_distance_ndarray('Saturday', np.array(['Sunday' 'Monday' 'Tuesday' 'Wednesday' 'Thursday' 'Friday' 'Saturday'])) = [3 5 5 6 4 5 0]
-    normalized_damerau_levenshtein_distance_ndarray('Saturday', np.array(['Sunday' 'Monday' 'Tuesday' 'Wednesday' 'Thursday' 'Friday' 'Saturday'])) = [ 0.375       0.625       0.625       0.66666669  0.5         0.625       0.        ]
-
-    # normalized edit distances for a single sequence against an array of sequences - unicode
-    damerau_levenshtein_distance_ndarray('Sjöstedt', np.array(['Sjöstedt' 'Sjostedt' 'Söstedt' 'Sjöedt'])) = [0 1 1 2]
-    normalized_damerau_levenshtein_distance_ndarray('Sjöstedt', np.array(['Sjöstedt' 'Sjostedt' 'Söstedt' 'Sjöedt'])) = [ 0.     0.125  0.125  0.25 ]
-
-    # performance testing:
-    timeit.timeit("damerau_levenshtein_distance('rsDbobSr1ojEAcBYNgwbgNmy9Uealk', '4JgqDXWA SBOCCIZDD1YIzfoCAy6ve')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 5.760512476997974 seconds
-    timeit.timeit("damerau_levenshtein_distance('rsDbobSr1ojEAcBYNgwbgNmy9Uealk', 'rsDbobSr1ojEAcBYNgwbgNmy9Uealk')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000) = 0.1195698640003684 seconds  # short-circuit makes this faster
-
 The following methods are available:
 
 * **Edit distance** (`damerau_levenshtein_distance`)
- - Compute the raw distance between two strings (i.e., the minumum number of operations necessary to transform one string into the other).
+    * Compute the raw distance between two strings (i.e., the minumum number of operations necessary to transform one string into the other).
+    * Additionally, the distance between lists and tuples can also be computed.
 
 * **Normalized edit distance** (`normalized_damerau_levenshtein_distance`)
- - Compute the ratio of the edit distance to the length of `max(string1, string2)`. 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](http://docs.python.org/2/library/difflib.html#difflib.SequenceMatcher.ratio).
+    * Compute the ratio of the edit distance to the length of `max(string1, string2)`. 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher.ratio).
 
 * **Edit distance against an array** (`damerau_levenshtein_distance_ndarray`)
- - Compute the raw distances between a string and each string in a NumPy array.
+    * Compute the raw distances between a string and each string in a NumPy array.
 
 * **Normalized edit distance against an array** (`normalized_damerau_levenshtein_distance_ndarray`)
- - Compute the normalized distances between a string and each string in a NumPy array.
+    * Compute the normalized distances between a string and each string in a NumPy array.
 
 Basic use:
 
@@ -84,6 +48,7 @@ Basic use:
 from pyxdameraulevenshtein import damerau_levenshtein_distance, normalized_damerau_levenshtein_distance
 damerau_levenshtein_distance('smtih', 'smith')  # expected result: 1
 normalized_damerau_levenshtein_distance('smtih', 'smith')  # expected result: 0.2
+damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4])  # expected result: 7
 
 from pyxdameraulevenshtein import damerau_levenshtein_distance_ndarray, normalized_damerau_levenshtein_distance_ndarray
 import numpy as np

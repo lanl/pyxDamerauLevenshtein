@@ -17,21 +17,17 @@
     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
     SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-    USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import sys
-
-from ez_setup import use_setuptools
-
-use_setuptools()
 
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext as _build_ext
 
 
-class build_ext(_build_ext):
+class BuildExt(_build_ext):
     def finalize_options(self):
         _build_ext.finalize_options(self)
         __builtins__.__NUMPY_SETUP__ = False
@@ -96,7 +92,7 @@ else:
     setup(
         setup_requires=['numpy'],
         install_requires=['numpy'],
-        cmdclass={'build_ext': build_ext},
+        cmdclass={'build_ext': BuildExt},
         ext_modules=[Extension('pyxdameraulevenshtein', ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'])],
         **metadata
     )
