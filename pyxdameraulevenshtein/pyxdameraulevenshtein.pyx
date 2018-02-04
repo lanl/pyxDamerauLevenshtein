@@ -121,12 +121,12 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
                 if i > 0 and j > 0 and s1[i] == s2[j - 1] and s1[i - 1] == s2[j] and s1[i] != s2[j]:
                     storage[THIS_ROW * offset + j] = min(storage[THIS_ROW * offset + j],
                                                          storage[TWO_AGO * offset + j - 2 if j > 1 else len(s2)] + 1)
+
         edit_distance = storage[THIS_ROW * offset + (len(s2) - 1)]
+        return edit_distance
     finally:
         # free dynamically-allocated memory
         free(storage)
-
-    return edit_distance
 
 
 cpdef float normalized_damerau_levenshtein_distance(seq1, seq2):
