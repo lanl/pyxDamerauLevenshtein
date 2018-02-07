@@ -122,8 +122,8 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
                     storage[THIS_ROW * offset + j] = min(storage[THIS_ROW * offset + j],
                                                          storage[TWO_AGO * offset + j - 2 if j > 1 else len(s2)] + 1)
 
-        edit_distance = storage[THIS_ROW * offset + (len(s2) - 1)]
-        return edit_distance
+        # compute and return the final edit distance
+        return storage[THIS_ROW * offset + (len(s2) - 1)]
     finally:
         # free dynamically-allocated memory
         free(storage)
