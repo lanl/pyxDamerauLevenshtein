@@ -3,9 +3,9 @@
 ## Maintainer
 
 Geoffrey Fairchild
-* [http://www.gfairchild.com/](http://www.gfairchild.com/)
+* [https://www.gfairchild.com/](https://www.gfairchild.com/)
 * [https://github.com/gfairchild](https://github.com/gfairchild)
-* [http://www.linkedin.com/in/gfairchild/](http://www.linkedin.com/in/gfairchild/)
+* [https://www.linkedin.com/in/gfairchild/](https://www.linkedin.com/in/gfairchild/)
 
 ## Contributors
 
