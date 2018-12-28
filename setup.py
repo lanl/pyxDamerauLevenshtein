@@ -90,7 +90,6 @@ if len(sys.argv) >= 2 and ('--help' in sys.argv[1:] or
     setup(**metadata)
 else:
     setup(
-        setup_requires=['numpy'],
         install_requires=['numpy'],
         cmdclass={'build_ext': BuildExt},
         ext_modules=[Extension('pyxdameraulevenshtein', ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'])],
