@@ -24,15 +24,6 @@
 import sys
 
 from setuptools import setup, Extension
-from setuptools.command.build_ext import build_ext as _build_ext
-
-
-class BuildExt(_build_ext):
-    def finalize_options(self):
-        _build_ext.finalize_options(self)
-        __builtins__.__NUMPY_SETUP__ = False
-        import numpy
-        self.include_dirs.append(numpy.get_include())
 
 
 metadata = dict(
@@ -85,14 +76,8 @@ metadata = dict(
     ]
 )
 
-if len(sys.argv) >= 2 and ('--help' in sys.argv[1:] or
-                                   sys.argv[1] in ('--help-commands', 'egg_info', '--version',
-                                                   'clean')):
-    setup(**metadata)
-else:
-    setup(
-        install_requires=['numpy'],
-        cmdclass={'build_ext': BuildExt},
-        ext_modules=[Extension('pyxdameraulevenshtein', ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'])],
-        **metadata
-    )
+setup(
+    install_requires=['numpy'],
+    ext_modules=[Extension('pyxdameraulevenshtein', ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'])],
+    **metadata
+)
