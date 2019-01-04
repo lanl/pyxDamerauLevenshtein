@@ -24,6 +24,7 @@
 import sys
 
 from setuptools import setup, Extension
+import numpy
 
 
 metadata = dict(
@@ -78,6 +79,7 @@ metadata = dict(
 
 setup(
     install_requires=['numpy'],
-    ext_modules=[Extension('pyxdameraulevenshtein', ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'])],
+    ext_modules=[Extension('pyxdameraulevenshtein', ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'],
+                           include_dirs=[numpy.get_include()])],
     **metadata
 )
