@@ -9,10 +9,8 @@ python:
   - 3.6
   - 3.7
 
-before_install:
-  - pip install numpy
-
 install:
+  - pip install -r requirements.txt
   - python setup.py install
 
 script: python tests/test_pyxdl.py
