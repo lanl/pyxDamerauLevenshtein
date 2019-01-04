@@ -1,5 +1,11 @@
 # Changes
 
+## 1.5.1 (2019-01-04)
+
+* Fixing NumPy-related install error. (courtesy @simobasso)
+* Enabling Python 3.7 unit tests in Travis.
+* Compiled with Cython 0.29.2.
+
 ## 1.5 (2018-02-04)
 
 * Allow tuples and lists as input. (courtesy @internaut)

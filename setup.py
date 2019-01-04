@@ -37,7 +37,7 @@ class BuildExt(_build_ext):
 
 metadata = dict(
     name='pyxDamerauLevenshtein',
-    version='1.5',
+    version='1.5.1',
     description='pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit '
                 'distance algorithm for Python in Cython for high performance.',
     long_description='pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) '
@@ -78,6 +78,7 @@ metadata = dict(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Topic :: Scientific/Engineering :: Bio-Informatics',
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Text Processing :: Linguistic',
