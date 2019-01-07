@@ -18,7 +18,7 @@ This code requires 2.7 or Python 3.4+, [NumPy](http://www.numpy.org/), and a C c
 ## INSTALL
 pyxDamerauLevenshtein is available on PyPI at https://pypi.python.org/pypi/pyxDamerauLevenshtein.
 
-Install using [pip](http://www.pip-installer.org/):
+Install using [pip](https://pypi.org/project/pip/):
 
     pip install pyxDamerauLevenshtein
 
