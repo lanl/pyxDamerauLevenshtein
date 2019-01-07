@@ -1,5 +1,9 @@
 # Changes
 
+## 1.5.2 (2019-01-07)
+
+* Using the `pyproject.toml` standard set forth in [PEP 518](https://www.python.org/dev/peps/pep-0518/), NumPy will now be correctly installed as a dependency prior to running `setup.py`.
+
 ## 1.5.1 (2019-01-04)
 
 * Fixing NumPy-related install error. (courtesy @simobasso)

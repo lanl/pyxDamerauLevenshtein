@@ -20,13 +20,16 @@ pyxDamerauLevenshtein is available on PyPI at https://pypi.python.org/pypi/pyxDa
 
 Install using [pip](http://www.pip-installer.org/):
 
-    pip install numpy
     pip install pyxDamerauLevenshtein
 
 Install from source:
 
     pip install numpy
     python setup.py install
+
+or
+
+    pip install .
 
 ## USING THIS CODE
 The following methods are available:
