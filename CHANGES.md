@@ -1,5 +1,10 @@
 # Changes
 
+## 1.5.3 (2019-02-25)
+
+* Specifying minimum version numbers in `pyproject.toml`.
+* Compiled with Cython 0.29.5.
+
 ## 1.5.2 (2019-01-07)
 
 * Using the `pyproject.toml` standard set forth in [PEP 518](https://www.python.org/dev/peps/pep-0518/), NumPy will now be correctly installed as a dependency prior to running `setup.py`.
