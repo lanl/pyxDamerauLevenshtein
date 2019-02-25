@@ -78,7 +78,7 @@ metadata = dict(
 )
 
 setup(
-    install_requires=['numpy'],
+    install_requires=['numpy>=1.16.1'],
     ext_modules=[Extension('pyxdameraulevenshtein', ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'],
                            include_dirs=[numpy.get_include()])],
     **metadata
