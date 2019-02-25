@@ -2,7 +2,7 @@
 
 ## 1.5.3 (2019-02-25)
 
-* Specifying minimum version numbers in `pyproject.toml`.
+* Specifying minimum version numbers in `pyproject.toml` and `setup.py`.
 * Compiled with Cython 0.29.5.
 
 ## 1.5.2 (2019-01-07)
