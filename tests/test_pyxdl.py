@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    Copyright (c) 2016, Triad National Security, LLC
+    Copyright (c) 2013, Triad National Security, LLC
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
