@@ -1705,7 +1705,7 @@ static const char __pyx_k_ndarray_is_not_Fortran_contiguou[] = "ndarray is not F
 static const char __pyx_k_normalized_damerau_levenshtein_d[] = "normalized_damerau_levenshtein_distance";
 static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath failed to import";
 static const char __pyx_k_Format_string_allocated_too_shor_2[] = "Format string allocated too short.";
-static const char __pyx_k_normalized_damerau_levenshtein_d_2[] = "normalized_damerau_levenshtein_distance (line 134)";
+static const char __pyx_k_normalized_damerau_levenshtein_d_2[] = "normalized_damerau_levenshtein_distance (line 135)";
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor_2;
 static PyObject *__pyx_n_s_ImportError;
@@ -2030,7 +2030,7 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
   /* "pyxdameraulevenshtein.pyx":70
  *         7
  *     """
- *     if isinstance(seq1, (list, tuple)) and isinstance(seq2, (list, tuple)):             # <<<<<<<<<<<<<<
+ *     if isinstance(seq1, (list, tuple,np.ndarray)) and isinstance(seq2, (list, tuple,np.ndarray)):             # <<<<<<<<<<<<<<
  *         s1 = seq1
  *         s2 = seq2
  */
@@ -2043,46 +2043,60 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
   }
   __pyx_t_4 = PyTuple_Check(__pyx_v_seq1); 
   __pyx_t_3 = (__pyx_t_4 != 0);
-  __pyx_t_2 = __pyx_t_3;
-  __pyx_L6_bool_binop_done:;
-  __pyx_t_3 = (__pyx_t_2 != 0);
-  if (__pyx_t_3) {
+  if (!__pyx_t_3) {
   } else {
-    __pyx_t_1 = __pyx_t_3;
+    __pyx_t_2 = __pyx_t_3;
+    goto __pyx_L6_bool_binop_done;
+  }
+  __pyx_t_3 = __Pyx_TypeCheck(__pyx_v_seq1, __pyx_ptype_5numpy_ndarray); 
+  __pyx_t_4 = (__pyx_t_3 != 0);
+  __pyx_t_2 = __pyx_t_4;
+  __pyx_L6_bool_binop_done:;
+  __pyx_t_4 = (__pyx_t_2 != 0);
+  if (__pyx_t_4) {
+  } else {
+    __pyx_t_1 = __pyx_t_4;
     goto __pyx_L4_bool_binop_done;
   }
   __pyx_t_2 = PyList_Check(__pyx_v_seq2); 
-  __pyx_t_4 = (__pyx_t_2 != 0);
-  if (!__pyx_t_4) {
+  __pyx_t_3 = (__pyx_t_2 != 0);
+  if (!__pyx_t_3) {
   } else {
-    __pyx_t_3 = __pyx_t_4;
-    goto __pyx_L8_bool_binop_done;
+    __pyx_t_4 = __pyx_t_3;
+    goto __pyx_L9_bool_binop_done;
   }
-  __pyx_t_4 = PyTuple_Check(__pyx_v_seq2); 
-  __pyx_t_2 = (__pyx_t_4 != 0);
-  __pyx_t_3 = __pyx_t_2;
-  __pyx_L8_bool_binop_done:;
+  __pyx_t_3 = PyTuple_Check(__pyx_v_seq2); 
   __pyx_t_2 = (__pyx_t_3 != 0);
-  __pyx_t_1 = __pyx_t_2;
+  if (!__pyx_t_2) {
+  } else {
+    __pyx_t_4 = __pyx_t_2;
+    goto __pyx_L9_bool_binop_done;
+  }
+  __pyx_t_2 = __Pyx_TypeCheck(__pyx_v_seq2, __pyx_ptype_5numpy_ndarray); 
+  __pyx_t_3 = (__pyx_t_2 != 0);
+  __pyx_t_4 = __pyx_t_3;
+  __pyx_L9_bool_binop_done:;
+  __pyx_t_3 = (__pyx_t_4 != 0);
+  __pyx_t_1 = __pyx_t_3;
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
     /* "pyxdameraulevenshtein.pyx":71
  *     """
- *     if isinstance(seq1, (list, tuple)) and isinstance(seq2, (list, tuple)):
+ *     if isinstance(seq1, (list, tuple,np.ndarray)) and isinstance(seq2, (list, tuple,np.ndarray)):
  *         s1 = seq1             # <<<<<<<<<<<<<<
  *         s2 = seq2
- *     else:
+ * 
  */
     __Pyx_INCREF(__pyx_v_seq1);
     __pyx_v_s1 = __pyx_v_seq1;
 
     /* "pyxdameraulevenshtein.pyx":72
- *     if isinstance(seq1, (list, tuple)) and isinstance(seq2, (list, tuple)):
+ *     if isinstance(seq1, (list, tuple,np.ndarray)) and isinstance(seq2, (list, tuple,np.ndarray)):
  *         s1 = seq1
  *         s2 = seq2             # <<<<<<<<<<<<<<
+ * 
  *     else:
- *         s1 = _to_unicode(seq1)
  */
     __Pyx_INCREF(__pyx_v_seq2);
     __pyx_v_s2 = __pyx_v_seq2;
@@ -2090,41 +2104,41 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
     /* "pyxdameraulevenshtein.pyx":70
  *         7
  *     """
- *     if isinstance(seq1, (list, tuple)) and isinstance(seq2, (list, tuple)):             # <<<<<<<<<<<<<<
+ *     if isinstance(seq1, (list, tuple,np.ndarray)) and isinstance(seq2, (list, tuple,np.ndarray)):             # <<<<<<<<<<<<<<
  *         s1 = seq1
  *         s2 = seq2
  */
     goto __pyx_L3;
   }
 
-  /* "pyxdameraulevenshtein.pyx":74
- *         s2 = seq2
+  /* "pyxdameraulevenshtein.pyx":75
+ * 
  *     else:
  *         s1 = _to_unicode(seq1)             # <<<<<<<<<<<<<<
  *         s2 = _to_unicode(seq2)
  * 
  */
   /*else*/ {
-    __pyx_t_5 = __pyx_f_21pyxdameraulevenshtein__to_unicode(__pyx_v_seq1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 74, __pyx_L1_error)
+    __pyx_t_5 = __pyx_f_21pyxdameraulevenshtein__to_unicode(__pyx_v_seq1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 75, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_v_s1 = __pyx_t_5;
     __pyx_t_5 = 0;
 
-    /* "pyxdameraulevenshtein.pyx":75
+    /* "pyxdameraulevenshtein.pyx":76
  *     else:
  *         s1 = _to_unicode(seq1)
  *         s2 = _to_unicode(seq2)             # <<<<<<<<<<<<<<
  * 
  *     # possible short-circuit if words have a lot in common at the beginning (or are identical)
  */
-    __pyx_t_5 = __pyx_f_21pyxdameraulevenshtein__to_unicode(__pyx_v_seq2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __pyx_t_5 = __pyx_f_21pyxdameraulevenshtein__to_unicode(__pyx_v_seq2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 76, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_v_s2 = __pyx_t_5;
     __pyx_t_5 = 0;
   }
   __pyx_L3:;
 
-  /* "pyxdameraulevenshtein.pyx":78
+  /* "pyxdameraulevenshtein.pyx":79
  * 
  *     # possible short-circuit if words have a lot in common at the beginning (or are identical)
  *     cdef Py_ssize_t first_differing_index = 0             # <<<<<<<<<<<<<<
@@ -2133,7 +2147,7 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
  */
   __pyx_v_first_differing_index = 0;
 
-  /* "pyxdameraulevenshtein.pyx":79
+  /* "pyxdameraulevenshtein.pyx":80
  *     # possible short-circuit if words have a lot in common at the beginning (or are identical)
  *     cdef Py_ssize_t first_differing_index = 0
  *     while first_differing_index < len(s1) and \             # <<<<<<<<<<<<<<
@@ -2141,50 +2155,50 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
  *           s1[first_differing_index] == s2[first_differing_index]:
  */
   while (1) {
-    __pyx_t_6 = PyObject_Length(__pyx_v_s1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 79, __pyx_L1_error)
-    __pyx_t_2 = ((__pyx_v_first_differing_index < __pyx_t_6) != 0);
-    if (__pyx_t_2) {
+    __pyx_t_6 = PyObject_Length(__pyx_v_s1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 80, __pyx_L1_error)
+    __pyx_t_3 = ((__pyx_v_first_differing_index < __pyx_t_6) != 0);
+    if (__pyx_t_3) {
     } else {
-      __pyx_t_1 = __pyx_t_2;
-      goto __pyx_L12_bool_binop_done;
+      __pyx_t_1 = __pyx_t_3;
+      goto __pyx_L14_bool_binop_done;
     }
 
-    /* "pyxdameraulevenshtein.pyx":80
+    /* "pyxdameraulevenshtein.pyx":81
  *     cdef Py_ssize_t first_differing_index = 0
  *     while first_differing_index < len(s1) and \
  *           first_differing_index < len(s2) and \             # <<<<<<<<<<<<<<
  *           s1[first_differing_index] == s2[first_differing_index]:
  *         first_differing_index += 1
  */
-    __pyx_t_6 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 80, __pyx_L1_error)
-    __pyx_t_2 = ((__pyx_v_first_differing_index < __pyx_t_6) != 0);
-    if (__pyx_t_2) {
+    __pyx_t_6 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 81, __pyx_L1_error)
+    __pyx_t_3 = ((__pyx_v_first_differing_index < __pyx_t_6) != 0);
+    if (__pyx_t_3) {
     } else {
-      __pyx_t_1 = __pyx_t_2;
-      goto __pyx_L12_bool_binop_done;
+      __pyx_t_1 = __pyx_t_3;
+      goto __pyx_L14_bool_binop_done;
     }
 
-    /* "pyxdameraulevenshtein.pyx":81
+    /* "pyxdameraulevenshtein.pyx":82
  *     while first_differing_index < len(s1) and \
  *           first_differing_index < len(s2) and \
  *           s1[first_differing_index] == s2[first_differing_index]:             # <<<<<<<<<<<<<<
  *         first_differing_index += 1
  * 
  */
-    __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_s1, __pyx_v_first_differing_index, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 81, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_s1, __pyx_v_first_differing_index, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_s2, __pyx_v_first_differing_index, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 81, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_s2, __pyx_v_first_differing_index, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 82, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_8 = PyObject_RichCompare(__pyx_t_5, __pyx_t_7, Py_EQ); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 81, __pyx_L1_error)
+    __pyx_t_8 = PyObject_RichCompare(__pyx_t_5, __pyx_t_7, Py_EQ); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 82, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 81, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 82, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_1 = __pyx_t_2;
-    __pyx_L12_bool_binop_done:;
+    __pyx_t_1 = __pyx_t_3;
+    __pyx_L14_bool_binop_done:;
     if (!__pyx_t_1) break;
 
-    /* "pyxdameraulevenshtein.pyx":82
+    /* "pyxdameraulevenshtein.pyx":83
  *           first_differing_index < len(s2) and \
  *           s1[first_differing_index] == s2[first_differing_index]:
  *         first_differing_index += 1             # <<<<<<<<<<<<<<
@@ -2194,103 +2208,103 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
     __pyx_v_first_differing_index = (__pyx_v_first_differing_index + 1);
   }
 
-  /* "pyxdameraulevenshtein.pyx":84
+  /* "pyxdameraulevenshtein.pyx":85
  *         first_differing_index += 1
  * 
  *     s1 = s1[first_differing_index:]             # <<<<<<<<<<<<<<
  *     s2 = s2[first_differing_index:]
  * 
  */
-  __pyx_t_8 = __Pyx_PyObject_GetSlice(__pyx_v_s1, __pyx_v_first_differing_index, 0, NULL, NULL, NULL, 1, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetSlice(__pyx_v_s1, __pyx_v_first_differing_index, 0, NULL, NULL, NULL, 1, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF_SET(__pyx_v_s1, __pyx_t_8);
   __pyx_t_8 = 0;
 
-  /* "pyxdameraulevenshtein.pyx":85
+  /* "pyxdameraulevenshtein.pyx":86
  * 
  *     s1 = s1[first_differing_index:]
  *     s2 = s2[first_differing_index:]             # <<<<<<<<<<<<<<
  * 
- *     if not s1:
+ *     if s1 is None:
  */
-  __pyx_t_8 = __Pyx_PyObject_GetSlice(__pyx_v_s2, __pyx_v_first_differing_index, 0, NULL, NULL, NULL, 1, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetSlice(__pyx_v_s2, __pyx_v_first_differing_index, 0, NULL, NULL, NULL, 1, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF_SET(__pyx_v_s2, __pyx_t_8);
   __pyx_t_8 = 0;
 
-  /* "pyxdameraulevenshtein.pyx":87
+  /* "pyxdameraulevenshtein.pyx":88
  *     s2 = s2[first_differing_index:]
  * 
- *     if not s1:             # <<<<<<<<<<<<<<
+ *     if s1 is None:             # <<<<<<<<<<<<<<
  *         return len(s2)
- *     if not s2:
+ *     if s2 is None:
  */
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_s1); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 87, __pyx_L1_error)
-  __pyx_t_2 = ((!__pyx_t_1) != 0);
-  if (__pyx_t_2) {
+  __pyx_t_1 = (__pyx_v_s1 == Py_None);
+  __pyx_t_3 = (__pyx_t_1 != 0);
+  if (__pyx_t_3) {
 
-    /* "pyxdameraulevenshtein.pyx":88
+    /* "pyxdameraulevenshtein.pyx":89
  * 
- *     if not s1:
+ *     if s1 is None:
  *         return len(s2)             # <<<<<<<<<<<<<<
- *     if not s2:
+ *     if s2 is None:
  *         return len(s1)
  */
-    __pyx_t_6 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_6 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 89, __pyx_L1_error)
     __pyx_r = __pyx_t_6;
     goto __pyx_L0;
 
-    /* "pyxdameraulevenshtein.pyx":87
+    /* "pyxdameraulevenshtein.pyx":88
  *     s2 = s2[first_differing_index:]
  * 
- *     if not s1:             # <<<<<<<<<<<<<<
+ *     if s1 is None:             # <<<<<<<<<<<<<<
  *         return len(s2)
- *     if not s2:
+ *     if s2 is None:
  */
   }
 
-  /* "pyxdameraulevenshtein.pyx":89
- *     if not s1:
+  /* "pyxdameraulevenshtein.pyx":90
+ *     if s1 is None:
  *         return len(s2)
- *     if not s2:             # <<<<<<<<<<<<<<
+ *     if s2 is None:             # <<<<<<<<<<<<<<
  *         return len(s1)
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_s2); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 89, __pyx_L1_error)
-  __pyx_t_1 = ((!__pyx_t_2) != 0);
+  __pyx_t_3 = (__pyx_v_s2 == Py_None);
+  __pyx_t_1 = (__pyx_t_3 != 0);
   if (__pyx_t_1) {
 
-    /* "pyxdameraulevenshtein.pyx":90
+    /* "pyxdameraulevenshtein.pyx":91
  *         return len(s2)
- *     if not s2:
+ *     if s2 is None:
  *         return len(s1)             # <<<<<<<<<<<<<<
  * 
  *     # Py_ssize_t should be used wherever we're dealing with an array index or length
  */
-    __pyx_t_6 = PyObject_Length(__pyx_v_s1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 90, __pyx_L1_error)
+    __pyx_t_6 = PyObject_Length(__pyx_v_s1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 91, __pyx_L1_error)
     __pyx_r = __pyx_t_6;
     goto __pyx_L0;
 
-    /* "pyxdameraulevenshtein.pyx":89
- *     if not s1:
+    /* "pyxdameraulevenshtein.pyx":90
+ *     if s1 is None:
  *         return len(s2)
- *     if not s2:             # <<<<<<<<<<<<<<
+ *     if s2 is None:             # <<<<<<<<<<<<<<
  *         return len(s1)
  * 
  */
   }
 
-  /* "pyxdameraulevenshtein.pyx":94
+  /* "pyxdameraulevenshtein.pyx":95
  *     # Py_ssize_t should be used wherever we're dealing with an array index or length
  *     cdef Py_ssize_t i, j
  *     cdef Py_ssize_t offset = len(s2) + 1             # <<<<<<<<<<<<<<
  *     cdef unsigned long delete_cost, add_cost, subtract_cost, edit_distance
  * 
  */
-  __pyx_t_6 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_t_6 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 95, __pyx_L1_error)
   __pyx_v_offset = (__pyx_t_6 + 1);
 
-  /* "pyxdameraulevenshtein.pyx":98
+  /* "pyxdameraulevenshtein.pyx":99
  * 
  *     # storage is a 3 x (len(s2) + 1) array that stores TWO_AGO, ONE_AGO, and THIS_ROW
  *     cdef unsigned long * storage = <unsigned long * >calloc(3 * offset, sizeof(unsigned long))             # <<<<<<<<<<<<<<
@@ -2299,7 +2313,7 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
  */
   __pyx_v_storage = ((unsigned long *)calloc((3 * __pyx_v_offset), (sizeof(unsigned long))));
 
-  /* "pyxdameraulevenshtein.pyx":99
+  /* "pyxdameraulevenshtein.pyx":100
  *     # storage is a 3 x (len(s2) + 1) array that stores TWO_AGO, ONE_AGO, and THIS_ROW
  *     cdef unsigned long * storage = <unsigned long * >calloc(3 * offset, sizeof(unsigned long))
  *     if not storage:             # <<<<<<<<<<<<<<
@@ -2309,16 +2323,16 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
   __pyx_t_1 = ((!(__pyx_v_storage != 0)) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "pyxdameraulevenshtein.pyx":100
+    /* "pyxdameraulevenshtein.pyx":101
  *     cdef unsigned long * storage = <unsigned long * >calloc(3 * offset, sizeof(unsigned long))
  *     if not storage:
  *         raise MemoryError()             # <<<<<<<<<<<<<<
  * 
  *     try:
  */
-    PyErr_NoMemory(); __PYX_ERR(0, 100, __pyx_L1_error)
+    PyErr_NoMemory(); __PYX_ERR(0, 101, __pyx_L1_error)
 
-    /* "pyxdameraulevenshtein.pyx":99
+    /* "pyxdameraulevenshtein.pyx":100
  *     # storage is a 3 x (len(s2) + 1) array that stores TWO_AGO, ONE_AGO, and THIS_ROW
  *     cdef unsigned long * storage = <unsigned long * >calloc(3 * offset, sizeof(unsigned long))
  *     if not storage:             # <<<<<<<<<<<<<<
@@ -2327,7 +2341,7 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
  */
   }
 
-  /* "pyxdameraulevenshtein.pyx":102
+  /* "pyxdameraulevenshtein.pyx":103
  *         raise MemoryError()
  * 
  *     try:             # <<<<<<<<<<<<<<
@@ -2336,7 +2350,7 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
  */
   /*try:*/ {
 
-    /* "pyxdameraulevenshtein.pyx":104
+    /* "pyxdameraulevenshtein.pyx":105
  *     try:
  *         # initialize THIS_ROW
  *         for i in range(1, offset):             # <<<<<<<<<<<<<<
@@ -2348,7 +2362,7 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
     for (__pyx_t_10 = 1; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
       __pyx_v_i = __pyx_t_10;
 
-      /* "pyxdameraulevenshtein.pyx":105
+      /* "pyxdameraulevenshtein.pyx":106
  *         # initialize THIS_ROW
  *         for i in range(1, offset):
  *             storage[THIS_ROW * offset + (i - 1)] = i             # <<<<<<<<<<<<<<
@@ -2358,19 +2372,19 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
       (__pyx_v_storage[((__pyx_v_21pyxdameraulevenshtein_THIS_ROW * __pyx_v_offset) + (__pyx_v_i - 1))]) = __pyx_v_i;
     }
 
-    /* "pyxdameraulevenshtein.pyx":107
+    /* "pyxdameraulevenshtein.pyx":108
  *             storage[THIS_ROW * offset + (i - 1)] = i
  * 
  *         for i in range(len(s1)):             # <<<<<<<<<<<<<<
  *             # swap/initialize vectors
  *             for j in range(offset):
  */
-    __pyx_t_6 = PyObject_Length(__pyx_v_s1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 107, __pyx_L19_error)
+    __pyx_t_6 = PyObject_Length(__pyx_v_s1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 108, __pyx_L21_error)
     __pyx_t_9 = __pyx_t_6;
     for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
       __pyx_v_i = __pyx_t_10;
 
-      /* "pyxdameraulevenshtein.pyx":109
+      /* "pyxdameraulevenshtein.pyx":110
  *         for i in range(len(s1)):
  *             # swap/initialize vectors
  *             for j in range(offset):             # <<<<<<<<<<<<<<
@@ -2382,7 +2396,7 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
       for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
         __pyx_v_j = __pyx_t_13;
 
-        /* "pyxdameraulevenshtein.pyx":110
+        /* "pyxdameraulevenshtein.pyx":111
  *             # swap/initialize vectors
  *             for j in range(offset):
  *                 storage[TWO_AGO * offset + j] = storage[ONE_AGO * offset + j]             # <<<<<<<<<<<<<<
@@ -2391,7 +2405,7 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
  */
         (__pyx_v_storage[((__pyx_v_21pyxdameraulevenshtein_TWO_AGO * __pyx_v_offset) + __pyx_v_j)]) = (__pyx_v_storage[((__pyx_v_21pyxdameraulevenshtein_ONE_AGO * __pyx_v_offset) + __pyx_v_j)]);
 
-        /* "pyxdameraulevenshtein.pyx":111
+        /* "pyxdameraulevenshtein.pyx":112
  *             for j in range(offset):
  *                 storage[TWO_AGO * offset + j] = storage[ONE_AGO * offset + j]
  *                 storage[ONE_AGO * offset + j] = storage[THIS_ROW * offset + j]             # <<<<<<<<<<<<<<
@@ -2401,19 +2415,19 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
         (__pyx_v_storage[((__pyx_v_21pyxdameraulevenshtein_ONE_AGO * __pyx_v_offset) + __pyx_v_j)]) = (__pyx_v_storage[((__pyx_v_21pyxdameraulevenshtein_THIS_ROW * __pyx_v_offset) + __pyx_v_j)]);
       }
 
-      /* "pyxdameraulevenshtein.pyx":112
+      /* "pyxdameraulevenshtein.pyx":113
  *                 storage[TWO_AGO * offset + j] = storage[ONE_AGO * offset + j]
  *                 storage[ONE_AGO * offset + j] = storage[THIS_ROW * offset + j]
  *             for j in range(len(s2)):             # <<<<<<<<<<<<<<
  *                 storage[THIS_ROW * offset + j] = 0
  *             storage[THIS_ROW * offset + len(s2)] = i + 1
  */
-      __pyx_t_11 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 112, __pyx_L19_error)
+      __pyx_t_11 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 113, __pyx_L21_error)
       __pyx_t_12 = __pyx_t_11;
       for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
         __pyx_v_j = __pyx_t_13;
 
-        /* "pyxdameraulevenshtein.pyx":113
+        /* "pyxdameraulevenshtein.pyx":114
  *                 storage[ONE_AGO * offset + j] = storage[THIS_ROW * offset + j]
  *             for j in range(len(s2)):
  *                 storage[THIS_ROW * offset + j] = 0             # <<<<<<<<<<<<<<
@@ -2423,29 +2437,29 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
         (__pyx_v_storage[((__pyx_v_21pyxdameraulevenshtein_THIS_ROW * __pyx_v_offset) + __pyx_v_j)]) = 0;
       }
 
-      /* "pyxdameraulevenshtein.pyx":114
+      /* "pyxdameraulevenshtein.pyx":115
  *             for j in range(len(s2)):
  *                 storage[THIS_ROW * offset + j] = 0
  *             storage[THIS_ROW * offset + len(s2)] = i + 1             # <<<<<<<<<<<<<<
  * 
  *             # now compute costs
  */
-      __pyx_t_11 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 114, __pyx_L19_error)
+      __pyx_t_11 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 115, __pyx_L21_error)
       (__pyx_v_storage[((__pyx_v_21pyxdameraulevenshtein_THIS_ROW * __pyx_v_offset) + __pyx_t_11)]) = (__pyx_v_i + 1);
 
-      /* "pyxdameraulevenshtein.pyx":117
+      /* "pyxdameraulevenshtein.pyx":118
  * 
  *             # now compute costs
  *             for j in range(len(s2)):             # <<<<<<<<<<<<<<
  *                 delete_cost = storage[ONE_AGO * offset + j] + 1
  *                 add_cost = storage[THIS_ROW * offset + (j - 1 if j > 0 else len(s2))] + 1
  */
-      __pyx_t_11 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 117, __pyx_L19_error)
+      __pyx_t_11 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_11 == ((Py_ssize_t)-1))) __PYX_ERR(0, 118, __pyx_L21_error)
       __pyx_t_12 = __pyx_t_11;
       for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
         __pyx_v_j = __pyx_t_13;
 
-        /* "pyxdameraulevenshtein.pyx":118
+        /* "pyxdameraulevenshtein.pyx":119
  *             # now compute costs
  *             for j in range(len(s2)):
  *                 delete_cost = storage[ONE_AGO * offset + j] + 1             # <<<<<<<<<<<<<<
@@ -2454,7 +2468,7 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
  */
         __pyx_v_delete_cost = ((__pyx_v_storage[((__pyx_v_21pyxdameraulevenshtein_ONE_AGO * __pyx_v_offset) + __pyx_v_j)]) + 1);
 
-        /* "pyxdameraulevenshtein.pyx":119
+        /* "pyxdameraulevenshtein.pyx":120
  *             for j in range(len(s2)):
  *                 delete_cost = storage[ONE_AGO * offset + j] + 1
  *                 add_cost = storage[THIS_ROW * offset + (j - 1 if j > 0 else len(s2))] + 1             # <<<<<<<<<<<<<<
@@ -2464,12 +2478,12 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
         if (((__pyx_v_j > 0) != 0)) {
           __pyx_t_14 = (__pyx_v_j - 1);
         } else {
-          __pyx_t_15 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_15 == ((Py_ssize_t)-1))) __PYX_ERR(0, 119, __pyx_L19_error)
+          __pyx_t_15 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_15 == ((Py_ssize_t)-1))) __PYX_ERR(0, 120, __pyx_L21_error)
           __pyx_t_14 = __pyx_t_15;
         }
         __pyx_v_add_cost = ((__pyx_v_storage[((__pyx_v_21pyxdameraulevenshtein_THIS_ROW * __pyx_v_offset) + __pyx_t_14)]) + 1);
 
-        /* "pyxdameraulevenshtein.pyx":120
+        /* "pyxdameraulevenshtein.pyx":121
  *                 delete_cost = storage[ONE_AGO * offset + j] + 1
  *                 add_cost = storage[THIS_ROW * offset + (j - 1 if j > 0 else len(s2))] + 1
  *                 subtract_cost = storage[ONE_AGO * offset + (j - 1 if j > 0 else len(s2))] + (s1[i] != s2[j])             # <<<<<<<<<<<<<<
@@ -2479,27 +2493,27 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
         if (((__pyx_v_j > 0) != 0)) {
           __pyx_t_14 = (__pyx_v_j - 1);
         } else {
-          __pyx_t_15 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_15 == ((Py_ssize_t)-1))) __PYX_ERR(0, 120, __pyx_L19_error)
+          __pyx_t_15 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_15 == ((Py_ssize_t)-1))) __PYX_ERR(0, 121, __pyx_L21_error)
           __pyx_t_14 = __pyx_t_15;
         }
-        __pyx_t_8 = __Pyx_PyInt_From_unsigned_long((__pyx_v_storage[((__pyx_v_21pyxdameraulevenshtein_ONE_AGO * __pyx_v_offset) + __pyx_t_14)])); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 120, __pyx_L19_error)
+        __pyx_t_8 = __Pyx_PyInt_From_unsigned_long((__pyx_v_storage[((__pyx_v_21pyxdameraulevenshtein_ONE_AGO * __pyx_v_offset) + __pyx_t_14)])); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 121, __pyx_L21_error)
         __Pyx_GOTREF(__pyx_t_8);
-        __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_s1, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 120, __pyx_L19_error)
+        __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_s1, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 121, __pyx_L21_error)
         __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_s2, __pyx_v_j, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 120, __pyx_L19_error)
+        __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_s2, __pyx_v_j, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 121, __pyx_L21_error)
         __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_16 = PyObject_RichCompare(__pyx_t_7, __pyx_t_5, Py_NE); __Pyx_XGOTREF(__pyx_t_16); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 120, __pyx_L19_error)
+        __pyx_t_16 = PyObject_RichCompare(__pyx_t_7, __pyx_t_5, Py_NE); __Pyx_XGOTREF(__pyx_t_16); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 121, __pyx_L21_error)
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        __pyx_t_5 = PyNumber_Add(__pyx_t_8, __pyx_t_16); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 120, __pyx_L19_error)
+        __pyx_t_5 = PyNumber_Add(__pyx_t_8, __pyx_t_16); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 121, __pyx_L21_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-        __pyx_t_17 = __Pyx_PyInt_As_unsigned_long(__pyx_t_5); if (unlikely((__pyx_t_17 == (unsigned long)-1) && PyErr_Occurred())) __PYX_ERR(0, 120, __pyx_L19_error)
+        __pyx_t_17 = __Pyx_PyInt_As_unsigned_long(__pyx_t_5); if (unlikely((__pyx_t_17 == (unsigned long)-1) && PyErr_Occurred())) __PYX_ERR(0, 121, __pyx_L21_error)
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __pyx_v_subtract_cost = __pyx_t_17;
 
-        /* "pyxdameraulevenshtein.pyx":121
+        /* "pyxdameraulevenshtein.pyx":122
  *                 add_cost = storage[THIS_ROW * offset + (j - 1 if j > 0 else len(s2))] + 1
  *                 subtract_cost = storage[ONE_AGO * offset + (j - 1 if j > 0 else len(s2))] + (s1[i] != s2[j])
  *                 storage[THIS_ROW * offset + j] = min(delete_cost, add_cost, subtract_cost)             # <<<<<<<<<<<<<<
@@ -2522,69 +2536,69 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
         }
         (__pyx_v_storage[((__pyx_v_21pyxdameraulevenshtein_THIS_ROW * __pyx_v_offset) + __pyx_v_j)]) = __pyx_t_20;
 
-        /* "pyxdameraulevenshtein.pyx":123
+        /* "pyxdameraulevenshtein.pyx":124
  *                 storage[THIS_ROW * offset + j] = min(delete_cost, add_cost, subtract_cost)
  *                 # deal with transpositions
  *                 if i > 0 and j > 0 and s1[i] == s2[j - 1] and s1[i - 1] == s2[j] and s1[i] != s2[j]:             # <<<<<<<<<<<<<<
  *                     storage[THIS_ROW * offset + j] = min(storage[THIS_ROW * offset + j],
  *                                                          storage[TWO_AGO * offset + j - 2 if j > 1 else len(s2)] + 1)
  */
-        __pyx_t_2 = ((__pyx_v_i > 0) != 0);
-        if (__pyx_t_2) {
+        __pyx_t_3 = ((__pyx_v_i > 0) != 0);
+        if (__pyx_t_3) {
         } else {
-          __pyx_t_1 = __pyx_t_2;
-          goto __pyx_L32_bool_binop_done;
+          __pyx_t_1 = __pyx_t_3;
+          goto __pyx_L34_bool_binop_done;
         }
-        __pyx_t_2 = ((__pyx_v_j > 0) != 0);
-        if (__pyx_t_2) {
+        __pyx_t_3 = ((__pyx_v_j > 0) != 0);
+        if (__pyx_t_3) {
         } else {
-          __pyx_t_1 = __pyx_t_2;
-          goto __pyx_L32_bool_binop_done;
+          __pyx_t_1 = __pyx_t_3;
+          goto __pyx_L34_bool_binop_done;
         }
-        __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_s1, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 123, __pyx_L19_error)
+        __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_s1, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 124, __pyx_L21_error)
         __Pyx_GOTREF(__pyx_t_5);
         __pyx_t_14 = (__pyx_v_j - 1);
-        __pyx_t_16 = __Pyx_GetItemInt(__pyx_v_s2, __pyx_t_14, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 123, __pyx_L19_error)
+        __pyx_t_16 = __Pyx_GetItemInt(__pyx_v_s2, __pyx_t_14, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 124, __pyx_L21_error)
         __Pyx_GOTREF(__pyx_t_16);
-        __pyx_t_8 = PyObject_RichCompare(__pyx_t_5, __pyx_t_16, Py_EQ); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 123, __pyx_L19_error)
+        __pyx_t_8 = PyObject_RichCompare(__pyx_t_5, __pyx_t_16, Py_EQ); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 124, __pyx_L21_error)
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-        __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 123, __pyx_L19_error)
+        __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 124, __pyx_L21_error)
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-        if (__pyx_t_2) {
+        if (__pyx_t_3) {
         } else {
-          __pyx_t_1 = __pyx_t_2;
-          goto __pyx_L32_bool_binop_done;
+          __pyx_t_1 = __pyx_t_3;
+          goto __pyx_L34_bool_binop_done;
         }
         __pyx_t_14 = (__pyx_v_i - 1);
-        __pyx_t_8 = __Pyx_GetItemInt(__pyx_v_s1, __pyx_t_14, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 123, __pyx_L19_error)
+        __pyx_t_8 = __Pyx_GetItemInt(__pyx_v_s1, __pyx_t_14, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 124, __pyx_L21_error)
         __Pyx_GOTREF(__pyx_t_8);
-        __pyx_t_16 = __Pyx_GetItemInt(__pyx_v_s2, __pyx_v_j, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 123, __pyx_L19_error)
+        __pyx_t_16 = __Pyx_GetItemInt(__pyx_v_s2, __pyx_v_j, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 124, __pyx_L21_error)
         __Pyx_GOTREF(__pyx_t_16);
-        __pyx_t_5 = PyObject_RichCompare(__pyx_t_8, __pyx_t_16, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 123, __pyx_L19_error)
+        __pyx_t_5 = PyObject_RichCompare(__pyx_t_8, __pyx_t_16, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 124, __pyx_L21_error)
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-        __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 123, __pyx_L19_error)
+        __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 124, __pyx_L21_error)
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        if (__pyx_t_2) {
+        if (__pyx_t_3) {
         } else {
-          __pyx_t_1 = __pyx_t_2;
-          goto __pyx_L32_bool_binop_done;
+          __pyx_t_1 = __pyx_t_3;
+          goto __pyx_L34_bool_binop_done;
         }
-        __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_s1, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 123, __pyx_L19_error)
+        __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_s1, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 124, __pyx_L21_error)
         __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_16 = __Pyx_GetItemInt(__pyx_v_s2, __pyx_v_j, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 123, __pyx_L19_error)
+        __pyx_t_16 = __Pyx_GetItemInt(__pyx_v_s2, __pyx_v_j, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 124, __pyx_L21_error)
         __Pyx_GOTREF(__pyx_t_16);
-        __pyx_t_8 = PyObject_RichCompare(__pyx_t_5, __pyx_t_16, Py_NE); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 123, __pyx_L19_error)
+        __pyx_t_8 = PyObject_RichCompare(__pyx_t_5, __pyx_t_16, Py_NE); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 124, __pyx_L21_error)
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-        __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 123, __pyx_L19_error)
+        __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 124, __pyx_L21_error)
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-        __pyx_t_1 = __pyx_t_2;
-        __pyx_L32_bool_binop_done:;
+        __pyx_t_1 = __pyx_t_3;
+        __pyx_L34_bool_binop_done:;
         if (__pyx_t_1) {
 
-          /* "pyxdameraulevenshtein.pyx":125
+          /* "pyxdameraulevenshtein.pyx":126
  *                 if i > 0 and j > 0 and s1[i] == s2[j - 1] and s1[i - 1] == s2[j] and s1[i] != s2[j]:
  *                     storage[THIS_ROW * offset + j] = min(storage[THIS_ROW * offset + j],
  *                                                          storage[TWO_AGO * offset + j - 2 if j > 1 else len(s2)] + 1)             # <<<<<<<<<<<<<<
@@ -2594,12 +2608,12 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
           if (((__pyx_v_j > 1) != 0)) {
             __pyx_t_14 = (((__pyx_v_21pyxdameraulevenshtein_TWO_AGO * __pyx_v_offset) + __pyx_v_j) - 2);
           } else {
-            __pyx_t_15 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_15 == ((Py_ssize_t)-1))) __PYX_ERR(0, 125, __pyx_L19_error)
+            __pyx_t_15 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_15 == ((Py_ssize_t)-1))) __PYX_ERR(0, 126, __pyx_L21_error)
             __pyx_t_14 = __pyx_t_15;
           }
           __pyx_t_20 = ((__pyx_v_storage[__pyx_t_14]) + 1);
 
-          /* "pyxdameraulevenshtein.pyx":124
+          /* "pyxdameraulevenshtein.pyx":125
  *                 # deal with transpositions
  *                 if i > 0 and j > 0 and s1[i] == s2[j - 1] and s1[i - 1] == s2[j] and s1[i] != s2[j]:
  *                     storage[THIS_ROW * offset + j] = min(storage[THIS_ROW * offset + j],             # <<<<<<<<<<<<<<
@@ -2608,7 +2622,7 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
  */
           __pyx_t_17 = (__pyx_v_storage[((__pyx_v_21pyxdameraulevenshtein_THIS_ROW * __pyx_v_offset) + __pyx_v_j)]);
 
-          /* "pyxdameraulevenshtein.pyx":125
+          /* "pyxdameraulevenshtein.pyx":126
  *                 if i > 0 and j > 0 and s1[i] == s2[j - 1] and s1[i - 1] == s2[j] and s1[i] != s2[j]:
  *                     storage[THIS_ROW * offset + j] = min(storage[THIS_ROW * offset + j],
  *                                                          storage[TWO_AGO * offset + j - 2 if j > 1 else len(s2)] + 1)             # <<<<<<<<<<<<<<
@@ -2621,7 +2635,7 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
             __pyx_t_18 = __pyx_t_17;
           }
 
-          /* "pyxdameraulevenshtein.pyx":124
+          /* "pyxdameraulevenshtein.pyx":125
  *                 # deal with transpositions
  *                 if i > 0 and j > 0 and s1[i] == s2[j - 1] and s1[i - 1] == s2[j] and s1[i] != s2[j]:
  *                     storage[THIS_ROW * offset + j] = min(storage[THIS_ROW * offset + j],             # <<<<<<<<<<<<<<
@@ -2630,7 +2644,7 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
  */
           (__pyx_v_storage[((__pyx_v_21pyxdameraulevenshtein_THIS_ROW * __pyx_v_offset) + __pyx_v_j)]) = __pyx_t_18;
 
-          /* "pyxdameraulevenshtein.pyx":123
+          /* "pyxdameraulevenshtein.pyx":124
  *                 storage[THIS_ROW * offset + j] = min(delete_cost, add_cost, subtract_cost)
  *                 # deal with transpositions
  *                 if i > 0 and j > 0 and s1[i] == s2[j - 1] and s1[i - 1] == s2[j] and s1[i] != s2[j]:             # <<<<<<<<<<<<<<
@@ -2641,19 +2655,19 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
       }
     }
 
-    /* "pyxdameraulevenshtein.pyx":128
+    /* "pyxdameraulevenshtein.pyx":129
  * 
  *         # compute and return the final edit distance
  *         return storage[THIS_ROW * offset + (len(s2) - 1)]             # <<<<<<<<<<<<<<
  *     finally:
  *         # free dynamically-allocated memory
  */
-    __pyx_t_6 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 128, __pyx_L19_error)
+    __pyx_t_6 = PyObject_Length(__pyx_v_s2); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 129, __pyx_L21_error)
     __pyx_r = (__pyx_v_storage[((__pyx_v_21pyxdameraulevenshtein_THIS_ROW * __pyx_v_offset) + (__pyx_t_6 - 1))]);
-    goto __pyx_L18_return;
+    goto __pyx_L20_return;
   }
 
-  /* "pyxdameraulevenshtein.pyx":131
+  /* "pyxdameraulevenshtein.pyx":132
  *     finally:
  *         # free dynamically-allocated memory
  *         free(storage)             # <<<<<<<<<<<<<<
@@ -2661,7 +2675,7 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
  * 
  */
   /*finally:*/ {
-    __pyx_L19_error:;
+    __pyx_L21_error:;
     /*exception exit:*/{
       __Pyx_PyThreadState_declare
       __Pyx_PyThreadState_assign
@@ -2696,7 +2710,7 @@ static unsigned long __pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distanc
       __pyx_lineno = __pyx_t_21; __pyx_clineno = __pyx_t_22; __pyx_filename = __pyx_t_23;
       goto __pyx_L1_error;
     }
-    __pyx_L18_return: {
+    __pyx_L20_return: {
       __pyx_t_18 = __pyx_r;
       free(__pyx_v_storage);
       __pyx_r = __pyx_t_18;
@@ -2812,7 +2826,7 @@ static PyObject *__pyx_pf_21pyxdameraulevenshtein_damerau_levenshtein_distance(C
   return __pyx_r;
 }
 
-/* "pyxdameraulevenshtein.pyx":134
+/* "pyxdameraulevenshtein.pyx":135
  * 
  * 
  * cpdef float normalized_damerau_levenshtein_distance(seq1, seq2):             # <<<<<<<<<<<<<<
@@ -2836,10 +2850,10 @@ static float __pyx_f_21pyxdameraulevenshtein_normalized_damerau_levenshtein_dist
   long __pyx_t_9;
   __Pyx_RefNannySetupContext("normalized_damerau_levenshtein_distance", 0);
 
-  /* "pyxdameraulevenshtein.pyx":151
+  /* "pyxdameraulevenshtein.pyx":152
  *         1.0
  *     """
- *     if isinstance(seq1, (list, tuple)) and isinstance(seq2, (list, tuple)):             # <<<<<<<<<<<<<<
+ *     if isinstance(seq1, (list, tuple,np.ndarray)) and isinstance(seq2, (list, tuple,np.ndarray)):             # <<<<<<<<<<<<<<
  *         n = max(len(seq1), len(seq2))
  *     else:
  */
@@ -2852,39 +2866,53 @@ static float __pyx_f_21pyxdameraulevenshtein_normalized_damerau_levenshtein_dist
   }
   __pyx_t_4 = PyTuple_Check(__pyx_v_seq1); 
   __pyx_t_3 = (__pyx_t_4 != 0);
-  __pyx_t_2 = __pyx_t_3;
-  __pyx_L6_bool_binop_done:;
-  __pyx_t_3 = (__pyx_t_2 != 0);
-  if (__pyx_t_3) {
+  if (!__pyx_t_3) {
   } else {
-    __pyx_t_1 = __pyx_t_3;
+    __pyx_t_2 = __pyx_t_3;
+    goto __pyx_L6_bool_binop_done;
+  }
+  __pyx_t_3 = __Pyx_TypeCheck(__pyx_v_seq1, __pyx_ptype_5numpy_ndarray); 
+  __pyx_t_4 = (__pyx_t_3 != 0);
+  __pyx_t_2 = __pyx_t_4;
+  __pyx_L6_bool_binop_done:;
+  __pyx_t_4 = (__pyx_t_2 != 0);
+  if (__pyx_t_4) {
+  } else {
+    __pyx_t_1 = __pyx_t_4;
     goto __pyx_L4_bool_binop_done;
   }
   __pyx_t_2 = PyList_Check(__pyx_v_seq2); 
-  __pyx_t_4 = (__pyx_t_2 != 0);
-  if (!__pyx_t_4) {
+  __pyx_t_3 = (__pyx_t_2 != 0);
+  if (!__pyx_t_3) {
   } else {
-    __pyx_t_3 = __pyx_t_4;
-    goto __pyx_L8_bool_binop_done;
+    __pyx_t_4 = __pyx_t_3;
+    goto __pyx_L9_bool_binop_done;
   }
-  __pyx_t_4 = PyTuple_Check(__pyx_v_seq2); 
-  __pyx_t_2 = (__pyx_t_4 != 0);
-  __pyx_t_3 = __pyx_t_2;
-  __pyx_L8_bool_binop_done:;
+  __pyx_t_3 = PyTuple_Check(__pyx_v_seq2); 
   __pyx_t_2 = (__pyx_t_3 != 0);
-  __pyx_t_1 = __pyx_t_2;
+  if (!__pyx_t_2) {
+  } else {
+    __pyx_t_4 = __pyx_t_2;
+    goto __pyx_L9_bool_binop_done;
+  }
+  __pyx_t_2 = __Pyx_TypeCheck(__pyx_v_seq2, __pyx_ptype_5numpy_ndarray); 
+  __pyx_t_3 = (__pyx_t_2 != 0);
+  __pyx_t_4 = __pyx_t_3;
+  __pyx_L9_bool_binop_done:;
+  __pyx_t_3 = (__pyx_t_4 != 0);
+  __pyx_t_1 = __pyx_t_3;
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "pyxdameraulevenshtein.pyx":152
+    /* "pyxdameraulevenshtein.pyx":153
  *     """
- *     if isinstance(seq1, (list, tuple)) and isinstance(seq2, (list, tuple)):
+ *     if isinstance(seq1, (list, tuple,np.ndarray)) and isinstance(seq2, (list, tuple,np.ndarray)):
  *         n = max(len(seq1), len(seq2))             # <<<<<<<<<<<<<<
  *     else:
  *         n = max(len(_to_unicode(seq1)), len(_to_unicode(seq2)))
  */
-    __pyx_t_5 = PyObject_Length(__pyx_v_seq2); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 152, __pyx_L1_error)
-    __pyx_t_6 = PyObject_Length(__pyx_v_seq1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 152, __pyx_L1_error)
+    __pyx_t_5 = PyObject_Length(__pyx_v_seq2); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 153, __pyx_L1_error)
+    __pyx_t_6 = PyObject_Length(__pyx_v_seq1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 153, __pyx_L1_error)
     if (((__pyx_t_5 > __pyx_t_6) != 0)) {
       __pyx_t_7 = __pyx_t_5;
     } else {
@@ -2892,17 +2920,17 @@ static float __pyx_f_21pyxdameraulevenshtein_normalized_damerau_levenshtein_dist
     }
     __pyx_v_n = __pyx_t_7;
 
-    /* "pyxdameraulevenshtein.pyx":151
+    /* "pyxdameraulevenshtein.pyx":152
  *         1.0
  *     """
- *     if isinstance(seq1, (list, tuple)) and isinstance(seq2, (list, tuple)):             # <<<<<<<<<<<<<<
+ *     if isinstance(seq1, (list, tuple,np.ndarray)) and isinstance(seq2, (list, tuple,np.ndarray)):             # <<<<<<<<<<<<<<
  *         n = max(len(seq1), len(seq2))
  *     else:
  */
     goto __pyx_L3;
   }
 
-  /* "pyxdameraulevenshtein.pyx":154
+  /* "pyxdameraulevenshtein.pyx":155
  *         n = max(len(seq1), len(seq2))
  *     else:
  *         n = max(len(_to_unicode(seq1)), len(_to_unicode(seq2)))             # <<<<<<<<<<<<<<
@@ -2910,21 +2938,21 @@ static float __pyx_f_21pyxdameraulevenshtein_normalized_damerau_levenshtein_dist
  *     # prevent division by zero for empty inputs
  */
   /*else*/ {
-    __pyx_t_8 = __pyx_f_21pyxdameraulevenshtein__to_unicode(__pyx_v_seq2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 154, __pyx_L1_error)
+    __pyx_t_8 = __pyx_f_21pyxdameraulevenshtein__to_unicode(__pyx_v_seq2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 155, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     if (unlikely(__pyx_t_8 == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(0, 154, __pyx_L1_error)
+      __PYX_ERR(0, 155, __pyx_L1_error)
     }
-    __pyx_t_7 = __Pyx_PyUnicode_GET_LENGTH(__pyx_t_8); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 154, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyUnicode_GET_LENGTH(__pyx_t_8); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 155, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = __pyx_f_21pyxdameraulevenshtein__to_unicode(__pyx_v_seq1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 154, __pyx_L1_error)
+    __pyx_t_8 = __pyx_f_21pyxdameraulevenshtein__to_unicode(__pyx_v_seq1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 155, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     if (unlikely(__pyx_t_8 == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(0, 154, __pyx_L1_error)
+      __PYX_ERR(0, 155, __pyx_L1_error)
     }
-    __pyx_t_5 = __Pyx_PyUnicode_GET_LENGTH(__pyx_t_8); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 154, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyUnicode_GET_LENGTH(__pyx_t_8); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 155, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     if (((__pyx_t_7 > __pyx_t_5) != 0)) {
       __pyx_t_6 = __pyx_t_7;
@@ -2935,7 +2963,7 @@ static float __pyx_f_21pyxdameraulevenshtein_normalized_damerau_levenshtein_dist
   }
   __pyx_L3:;
 
-  /* "pyxdameraulevenshtein.pyx":157
+  /* "pyxdameraulevenshtein.pyx":158
  * 
  *     # prevent division by zero for empty inputs
  *     return float(damerau_levenshtein_distance(seq1, seq2)) / max(n, 1)             # <<<<<<<<<<<<<<
@@ -2952,12 +2980,12 @@ static float __pyx_f_21pyxdameraulevenshtein_normalized_damerau_levenshtein_dist
   __pyx_t_6 = __pyx_t_7;
   if (unlikely(__pyx_t_6 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 157, __pyx_L1_error)
+    __PYX_ERR(0, 158, __pyx_L1_error)
   }
   __pyx_r = (((double)__pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distance(__pyx_v_seq1, __pyx_v_seq2, 0)) / __pyx_t_6);
   goto __pyx_L0;
 
-  /* "pyxdameraulevenshtein.pyx":134
+  /* "pyxdameraulevenshtein.pyx":135
  * 
  * 
  * cpdef float normalized_damerau_levenshtein_distance(seq1, seq2):             # <<<<<<<<<<<<<<
@@ -3007,11 +3035,11 @@ static PyObject *__pyx_pw_21pyxdameraulevenshtein_3normalized_damerau_levenshtei
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_seq2)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("normalized_damerau_levenshtein_distance", 1, 2, 2, 1); __PYX_ERR(0, 134, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("normalized_damerau_levenshtein_distance", 1, 2, 2, 1); __PYX_ERR(0, 135, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "normalized_damerau_levenshtein_distance") < 0)) __PYX_ERR(0, 134, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "normalized_damerau_levenshtein_distance") < 0)) __PYX_ERR(0, 135, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -3024,7 +3052,7 @@ static PyObject *__pyx_pw_21pyxdameraulevenshtein_3normalized_damerau_levenshtei
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("normalized_damerau_levenshtein_distance", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 134, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("normalized_damerau_levenshtein_distance", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 135, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pyxdameraulevenshtein.normalized_damerau_levenshtein_distance", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3043,7 +3071,7 @@ static PyObject *__pyx_pf_21pyxdameraulevenshtein_2normalized_damerau_levenshtei
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("normalized_damerau_levenshtein_distance", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_21pyxdameraulevenshtein_normalized_damerau_levenshtein_distance(__pyx_v_seq1, __pyx_v_seq2, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_21pyxdameraulevenshtein_normalized_damerau_levenshtein_distance(__pyx_v_seq1, __pyx_v_seq2, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3060,7 +3088,7 @@ static PyObject *__pyx_pf_21pyxdameraulevenshtein_2normalized_damerau_levenshtei
   return __pyx_r;
 }
 
-/* "pyxdameraulevenshtein.pyx":160
+/* "pyxdameraulevenshtein.pyx":161
  * 
  * 
  * cpdef np.ndarray[np.uint32_t, ndim=1] damerau_levenshtein_distance_ndarray(seq, np.ndarray array):             # <<<<<<<<<<<<<<
@@ -3081,40 +3109,40 @@ static PyArrayObject *__pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distan
   int __pyx_t_6;
   __Pyx_RefNannySetupContext("damerau_levenshtein_distance_ndarray", 0);
 
-  /* "pyxdameraulevenshtein.pyx":165
+  /* "pyxdameraulevenshtein.pyx":166
  *         be returned, 1 for each element in the array.
  *     """
  *     dl = np.vectorize(damerau_levenshtein_distance, otypes=[np.uint32])             # <<<<<<<<<<<<<<
  *     return dl(seq, array)
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 166, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_vectorize); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_vectorize); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 166, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_damerau_levenshtein_distance); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_damerau_levenshtein_distance); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 166, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 166, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 166, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 166, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_uint32); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_uint32); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 166, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 166, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_5);
   PyList_SET_ITEM(__pyx_t_4, 0, __pyx_t_5);
   __pyx_t_5 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_otypes, __pyx_t_4) < 0) __PYX_ERR(0, 165, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_otypes, __pyx_t_4) < 0) __PYX_ERR(0, 166, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 166, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3122,7 +3150,7 @@ static PyArrayObject *__pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distan
   __pyx_v_dl = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "pyxdameraulevenshtein.pyx":166
+  /* "pyxdameraulevenshtein.pyx":167
  *     """
  *     dl = np.vectorize(damerau_levenshtein_distance, otypes=[np.uint32])
  *     return dl(seq, array)             # <<<<<<<<<<<<<<
@@ -3146,7 +3174,7 @@ static PyArrayObject *__pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distan
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_v_seq, ((PyObject *)__pyx_v_array)};
-    __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 167, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_4);
   } else
@@ -3154,13 +3182,13 @@ static PyArrayObject *__pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distan
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_v_seq, ((PyObject *)__pyx_v_array)};
-    __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 167, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_4);
   } else
   #endif
   {
-    __pyx_t_2 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __pyx_t_2 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 167, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     if (__pyx_t_3) {
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -3171,17 +3199,17 @@ static PyArrayObject *__pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distan
     __Pyx_INCREF(((PyObject *)__pyx_v_array));
     __Pyx_GIVEREF(((PyObject *)__pyx_v_array));
     PyTuple_SET_ITEM(__pyx_t_2, 1+__pyx_t_6, ((PyObject *)__pyx_v_array));
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 167, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 166, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 167, __pyx_L1_error)
   __pyx_r = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "pyxdameraulevenshtein.pyx":160
+  /* "pyxdameraulevenshtein.pyx":161
  * 
  * 
  * cpdef np.ndarray[np.uint32_t, ndim=1] damerau_levenshtein_distance_ndarray(seq, np.ndarray array):             # <<<<<<<<<<<<<<
@@ -3237,11 +3265,11 @@ static PyObject *__pyx_pw_21pyxdameraulevenshtein_5damerau_levenshtein_distance_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_array)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("damerau_levenshtein_distance_ndarray", 1, 2, 2, 1); __PYX_ERR(0, 160, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("damerau_levenshtein_distance_ndarray", 1, 2, 2, 1); __PYX_ERR(0, 161, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "damerau_levenshtein_distance_ndarray") < 0)) __PYX_ERR(0, 160, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "damerau_levenshtein_distance_ndarray") < 0)) __PYX_ERR(0, 161, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -3254,13 +3282,13 @@ static PyObject *__pyx_pw_21pyxdameraulevenshtein_5damerau_levenshtein_distance_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("damerau_levenshtein_distance_ndarray", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 160, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("damerau_levenshtein_distance_ndarray", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 161, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pyxdameraulevenshtein.damerau_levenshtein_distance_ndarray", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_array), __pyx_ptype_5numpy_ndarray, 1, "array", 0))) __PYX_ERR(0, 160, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_array), __pyx_ptype_5numpy_ndarray, 1, "array", 0))) __PYX_ERR(0, 161, __pyx_L1_error)
   __pyx_r = __pyx_pf_21pyxdameraulevenshtein_4damerau_levenshtein_distance_ndarray(__pyx_self, __pyx_v_seq, __pyx_v_array);
 
   /* function exit code */
@@ -3278,7 +3306,7 @@ static PyObject *__pyx_pf_21pyxdameraulevenshtein_4damerau_levenshtein_distance_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("damerau_levenshtein_distance_ndarray", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distance_ndarray(__pyx_v_seq, __pyx_v_array, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_21pyxdameraulevenshtein_damerau_levenshtein_distance_ndarray(__pyx_v_seq, __pyx_v_array, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3295,7 +3323,7 @@ static PyObject *__pyx_pf_21pyxdameraulevenshtein_4damerau_levenshtein_distance_
   return __pyx_r;
 }
 
-/* "pyxdameraulevenshtein.pyx":169
+/* "pyxdameraulevenshtein.pyx":170
  * 
  * 
  * cpdef np.ndarray[np.float32_t, ndim=1] normalized_damerau_levenshtein_distance_ndarray(seq, np.ndarray array):             # <<<<<<<<<<<<<<
@@ -3316,39 +3344,39 @@ static PyArrayObject *__pyx_f_21pyxdameraulevenshtein_normalized_damerau_levensh
   int __pyx_t_6;
   __Pyx_RefNannySetupContext("normalized_damerau_levenshtein_distance_ndarray", 0);
 
-  /* "pyxdameraulevenshtein.pyx":174
+  /* "pyxdameraulevenshtein.pyx":175
  *         normalized distances will be returned, 1 for each element in the array.
  *     """
  *     ndl = np.vectorize(normalized_damerau_levenshtein_distance, otypes=[np.float32])             # <<<<<<<<<<<<<<
  *     return ndl(seq, array)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_vectorize); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_vectorize); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_normalized_damerau_levenshtein_d); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_normalized_damerau_levenshtein_d); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float32); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float32); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_5);
   PyList_SET_ITEM(__pyx_t_4, 0, __pyx_t_5);
   __pyx_t_5 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_otypes, __pyx_t_4) < 0) __PYX_ERR(0, 174, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_otypes, __pyx_t_4) < 0) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3356,7 +3384,7 @@ static PyArrayObject *__pyx_f_21pyxdameraulevenshtein_normalized_damerau_levensh
   __pyx_v_ndl = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "pyxdameraulevenshtein.pyx":175
+  /* "pyxdameraulevenshtein.pyx":176
  *     """
  *     ndl = np.vectorize(normalized_damerau_levenshtein_distance, otypes=[np.float32])
  *     return ndl(seq, array)             # <<<<<<<<<<<<<<
@@ -3378,7 +3406,7 @@ static PyArrayObject *__pyx_f_21pyxdameraulevenshtein_normalized_damerau_levensh
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_v_seq, ((PyObject *)__pyx_v_array)};
-    __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 175, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 176, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_4);
   } else
@@ -3386,13 +3414,13 @@ static PyArrayObject *__pyx_f_21pyxdameraulevenshtein_normalized_damerau_levensh
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_v_seq, ((PyObject *)__pyx_v_array)};
-    __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 175, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 176, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_4);
   } else
   #endif
   {
-    __pyx_t_2 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 175, __pyx_L1_error)
+    __pyx_t_2 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 176, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     if (__pyx_t_3) {
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -3403,17 +3431,17 @@ static PyArrayObject *__pyx_f_21pyxdameraulevenshtein_normalized_damerau_levensh
     __Pyx_INCREF(((PyObject *)__pyx_v_array));
     __Pyx_GIVEREF(((PyObject *)__pyx_v_array));
     PyTuple_SET_ITEM(__pyx_t_2, 1+__pyx_t_6, ((PyObject *)__pyx_v_array));
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 175, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 176, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 175, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 176, __pyx_L1_error)
   __pyx_r = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "pyxdameraulevenshtein.pyx":169
+  /* "pyxdameraulevenshtein.pyx":170
  * 
  * 
  * cpdef np.ndarray[np.float32_t, ndim=1] normalized_damerau_levenshtein_distance_ndarray(seq, np.ndarray array):             # <<<<<<<<<<<<<<
@@ -3469,11 +3497,11 @@ static PyObject *__pyx_pw_21pyxdameraulevenshtein_7normalized_damerau_levenshtei
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_array)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("normalized_damerau_levenshtein_distance_ndarray", 1, 2, 2, 1); __PYX_ERR(0, 169, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("normalized_damerau_levenshtein_distance_ndarray", 1, 2, 2, 1); __PYX_ERR(0, 170, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "normalized_damerau_levenshtein_distance_ndarray") < 0)) __PYX_ERR(0, 169, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "normalized_damerau_levenshtein_distance_ndarray") < 0)) __PYX_ERR(0, 170, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -3486,13 +3514,13 @@ static PyObject *__pyx_pw_21pyxdameraulevenshtein_7normalized_damerau_levenshtei
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("normalized_damerau_levenshtein_distance_ndarray", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 169, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("normalized_damerau_levenshtein_distance_ndarray", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 170, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pyxdameraulevenshtein.normalized_damerau_levenshtein_distance_ndarray", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_array), __pyx_ptype_5numpy_ndarray, 1, "array", 0))) __PYX_ERR(0, 169, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_array), __pyx_ptype_5numpy_ndarray, 1, "array", 0))) __PYX_ERR(0, 170, __pyx_L1_error)
   __pyx_r = __pyx_pf_21pyxdameraulevenshtein_6normalized_damerau_levenshtein_distance_ndarray(__pyx_self, __pyx_v_seq, __pyx_v_array);
 
   /* function exit code */
@@ -3510,7 +3538,7 @@ static PyObject *__pyx_pf_21pyxdameraulevenshtein_6normalized_damerau_levenshtei
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("normalized_damerau_levenshtein_distance_ndarray", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_21pyxdameraulevenshtein_normalized_damerau_levenshtein_distance_ndarray(__pyx_v_seq, __pyx_v_array, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 169, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_21pyxdameraulevenshtein_normalized_damerau_levenshtein_distance_ndarray(__pyx_v_seq, __pyx_v_array, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6036,8 +6064,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 50, __pyx_L1_error)
-  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 100, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 105, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 272, __pyx_L1_error)
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(1, 856, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(1, 1038, __pyx_L1_error)
