@@ -1,5 +1,11 @@
 # Changes
 
+## 1.6 (2020-05-01)
+
+* Allow `np.ndarrays` as input.
+* Add support for Python 3.8 to `setup.py`.
+* Compiled with Cython 0.29.17.
+
 ## 1.5.3 (2019-02-25)
 
 * Specifying minimum version numbers in `pyproject.toml` and `setup.py`.
