@@ -67,7 +67,7 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
         >>> damerau_levenshtein_distance('orange', 'pumpkin')
         7
     """
-    if isinstance(seq1, (list, tuple)) and isinstance(seq2, (list, tuple)):
+    if isinstance(seq1, (list, tuple,np.ndarray)) and isinstance(seq2, (list, tuple,np.ndarray)):
         s1 = seq1
         s2 = seq2
     else:
@@ -84,9 +84,9 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
     s1 = s1[first_differing_index:]
     s2 = s2[first_differing_index:]
 
-    if not s1:
+    if s1 is None:
         return len(s2)
-    if not s2:
+    if s2 is None:
         return len(s1)
 
     # Py_ssize_t should be used wherever we're dealing with an array index or length
@@ -148,7 +148,7 @@ cpdef float normalized_damerau_levenshtein_distance(seq1, seq2):
         >>> normalized_damerau_levenshtein_distance('orange', 'pumpkin')
         1.0
     """
-    if isinstance(seq1, (list, tuple)) and isinstance(seq2, (list, tuple)):
+    if isinstance(seq1, (list, tuple,np.ndarray)) and isinstance(seq2, (list, tuple,np.ndarray)):
         n = max(len(seq1), len(seq2))
     else:
         n = max(len(_to_unicode(seq1)), len(_to_unicode(seq2)))

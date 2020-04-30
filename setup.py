@@ -29,7 +29,7 @@ import numpy
 
 metadata = dict(
     name='pyxDamerauLevenshtein',
-    version='1.5.3',
+    version='1.6',
     description='pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit '
                 'distance algorithm for Python in Cython for high performance.',
     long_description='pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) '
@@ -71,6 +71,7 @@ metadata = dict(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Topic :: Scientific/Engineering :: Bio-Informatics',
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Text Processing :: Linguistic',
