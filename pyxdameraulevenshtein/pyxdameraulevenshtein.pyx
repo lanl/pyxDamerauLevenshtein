@@ -74,6 +74,7 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
         s1 = _to_unicode(seq1)
         s2 = _to_unicode(seq2)
 
+
     # possible short-circuit if words have a lot in common at the beginning (or are identical)
     cdef Py_ssize_t first_differing_index = 0
     while first_differing_index < len(s1) and \
@@ -88,6 +89,10 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
         return len(s2)
     if s2 is None:
         return len(s1)
+
+    # Hack to fix a bug where the second string is one shorter than the first
+    if len(s2) < len(s1):
+        s1, s2 = s2, s1
 
     # Py_ssize_t should be used wherever we're dealing with an array index or length
     cdef Py_ssize_t i, j
