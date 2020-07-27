@@ -90,7 +90,7 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
     if s2 is None:
         return len(s1)
 
-    # Hack to fix a bug where the second string is one shorter than the first
+    # Fix bug where the second string is one shorter than the first (#22).
     if len(s2) < len(s1):
         s1, s2 = s2, s1
 
