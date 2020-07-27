@@ -16,3 +16,4 @@ Sorted by date of first contribution:
 * [Markus Konrad](https://github.com/internaut)
 * [Simone Basso](https://github.com/simobasso)
 * [Andrew Lensen](https://github.com/AndLen)
+* [Sergiusz Bleja](https://github.com/svenski)

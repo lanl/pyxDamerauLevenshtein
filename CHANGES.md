@@ -1,5 +1,10 @@
 # Changes
 
+## 1.6.1 (2020-07-27)
+
+* Fixed bug when first string is longer than the second string (#22). (courtesy @svenski)
+* Compiles with Cython 0.29.21.
+
 ## 1.6 (2020-05-01)
 
 * Allow `np.ndarrays` as input.
