@@ -4,6 +4,7 @@
 
 * Fixed bug when first string is longer than the second string (#22). (courtesy @svenski)
 * Compiles with Cython 0.29.21.
+* Dropping Python 3.4 support from Travis.
 
 ## 1.6 (2020-05-01)
 
