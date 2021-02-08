@@ -64,8 +64,6 @@ metadata = dict(
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Cython',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
@@ -79,7 +77,7 @@ metadata = dict(
 )
 
 setup(
-    install_requires=['numpy>=1.20.1'],
+    install_requires=['numpy>=1.19.5'],
     ext_modules=[Extension('pyxdameraulevenshtein', ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'],
                            include_dirs=[numpy.get_include()])],
     **metadata
