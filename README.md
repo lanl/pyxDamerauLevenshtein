@@ -1,6 +1,6 @@
 # pyxDamerauLevenshtein
 
-[![Build Status](https://travis-ci.org/gfairchild/pyxDamerauLevenshtein.svg?branch=master)](https://travis-ci.org/gfairchild/pyxDamerauLevenshtein)
+[![Build Status](https://travis-ci.com/gfairchild/pyxDamerauLevenshtein.svg?branch=master)](https://travis-ci.com/gfairchild/pyxDamerauLevenshtein)
 
 ## LICENSE
 This software is licensed under the [BSD 3-Clause License](http://opensource.org/licenses/BSD-3-Clause). Please refer to the separate [LICENSE.txt](LICENSE.txt) file for the exact text of the license. You are obligated to give attribution if you use this code.
