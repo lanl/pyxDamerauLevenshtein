@@ -2,7 +2,7 @@
 
 ## 1.6.2 (2021-02-08)
 
-* Remove Python 2 support.
+* Remove Python 2 and 3.5 support (they are EOL).
 * Bump minimum NumPy version to 1.19.5.
 * Add Python 3.9 support in `setup.py`.
 
