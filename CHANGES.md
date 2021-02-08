@@ -3,7 +3,7 @@
 ## 1.6.2 (2021-02-08)
 
 * Remove Python 2 support.
-* Bump minimum NumPy version to 1.20.1.
+* Bump minimum NumPy version to 1.19.5.
 * Add Python 3.9 support in `setup.py`.
 
 ## 1.6.1 (2020-07-27)
