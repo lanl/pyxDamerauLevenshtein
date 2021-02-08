@@ -1,5 +1,10 @@
 # Changes
 
+## 1.6.2 (2021-02-08)
+
+* Bump minimum NumPy version to 1.20.1.
+* Add Python 3.9 support in `setup.py`.
+
 ## 1.6.1 (2020-07-27)
 
 * Fixed bug when first string is longer than the second string (#22). (courtesy @svenski)
