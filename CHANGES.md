@@ -6,6 +6,9 @@
     * **This is a breaking change if you currently rely on either of the `*_ndarray` methods.**
         * `damerau_levenshtein_distance_ndarray` refactored to `damerau_levenshtein_distance_seqs`
         * `normalized_damerau_levenshtein_distance_ndarray` refactored to `normalized_damerau_levenshtein_distance_seqs`
+    * The simplest way to migrate to these new methods is to switch to using a native Python `list`. For example:
+        * `damerau_levenshtein_distance_ndarray('test', np.array(['test1', 't1', 'test']))` is now `damerau_levenshtein_distance_seqs('test', ['test1', 't1', 'test'])`
+        * `normalized_damerau_levenshtein_distance_ndarray('test', np.array(['test1', 't1', 'test']))` is now `normalized_damerau_levenshtein_distance_seqs('test', ['test1', 't1', 'test'])`
 * Compiled with Cython 0.29.21.
 
 ## 1.6.2 (2021-02-08)
