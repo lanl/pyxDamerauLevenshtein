@@ -3,8 +3,9 @@
 ## 1.7.0 (2021-02-09)
 
 * Remove NumPy dependency to simplify build process. Rather than relying on `np.ndarray`, we'll now use native iterables like `list` or `tuple`.
-    * `damerau_levenshtein_distance_ndarray` refactored to `damerau_levenshtein_distance_seqs`
-    * `normalized_damerau_levenshtein_distance_ndarray` refactored to `normalized_damerau_levenshtein_distance_seqs`
+    * **This is a breaking change if you currently rely on either of the `*_ndarray` methods.**
+        * `damerau_levenshtein_distance_ndarray` refactored to `damerau_levenshtein_distance_seqs`
+        * `normalized_damerau_levenshtein_distance_ndarray` refactored to `normalized_damerau_levenshtein_distance_seqs`
 
 ## 1.6.2 (2021-02-08)
 
