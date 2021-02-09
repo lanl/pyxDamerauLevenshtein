@@ -4,11 +4,13 @@
 
 * Remove NumPy dependency to simplify build process. Rather than relying on `np.ndarray`, we'll now use native iterables like `list` or `tuple`.
     * **This is a breaking change if you currently rely on either of the `*_ndarray` methods.**
-        * `damerau_levenshtein_distance_ndarray` refactored to `damerau_levenshtein_distance_seqs`
-        * `normalized_damerau_levenshtein_distance_ndarray` refactored to `normalized_damerau_levenshtein_distance_seqs`
+        * `damerau_levenshtein_distance_ndarray` refactored to `damerau_levenshtein_distance_seqs`, and the return value is now a `list` rather than `np.array`
+        * `normalized_damerau_levenshtein_distance_ndarray` refactored to `normalized_damerau_levenshtein_distance_seqs`, and the return value is now a `list` rather than `np.array`
     * The simplest way to migrate to these new methods is to switch to using a native Python `list`. For example:
         * `damerau_levenshtein_distance_ndarray('test', np.array(['test1', 't1', 'test']))` is now `damerau_levenshtein_distance_seqs('test', ['test1', 't1', 'test'])`
         * `normalized_damerau_levenshtein_distance_ndarray('test', np.array(['test1', 't1', 'test']))` is now `normalized_damerau_levenshtein_distance_seqs('test', ['test1', 't1', 'test'])`
+        * If you need the return value to be an `np.array`, then you can simply wrap the return value (a `list`) with `np.array` like so:
+            * `np.array(damerau_levenshtein_distance_seqs('test', ['test1', 't1', 'test']))`
 * Compiled with Cython 0.29.21.
 
 ## 1.6.2 (2021-02-08)
