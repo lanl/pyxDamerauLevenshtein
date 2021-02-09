@@ -1,4 +1,4 @@
-# cython: language_level=2
+# cython: language_level=3
 
 """
     Copyright (c) 2013, Triad National Security, LLC
