@@ -55,7 +55,7 @@ normalized_damerau_levenshtein_distance('smtih', 'smith')  # expected result: 0.
 damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4])  # expected result: 7
 
 from pyxdameraulevenshtein import damerau_levenshtein_distance_seqs, normalized_damerau_levenshtein_distance_seqs
-array = list('test1', 'test12', 'test123')
+array = ['test1', 'test12', 'test123']
 damerau_levenshtein_distance_seqs('test', array)  # expected result: [1, 2, 3]
 normalized_damerau_levenshtein_distance_seqs('test', array)  # expected result: [0.2, 0.33333334, 0.42857143]
 ```
