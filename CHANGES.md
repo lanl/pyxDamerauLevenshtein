@@ -6,12 +6,14 @@
     * **This is a breaking change if you currently rely on either of the `*_ndarray` methods.**
         * `damerau_levenshtein_distance_ndarray` refactored to `damerau_levenshtein_distance_seqs`
         * `normalized_damerau_levenshtein_distance_ndarray` refactored to `normalized_damerau_levenshtein_distance_seqs`
+* Compiled with Cython 0.29.21.
 
 ## 1.6.2 (2021-02-08)
 
 * Remove Python 2 and 3.5 support (they are EOL).
 * Bump minimum NumPy version to 1.19.5.
 * Add Python 3.9 support in `setup.py`.
+* Compiled with Cython 0.29.21.
 
 ## 1.6.1 (2020-07-27)
 
