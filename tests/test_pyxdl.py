@@ -25,13 +25,12 @@
 """
 
 import unittest
-
-import numpy as np
+import math
 
 from pyxdameraulevenshtein import damerau_levenshtein_distance
-from pyxdameraulevenshtein import damerau_levenshtein_distance_ndarray
+from pyxdameraulevenshtein import damerau_levenshtein_distance_seqs
 from pyxdameraulevenshtein import normalized_damerau_levenshtein_distance
-from pyxdameraulevenshtein import normalized_damerau_levenshtein_distance_ndarray
+from pyxdameraulevenshtein import normalized_damerau_levenshtein_distance_seqs
 
 
 class TestDamerauLevenshtien(unittest.TestCase):
@@ -50,15 +49,15 @@ class TestDamerauLevenshtien(unittest.TestCase):
         assert damerau_levenshtein_distance((1, 2, 3), (1, 3, 2)) == 1
         assert damerau_levenshtein_distance((1, 2, 3), [1, 3, 2]) == 1
         assert damerau_levenshtein_distance([], []) == 0
-        assert damerau_levenshtein_distance(list(range(10)), list(range(1, 11))) == 2
+        assert damerau_levenshtein_distance(range(10), range(1, 11)) == 2
         assert damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4]) == 7
 
-        assert damerau_levenshtein_distance(np.array([1, 2, 3]), np.array([1, 3, 2])) == 1
-        assert damerau_levenshtein_distance(np.array((1, 2, 3)), np.array((1, 3, 2))) == 1
-        assert damerau_levenshtein_distance(np.array((1, 2, 3)), ([1, 3, 2])) == 1
-        assert damerau_levenshtein_distance(np.array([]), np.array([])) == 0
-        assert damerau_levenshtein_distance(np.fromiter(range(10),dtype="int"), np.fromiter(range(1, 11),dtype="int")) == 2
-        assert damerau_levenshtein_distance(np.array([1, 2, 3, 4, 5, 6]), np.array([7, 8, 9, 7, 10, 11, 4])) == 7
+        assert damerau_levenshtein_distance([1, 2, 3], [1, 3, 2]) == 1
+        assert damerau_levenshtein_distance((1, 2, 3), (1, 3, 2)) == 1
+        assert damerau_levenshtein_distance((1, 2, 3), [1, 3, 2]) == 1
+        assert damerau_levenshtein_distance([], []) == 0
+        assert damerau_levenshtein_distance(range(10), range(1, 11)) == 2
+        assert damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4]) == 7
 
     def test_normalized_damerau_levenshtein_distance(self):
         assert normalized_damerau_levenshtein_distance('smtih', 'smith') == 0.20000000298023224
@@ -70,35 +69,30 @@ class TestDamerauLevenshtien(unittest.TestCase):
         assert normalized_damerau_levenshtein_distance('orange', 'pumpkin') == 1.0
         assert normalized_damerau_levenshtein_distance('gifts', 'profit') == 0.8333333134651184
         assert normalized_damerau_levenshtein_distance('Sjöstedt', 'Sjostedt') == 0.125
-        assert normalized_damerau_levenshtein_distance('tt','t') == 0.5
+        assert normalized_damerau_levenshtein_distance('tt', 't') == 0.5
 
-        assert np.isclose(normalized_damerau_levenshtein_distance([1, 2, 3], [1, 3, 2]), 1.0 / 3.0)
+        assert math.isclose(normalized_damerau_levenshtein_distance([1, 2, 3], [1, 3, 2]), 1.0 / 3.0, rel_tol=1e-05)
         assert normalized_damerau_levenshtein_distance([], []) == 0.0
-        assert np.isclose(normalized_damerau_levenshtein_distance(list(range(10)), list(range(1, 11))), 0.2)
+        assert math.isclose(normalized_damerau_levenshtein_distance(range(10), range(1, 11)), 0.2, rel_tol=1e-05)
         assert normalized_damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4]) == 1.0
 
-        assert np.isclose(normalized_damerau_levenshtein_distance(np.array([1, 2, 3]), np.array([1, 3, 2])), 1.0 / 3.0)
-        assert normalized_damerau_levenshtein_distance(np.array([]), np.array([])) == 0.0
-        assert np.isclose(normalized_damerau_levenshtein_distance(np.fromiter(range(10),dtype="int"), np.fromiter(range(1, 11),dtype="int")), 0.2)
-        assert normalized_damerau_levenshtein_distance(np.array([1, 2, 3, 4, 5, 6]), np.array([7, 8, 9, 7, 10, 11, 4])) == 1.0
+    def test_damerau_levenshtein_distance_seqs(self):
+        assert damerau_levenshtein_distance_seqs(
+            'Saturday', ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        ) == [3, 5, 5, 6, 4, 5, 0]
 
-    def test_damerau_levenshtein_distance_ndarray(self):
-        assert damerau_levenshtein_distance_ndarray(
-            'Saturday', np.array(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
-        ).tolist() == [3, 5, 5, 6, 4, 5, 0]
+        assert damerau_levenshtein_distance_seqs(
+            'Sjöstedt', ['Sjöstedt', 'Sjostedt', 'Söstedt', 'Sjöedt']
+        ) == [0, 1, 1, 2]
 
-        assert damerau_levenshtein_distance_ndarray(
-            'Sjöstedt', np.array(['Sjöstedt', 'Sjostedt', 'Söstedt', 'Sjöedt'])
-        ).tolist() == [0, 1, 1, 2]
+    def test_normalized_damerau_levenshtein_distance_seqs(self):
+        assert normalized_damerau_levenshtein_distance_seqs(
+            'Saturday', ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        ) == [0.375, 0.625, 0.625, 0.6666666865348816, 0.5, 0.625, 0.0]
 
-    def test_normalized_damerau_levenshtein_distance_ndarray(self):
-        assert normalized_damerau_levenshtein_distance_ndarray(
-            'Saturday', np.array(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])
-        ).tolist() == [0.375, 0.625, 0.625, 0.6666666865348816, 0.5, 0.625, 0.0]
-
-        assert normalized_damerau_levenshtein_distance_ndarray(
-            'Sjöstedt', np.array(['Sjöstedt', 'Sjostedt', 'Söstedt', 'Sjöedt'])
-        ).tolist() == [0.0, 0.125, 0.125, 0.25]
+        assert normalized_damerau_levenshtein_distance_seqs(
+            'Sjöstedt', ['Sjöstedt', 'Sjostedt', 'Söstedt', 'Sjöedt']
+        ) == [0.0, 0.125, 0.125, 0.25]
 
 
 if __name__ == '__main__':

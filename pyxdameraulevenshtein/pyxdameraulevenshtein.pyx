@@ -23,31 +23,13 @@
     OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-from cpython.version cimport PY_MAJOR_VERSION
 from libc.stdlib cimport calloc, free
-import numpy as np
-cimport numpy as np
+
 
 # these guys are used to index into storage inside damerau_levenshtein_distance()
 cdef Py_ssize_t TWO_AGO = 0
 cdef Py_ssize_t ONE_AGO = 1
 cdef Py_ssize_t THIS_ROW = 2
-
-cdef unicode _to_unicode(s):
-    """
-        Convert s to a proper unicode type, handling the differences between Python 2 and 3. This code
-        comes from http://docs.cython.org/src/tutorial/strings.html#accepting-strings-from-python-code.
-    """
-    if type(s) is unicode:
-        # fast path for most common case(s)
-        return <unicode>s
-    elif PY_MAJOR_VERSION < 3 and isinstance(s, bytes):
-        # only accept byte strings in Python 2.x, not in Py3
-        return (<bytes>s).decode('UTF-8')
-    elif isinstance(s, unicode):
-        # this works for NumPy strings
-        return unicode(s)
-    raise TypeError('string [{}] has an unrecognized type of [{}]'.format(s, type(s)))
 
 
 cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
@@ -58,6 +40,9 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
         algorithm, as described in Wikipedia here:
         https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance
 
+        Note that `seq1` and `seq2` can be any sequence type. This not only includes `str` but also includes `list`,
+        `tuple`, `range`, and more.
+
         Examples:
 
         >>> damerau_levenshtein_distance('smtih', 'smith')
@@ -66,40 +51,34 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
         3
         >>> damerau_levenshtein_distance('orange', 'pumpkin')
         7
+        >>> damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4])
+        7
     """
-    if isinstance(seq1, (list, tuple,np.ndarray)) and isinstance(seq2, (list, tuple,np.ndarray)):
-        s1 = seq1
-        s2 = seq2
-    else:
-        s1 = _to_unicode(seq1)
-        s2 = _to_unicode(seq2)
-
-
-    # possible short-circuit if words have a lot in common at the beginning (or are identical)
+    # possible short-circuit if sequences have a lot in common at the beginning (or are identical)
     cdef Py_ssize_t first_differing_index = 0
-    while first_differing_index < len(s1) and \
-          first_differing_index < len(s2) and \
-          s1[first_differing_index] == s2[first_differing_index]:
+    while first_differing_index < len(seq1) and \
+          first_differing_index < len(seq2) and \
+          seq1[first_differing_index] == seq2[first_differing_index]:
         first_differing_index += 1
 
-    s1 = s1[first_differing_index:]
-    s2 = s2[first_differing_index:]
+    seq1 = seq1[first_differing_index:]
+    seq2 = seq2[first_differing_index:]
 
-    if s1 is None:
-        return len(s2)
-    if s2 is None:
-        return len(s1)
+    if seq1 is None:
+        return len(seq2)
+    if seq2 is None:
+        return len(seq1)
 
-    # Fix bug where the second string is one shorter than the first (#22).
-    if len(s2) < len(s1):
-        s1, s2 = s2, s1
+    # Fix bug where the second sequence is one shorter than the first (#22).
+    if len(seq2) < len(seq1):
+        seq1, seq2 = seq2, seq1
 
     # Py_ssize_t should be used wherever we're dealing with an array index or length
     cdef Py_ssize_t i, j
-    cdef Py_ssize_t offset = len(s2) + 1
+    cdef Py_ssize_t offset = len(seq2) + 1
     cdef unsigned long delete_cost, add_cost, subtract_cost, edit_distance
 
-    # storage is a 3 x (len(s2) + 1) array that stores TWO_AGO, ONE_AGO, and THIS_ROW
+    # storage is a 3 x (len(seq2) + 1) array that stores TWO_AGO, ONE_AGO, and THIS_ROW
     cdef unsigned long * storage = <unsigned long * >calloc(3 * offset, sizeof(unsigned long))
     if not storage:
         raise MemoryError()
@@ -109,28 +88,28 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
         for i in range(1, offset):
             storage[THIS_ROW * offset + (i - 1)] = i
 
-        for i in range(len(s1)):
+        for i in range(len(seq1)):
             # swap/initialize vectors
             for j in range(offset):
                 storage[TWO_AGO * offset + j] = storage[ONE_AGO * offset + j]
                 storage[ONE_AGO * offset + j] = storage[THIS_ROW * offset + j]
-            for j in range(len(s2)):
+            for j in range(len(seq2)):
                 storage[THIS_ROW * offset + j] = 0
-            storage[THIS_ROW * offset + len(s2)] = i + 1
+            storage[THIS_ROW * offset + len(seq2)] = i + 1
 
             # now compute costs
-            for j in range(len(s2)):
+            for j in range(len(seq2)):
                 delete_cost = storage[ONE_AGO * offset + j] + 1
-                add_cost = storage[THIS_ROW * offset + (j - 1 if j > 0 else len(s2))] + 1
-                subtract_cost = storage[ONE_AGO * offset + (j - 1 if j > 0 else len(s2))] + (s1[i] != s2[j])
+                add_cost = storage[THIS_ROW * offset + (j - 1 if j > 0 else len(seq2))] + 1
+                subtract_cost = storage[ONE_AGO * offset + (j - 1 if j > 0 else len(seq2))] + (seq1[i] != seq2[j])
                 storage[THIS_ROW * offset + j] = min(delete_cost, add_cost, subtract_cost)
                 # deal with transpositions
-                if i > 0 and j > 0 and s1[i] == s2[j - 1] and s1[i - 1] == s2[j] and s1[i] != s2[j]:
+                if i > 0 and j > 0 and seq1[i] == seq2[j - 1] and seq1[i - 1] == seq2[j] and seq1[i] != seq2[j]:
                     storage[THIS_ROW * offset + j] = min(storage[THIS_ROW * offset + j],
-                                                         storage[TWO_AGO * offset + j - 2 if j > 1 else len(s2)] + 1)
+                                                         storage[TWO_AGO * offset + j - 2 if j > 1 else len(seq2)] + 1)
 
         # compute and return the final edit distance
-        return storage[THIS_ROW * offset + (len(s2) - 1)]
+        return storage[THIS_ROW * offset + (len(seq2) - 1)]
     finally:
         # free dynamically-allocated memory
         free(storage)
@@ -138,11 +117,11 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2):
 
 cpdef float normalized_damerau_levenshtein_distance(seq1, seq2):
     """
-        Return a real number between 0.0 and 1.0, indicating the edit distance as a fraction of the longer
-        string. 0.0 means that the sequences are identical, while 1.0 means they have nothing in common.
+        Return a real number between 0.0 and 1.0, indicating the edit distance as a fraction of the longer sequence.
+        0.0 means that the sequences are identical, while 1.0 means they have nothing in common.
 
-        Note that this definition is the exact opposite of difflib.SequenceMatcher.ratio(). difflib outputs
-        1.0 for identical sequences and 0.0 for unlike sequences.
+        Note that this definition is the exact opposite of `difflib.SequenceMatcher.ratio()`. `difflib` outputs 1.0
+        for identical sequences and 0.0 for unlike sequences.
 
         Examples:
 
@@ -152,29 +131,43 @@ cpdef float normalized_damerau_levenshtein_distance(seq1, seq2):
         0.375
         >>> normalized_damerau_levenshtein_distance('orange', 'pumpkin')
         1.0
+        >>> normalized_damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4])
+        1.0
     """
-    if isinstance(seq1, (list, tuple,np.ndarray)) and isinstance(seq2, (list, tuple,np.ndarray)):
-        n = max(len(seq1), len(seq2))
-    else:
-        n = max(len(_to_unicode(seq1)), len(_to_unicode(seq2)))
-
     # prevent division by zero for empty inputs
+    n = max(len(seq1), len(seq2))
     return float(damerau_levenshtein_distance(seq1, seq2)) / max(n, 1)
 
 
-cpdef np.ndarray[np.uint32_t, ndim=1] damerau_levenshtein_distance_ndarray(seq, np.ndarray array):
+cpdef list damerau_levenshtein_distance_seqs(seq, seqs):
     """
-        For each element in the array, compute the DL distance between it and seq. An array of distances will
-        be returned, 1 for each element in the array.
+        For each sequence in `seqs`, compute the DL distance between it and `seq`. A list of distances will be
+        returned, one for each element in `seqs`.
+
+        Because this code generates a list of distances, where each element's position corresponds to the index
+        of the element we encounter as we iterate through `seqs`, `seqs` must be ordered. That is, do not use
+        a data structure like a `set` because order is not guaranteed.
+
+        Example:
+
+        >>> damerau_levenshtein_distance_list('Sjöstedt', ['Sjöstedt', 'Sjostedt', 'Söstedt', 'Sjöedt'])
+        [0, 1, 1, 2]
     """
-    dl = np.vectorize(damerau_levenshtein_distance, otypes=[np.uint32])
-    return dl(seq, array)
+    return [damerau_levenshtein_distance(seq, x) for x in seqs]
 
 
-cpdef np.ndarray[np.float32_t, ndim=1] normalized_damerau_levenshtein_distance_ndarray(seq, np.ndarray array):
+cpdef list normalized_damerau_levenshtein_distance_seqs(seq, seqs):
     """
-        For each element in the array, compute the normalized DL distance between it and seq. An array of
-        normalized distances will be returned, 1 for each element in the array.
+        For each sequence in `seqs`, compute the normalized DL distance between it and `seq`. A list of normalized
+        distances will be returned, one for each element in `seqs`.
+
+        Because this code generates a list of normalized distances, where each element's position corresponds to the
+        index of the element we encounter as we iterate through `seqs`, `seqs` must be ordered. That is, do not use
+        a data structure like a `set` because order is not guaranteed.
+
+        Example:
+
+        >>> normalized_damerau_levenshtein_distance_seqs('Sjöstedt', ['Sjöstedt', 'Sjostedt', 'Söstedt', 'Sjöedt'])
+        [0.0, 0.125, 0.125, 0.25]
     """
-    ndl = np.vectorize(normalized_damerau_levenshtein_distance, otypes=[np.float32])
-    return ndl(seq, array)
+    return [normalized_damerau_levenshtein_distance(seq, x) for x in seqs]

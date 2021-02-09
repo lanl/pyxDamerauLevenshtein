@@ -41,10 +41,10 @@ The following methods are available:
 * **Normalized edit distance** (`normalized_damerau_levenshtein_distance`)
     * Compute the ratio of the edit distance to the length of `max(string1, string2)`. 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher.ratio).
 
-* **Edit distance against an array** (`damerau_levenshtein_distance_ndarray`)
-    * Compute the raw distances between a string and each string in a NumPy array.
+* **Edit distance against a sequence of sequences** (`damerau_levenshtein_distance_seqs`)
+    * Compute the raw distances between a string and each string in an `list`.
 
-* **Normalized edit distance against an array** (`normalized_damerau_levenshtein_distance_ndarray`)
+* **Normalized edit distance against a sequence of sequences** (`normalized_damerau_levenshtein_distance_seqs`)
     * Compute the normalized distances between a string and each string in a NumPy array.
 
 Basic use:
@@ -55,11 +55,10 @@ damerau_levenshtein_distance('smtih', 'smith')  # expected result: 1
 normalized_damerau_levenshtein_distance('smtih', 'smith')  # expected result: 0.2
 damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4])  # expected result: 7
 
-from pyxdameraulevenshtein import damerau_levenshtein_distance_ndarray, normalized_damerau_levenshtein_distance_ndarray
-import numpy as np
-array = np.array(['test1', 'test12', 'test123'])
-damerau_levenshtein_distance_ndarray('test', array)  # expected result: [1, 2, 3]
-normalized_damerau_levenshtein_distance_ndarray('test', array)  # expected result: [0.2, 0.33333334, 0.42857143]
+from pyxdameraulevenshtein import damerau_levenshtein_distance_seqs, normalized_damerau_levenshtein_distance_seqs
+array = list('test1', 'test12', 'test123')
+damerau_levenshtein_distance_seqs('test', array)  # expected result: [1, 2, 3]
+normalized_damerau_levenshtein_distance_seqs('test', array)  # expected result: [0.2, 0.33333334, 0.42857143]
 ```
 
 ## DIFFERENCES

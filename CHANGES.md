@@ -1,5 +1,11 @@
 # Changes
 
+## 1.7.0 (2021-02-09)
+
+* Remove NumPy dependency to simplify build process. Rather than relying on `np.ndarray`, we'll now use native iterables like `list` or `tuple`.
+    * `damerau_levenshtein_distance_ndarray` refactored to `damerau_levenshtein_distance_seqs`
+    * `normalized_damerau_levenshtein_distance_ndarray` refactored to `normalized_damerau_levenshtein_distance_seqs`
+
 ## 1.6.2 (2021-02-08)
 
 * Remove Python 2 and 3.5 support (they are EOL).
@@ -9,7 +15,7 @@
 ## 1.6.1 (2020-07-27)
 
 * Fixed bug when first string is longer than the second string (#22). (courtesy @svenski)
-* Compiles with Cython 0.29.21.
+* Compiled with Cython 0.29.21.
 * Dropping Python 3.4 support from Travis.
 
 ## 1.6 (2020-05-01)

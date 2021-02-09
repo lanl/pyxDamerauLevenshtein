@@ -24,12 +24,11 @@
 import sys
 
 from setuptools import setup, Extension
-import numpy
 
 
 metadata = dict(
     name='pyxDamerauLevenshtein',
-    version='1.6.2',
+    version='1.7.0',
     description='pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit '
                 'distance algorithm for Python in Cython for high performance.',
     long_description='pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) '
@@ -76,8 +75,6 @@ metadata = dict(
 )
 
 setup(
-    install_requires=['numpy>=1.19.5'],
-    ext_modules=[Extension('pyxdameraulevenshtein', ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'],
-                           include_dirs=[numpy.get_include()])],
+    ext_modules=[Extension('pyxdameraulevenshtein', ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'])],
     **metadata
 )
