@@ -46,12 +46,12 @@ metadata = dict(
                      '<https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance>`_. '
                      'It runs in ``O(N*M)`` time using ``O(M)`` space. It supports '
                      'unicode characters. For more information on pyxDamerauLevenshtein, '
-                     'visit the `GitHub project page <https://github.com/gfairchild/pyxDamerauLevenshtein>`_.',
+                     'visit the `GitHub project page <https://github.com/lanl/pyxDamerauLevenshtein>`_.',
     author='Geoffrey Fairchild',
     author_email='mail@gfairchild.com',
     maintainer='Geoffrey Fairchild',
     maintainer_email='mail@gfairchild.com',
-    url='https://github.com/gfairchild/pyxDamerauLevenshtein',
+    url='https://github.com/lanl/pyxDamerauLevenshtein',
     license='BSD 3-Clause License',
     classifiers=[
         'Development Status :: 5 - Production/Stable',

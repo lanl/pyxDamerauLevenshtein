@@ -5,6 +5,7 @@
 * Drop Python 3.6 support (EOL).
 * Add Python 3.10 support.
 * Compiled with Cython 0.29.32.
+* Updating project URL (moved from [@gfairchild](https://github.com/gfairchild)'s personal namespace to [@lanl](https://github.com/lanl)'s namespace).
 
 ## 1.7.0 (2021-02-09)
 
