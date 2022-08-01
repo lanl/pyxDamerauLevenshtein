@@ -11,7 +11,7 @@ python:
 before_install:
   - pip install --upgrade pip setuptools wheel
 
-install:
-  - pip install .
+#install:
+#  - pip install .
 
 script: python tests/test_pyxdl.py
