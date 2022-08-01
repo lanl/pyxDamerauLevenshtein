@@ -1,5 +1,11 @@
 # Changes
 
+## 1.7.1 (2022-08-01)
+
+* Drop Python 3.6 support (EOL).
+* Add Python 3.10 support.
+* Compiled with Cython 0.29.32.
+
 ## 1.7.0 (2021-02-09)
 
 * Remove NumPy dependency to simplify build process. Rather than relying on `np.ndarray`, we'll now use native iterables like `list` or `tuple`.

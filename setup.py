@@ -26,7 +26,7 @@ from setuptools import setup, Extension
 
 metadata = dict(
     name='pyxDamerauLevenshtein',
-    version='1.7.0',
+    version='1.7.1',
     description='pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit '
                 'distance algorithm for Python in Cython for high performance.',
     long_description='pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) '
@@ -62,10 +62,10 @@ metadata = dict(
         'Operating System :: OS Independent',
         'Programming Language :: Cython',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'Topic :: Scientific/Engineering :: Bio-Informatics',
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Text Processing :: Linguistic',
