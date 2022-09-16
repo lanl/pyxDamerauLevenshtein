@@ -1,1 +1,3 @@
 include pyproject.toml
+include pyxdameraulevenshtein/py.typed
+recursive-include pyxdameraulevenshtein *.pyi

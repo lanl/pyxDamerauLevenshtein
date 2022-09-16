@@ -69,7 +69,10 @@ metadata = dict(
         'Topic :: Scientific/Engineering :: Bio-Informatics',
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Text Processing :: Linguistic',
-    ]
+    ],
+    package_data= {
+        "pyxdameraulevenshtein": ["*.pyi", "py.typed"]
+    }
 )
 
 setup(
