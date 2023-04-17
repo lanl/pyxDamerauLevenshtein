@@ -18,3 +18,4 @@ Sorted by date of first contribution:
 * [Andrew Lensen](https://github.com/AndLen)
 * [Sergiusz Bleja](https://github.com/svenski)
 * [Max Bachmann](https://github.com/maxbachmann)
+* [Seth Sims](https://github.com/xzy3)
