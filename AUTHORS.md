@@ -17,3 +17,4 @@ Sorted by date of first contribution:
 * [Simone Basso](https://github.com/simobasso)
 * [Andrew Lensen](https://github.com/AndLen)
 * [Sergiusz Bleja](https://github.com/svenski)
+* [Max Bachmann](https://github.com/maxbachmann)
