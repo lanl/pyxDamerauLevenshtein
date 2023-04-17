@@ -69,10 +69,14 @@ metadata = dict(
         'Topic :: Scientific/Engineering :: Bio-Informatics',
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Text Processing :: Linguistic',
-    ]
+    ],
+    packages=["pyxdameraulevenshtein"],
+    package_data={
+        "pyxdameraulevenshtein": ["*.pyi", "py.typed"]
+    }
 )
 
 setup(
-    ext_modules=[Extension('pyxdameraulevenshtein', ['pyxdameraulevenshtein/pyxdameraulevenshtein.c'])],
+    ext_modules=[Extension('pyxdameraulevenshtein._initialize', ['pyxdameraulevenshtein/_initialize.c'])],
     **metadata
 )
