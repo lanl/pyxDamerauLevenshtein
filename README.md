@@ -13,7 +13,7 @@ pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algo
 This implementation is based on [Michael Homer's pure Python implementation](https://web.archive.org/web/20150909134357/http://mwh.geek.nz:80/2009/04/26/python-damerau-levenshtein-distance/), which implements the [optimal string alignment distance algorithm](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance). It runs in `O(N*M)` time using `O(M)` space. It supports unicode characters.
 
 ## REQUIREMENTS
-This code requires Python 3.7+ and a C compiler such as GCC. Although the code was written in Cython, Cython is not required for installation.
+This code requires Python 3.7+, C compiler such as GCC, and cython.
 
 ## INSTALL
 pyxDamerauLevenshtein is available on PyPI at https://pypi.org/project/pyxDamerauLevenshtein/.
@@ -24,11 +24,8 @@ Install using [pip](https://pypi.org/project/pip/):
 
 Install from source:
 
-    python setup.py install
-
-or
-
     pip install .
+
 
 ## USING THIS CODE
 The following methods are available:
