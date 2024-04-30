@@ -61,3 +61,6 @@ target/
 
 # MacOS files
 .DS_Store
+
+# cython output
+pyxdameraulevenshtein/*.c
