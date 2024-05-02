@@ -74,7 +74,7 @@ metadata = dict(
     ],
     packages=["pyxdameraulevenshtein"],
     package_data={
-        "pyxdameraulevenshtein": ["*.pyi", "py.typed"]
+        "pyxdameraulevenshtein": ["*.pyi", "py.typed", "*.pyx"]
     }
 )
 
