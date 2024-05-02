@@ -22,7 +22,7 @@
 """
 
 from setuptools import setup, Extension
-
+from Cython.Build import cythonize
 
 metadata = dict(
     name='pyxDamerauLevenshtein',
@@ -77,6 +77,6 @@ metadata = dict(
 )
 
 setup(
-    ext_modules=[Extension('pyxdameraulevenshtein._initialize', ['pyxdameraulevenshtein/_initialize.c'])],
+    ext_modules=cythonize("pyxdameraulevenshtein/_initialize.pyx"),
     **metadata
 )

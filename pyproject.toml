@@ -1,2 +1,2 @@
 [build-system]
-requires = ["setuptools>=40.8.0", "wheel>=0.33.1"]
+requires = ["setuptools>=40.8.0", "wheel>=0.33.1", "cython"]
