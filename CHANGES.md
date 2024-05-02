@@ -1,5 +1,10 @@
 # Changes
 
+## 1.8.0 (2024-05-02)
+* Add Cython to the build process to reduce the likelihood of incompatabilities between the Cython-generated C code and CPython (#38). (courtesy @tacaswell)
+* Drop Python 3.7 support.
+* Add Python 3.11-3.13 support.
+
 ## 1.7.1 (2022-08-01)
 
 * Drop Python 3.6 support (EOL).
@@ -33,7 +38,7 @@
 * Compiled with Cython 0.29.21.
 * Dropping Python 3.4 support from Travis.
 
-## 1.6 (2020-05-01)
+## 1.6.0 (2020-05-01)
 
 * Allow `np.ndarrays` as input.
 * Add support for Python 3.8 to `setup.py`.
@@ -54,7 +59,7 @@
 * Enabling Python 3.7 unit tests in Travis.
 * Compiled with Cython 0.29.2.
 
-## 1.5 (2018-02-04)
+## 1.5.0 (2018-02-04)
 
 * Allow tuples and lists as input. (courtesy @internaut)
 * Dropped support of EOL Python versions (2.6, 3.2, and 3.3). (courtesy @internaut)
@@ -77,11 +82,11 @@
 * [@ovarene](https://github.com/ovarene) added the ability to compute the edit distance between a string and each string in a [NumPy](http://www.numpy.org/) array in [this PR](https://github.com/gfairchild/pyxDamerauLevenshtein/pull/3).
 * Compiled with Cython 0.22.
 
-## 1.2 (2014-05-06)
+## 1.2.0 (2014-05-06)
 * Changed `xrange` to `range` in pyx code.
 * Compiled with Cython 0.20.1.
 
-## 1.1 (2013-10-04)
+## 1.1.0 (2013-10-04)
 * Moving to setuptools (using [ez_setup.py](https://bitbucket.org/pypa/setuptools/downloads/ez_setup.py) to manage it).
 
 ## 1.0.2 (2013-09-23)
@@ -94,5 +99,5 @@
 * Fixed a possible memory leak (thanks to Stefan Behnel).
 * Examples are now Python 3-compatible.
 
-## 1.0 (2013-07-03)
+## 1.0.0 (2013-07-03)
 * Initial release.

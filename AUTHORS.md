@@ -19,3 +19,4 @@ Sorted by date of first contribution:
 * [Sergiusz Bleja](https://github.com/svenski)
 * [Max Bachmann](https://github.com/maxbachmann)
 * [Seth Sims](https://github.com/xzy3)
+* [Thomas A Caswell](https://github.com/tacaswell)
