@@ -1,5 +1,9 @@
 # Changes
 
+## 1.9.0 (2025-07-29)
+* Add Python wheel support (#8). (courtesy @jianlins)
+* Drop Python 3.8 support.
+
 ## 1.8.0 (2024-05-02)
 * Add Cython to the build process to reduce the likelihood of incompatabilities between the Cython-generated C code and CPython (#38). (courtesy @tacaswell)
 * Drop Python 3.7 support.
