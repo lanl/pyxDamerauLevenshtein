@@ -1,0 +1,133 @@
+name: Build_and_Release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., 1.8.0)'
+        required: true
+        default: ''
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build_wheels:
+    name: Build wheel for ${{ matrix.python }}-${{ matrix.buildplat[1] }}
+    if: >-
+      github.event_name == 'workflow_dispatch'
+    runs-on: ${{ matrix.buildplat[0] }}
+    timeout-minutes: 50
+    strategy:
+      # Ensure that a wheel builder finishes even if another fails
+      fail-fast: false
+      matrix:
+        # Github Actions doesn't support pairing matrix values together, let's improvise
+        buildplat:
+        - [ubuntu-latest, manylinux_x86_64]
+        - [ubuntu-latest, musllinux_x86_64]
+        - [macos-13, macosx_*]
+        - [windows-latest, win_amd64]
+        python: ["cp39", "cp310", "cp311", "cp312"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v3.0.0
+        env:
+          CIBW_BEFORE_BUILD: pip install -r requirements.txt
+          CIBW_BUILD: ${{ matrix.python }}-${{ matrix.buildplat[1] }}
+          CIBW_ENVIRONMENT: CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC' LDFLAGS='-fPIC'
+          CIBW_BEFORE_TEST: pip install -r dev-requirements.txt
+          CIBW_TEST_COMMAND: pytest {package}/tests
+
+      - name: check build
+        run: |
+          ls -l wheelhouse
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.python }}-${{ startsWith(matrix.buildplat[1], 'macosx') && 'macosx' || matrix.buildplat[1] }}
+          path: ./wheelhouse/*.whl
+
+  build_sdist:
+    name: Build sdist
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build sdist
+        run: |
+          python setup.py sdist
+          
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sdist
+          path: ./dist/*.tar.gz
+
+  create_github_release:
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: Prepare release files
+        run: |
+          mkdir -p release_files
+          cp dist/sdist/*.tar.gz release_files/
+          find dist -name "*.whl" -exec cp {} release_files/ \;
+          ls -la release_files/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          name: pyxDamerauLevenshtein ${{ github.event.inputs.version }}
+          draft: false
+          prerelease: false
+          files: release_files/*
+          body: |
+            # pyxDamerauLevenshtein ${{ github.event.inputs.version }}
+            
+            This release includes built wheels for Python 3.9, 3.10, 3.11, and 3.12 on the following platforms:
+            - Linux (manylinux, musllinux)
+            - macOS
+            - Windows
+            
+            And a source distribution for manual installation.
+            
+            ## Installation
+            
+            ```
+            pip install pyxDamerauLevenshtein
+            ```
+            
+            For more information, see the [README](https://github.com/lanl/pyxDamerauLevenshtein/blob/main/README.md).
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
