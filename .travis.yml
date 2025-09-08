@@ -8,6 +8,7 @@ python:
   - 3.11
   - 3.12
   - 3.13
+  - 3.14
 
 before_install:
   - pip install --upgrade pip setuptools wheel
