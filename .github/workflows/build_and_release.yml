@@ -18,11 +18,11 @@ jobs:
       github.event_name == 'workflow_dispatch'
     runs-on: ${{ matrix.buildplat[0] }}
     timeout-minutes: 50
-    strategy:
+    strategy: &build_wheels_strategy
       # Ensure that a wheel builder finishes even if another fails
       fail-fast: false
-      matrix: &build_wheels_matrix
-        # Github Actions doesn't support pairing matrix values together, let's improvise
+      matrix:
+        # GitHub Actions doesn't support pairing matrix values together, let's improvise
         buildplat:
         - [ubuntu-latest, manylinux_x86_64]
         - [ubuntu-latest, musllinux_x86_64]
@@ -144,6 +144,7 @@ jobs:
       url: https://pypi.org/p/pyxDamerauLevenshtein
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
+    strategy: *build_wheels_strategy
 
     steps:
     - name: Download the sdist
@@ -153,7 +154,6 @@ jobs:
         path: ./dist/*.tar.gz
     - name: Download the wheels
       uses: actions/download-artifact@v4
-      matrix: *build_wheels_matrix
       with:
         name: ${{ matrix.python }}-${{ startsWith(matrix.buildplat[1], 'macosx') && 'macosx' || matrix.buildplat[1] }}
         path: ./wheelhouse/*.whl
