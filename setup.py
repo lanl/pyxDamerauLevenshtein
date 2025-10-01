@@ -26,7 +26,7 @@ from Cython.Build import cythonize
 
 metadata = dict(
     name='pyxDamerauLevenshtein',
-    version='1.8.0',
+    version='1.9.0',
     description='pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit '
                 'distance algorithm for Python in Cython for high performance.',
     long_description='pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) '
