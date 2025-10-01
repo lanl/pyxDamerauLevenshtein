@@ -154,7 +154,7 @@ jobs:
         path: dist/
     - name: Download the wheels
       uses: actions/download-artifact@v4
-      :x
+      with:
         name: ${{ matrix.python }}-${{ startsWith(matrix.buildplat[1], 'macosx') && 'macosx' || matrix.buildplat[1] }}
         path: dist/
     - name: Publish distribution 📦 to PyPI
