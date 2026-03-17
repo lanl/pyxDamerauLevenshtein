@@ -169,9 +169,10 @@ class TestDamerauLevenshtien(unittest.TestCase):
         # distance within threshold returns exact normalized distance
         assert normalized_damerau_levenshtein_distance('smtih', 'smith', max_distance=0.5) == 0.20000000298023224
 
-        # distance exceeds threshold returns value > max_distance
-        assert normalized_damerau_levenshtein_distance('saturday', 'sunday', max_distance=0.2) > 0.2
-        assert normalized_damerau_levenshtein_distance('orange', 'pumpkin', max_distance=0.5) > 0.5
+        # distance exceeds threshold: n=8, int_max=1, raw returns 2, result=2/8=0.25
+        assert normalized_damerau_levenshtein_distance('saturday', 'sunday', max_distance=0.2) == 0.25
+        # distance exceeds threshold: n=7, int_max=3, raw returns 4, result=4/7
+        assert math.isclose(normalized_damerau_levenshtein_distance('orange', 'pumpkin', max_distance=0.5), 4.0 / 7.0, rel_tol=1e-05)
 
     def test_damerau_levenshtein_distance_seqs_max_distance(self):
         # distances within threshold return exact values; those exceeding return max_distance + 1
