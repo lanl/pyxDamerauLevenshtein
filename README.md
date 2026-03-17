@@ -30,17 +30,21 @@ Install from source:
 The following methods are available:
 
 * **Edit distance** (`damerau_levenshtein_distance`)
-    * Compute the raw distance between two strings (i.e., the minumum number of operations necessary to transform one string into the other).
-    * Additionally, the distance between lists and tuples can also be computed.
+    * Compute the raw distance between two sequences (i.e., the minimum number of operations necessary to transform one sequence into the other).
+    * Supports any sequence type: `str`, `list`, `tuple`, `range`, and more.
+    * Optionally accepts a `max_distance` integer threshold. If the true distance exceeds it, `max_distance + 1` is returned immediately, avoiding unnecessary computation.
 
 * **Normalized edit distance** (`normalized_damerau_levenshtein_distance`)
-    * Compute the ratio of the edit distance to the length of `max(string1, string2)`. 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher.ratio).
+    * Compute the ratio of the edit distance to the length of `max(seq1, seq2)`. 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher.ratio).
+    * Optionally accepts a `max_distance` float threshold. If the true normalized distance exceeds it, a value greater than `max_distance` is returned immediately.
 
 * **Edit distance against a sequence of sequences** (`damerau_levenshtein_distance_seqs`)
     * Compute the raw distances between a sequence and each sequence within another sequence (e.g., `list`, `tuple`).
+    * Optionally accepts a `max_distance` threshold forwarded to each individual computation.
 
 * **Normalized edit distance against a sequence of sequences** (`normalized_damerau_levenshtein_distance_seqs`)
     * Compute the normalized distances between a sequence and each sequence within another sequence (e.g., `list`, `tuple`).
+    * Optionally accepts a `max_distance` threshold forwarded to each individual computation.
 
 Basic use:
 
@@ -60,7 +64,7 @@ normalized_damerau_levenshtein_distance_seqs('test', array)  # expected result: 
 Other Python DL implementations:
 
 * [Michael Homer's native Python code](https://web.archive.org/web/20150909134357/http://mwh.geek.nz:80/2009/04/26/python-damerau-levenshtein-distance/)
-* [jellyfish](https://github.com/sunlightlabs/jellyfish)
+* [jellyfish](https://github.com/jamesturk/jellyfish)
 
 pyxDamerauLevenshtein differs from other Python implementations in that it is both fast via Cython *and* supports unicode. Michael Homer's implementation is fast for Python, but it is *two orders of magnitude* slower than this Cython implementation. jellyfish provides C implementations for a variety of string comparison metrics and is sometimes faster than pyxDamerauLevenshtein.
 
