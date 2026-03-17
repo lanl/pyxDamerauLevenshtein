@@ -1,6 +1,6 @@
 # pyxDamerauLevenshtein
 
-[![Build Status](https://app.travis-ci.com/lanl/pyxDamerauLevenshtein.svg?branch=master)](https://app.travis-ci.com/lanl/pyxDamerauLevenshtein)
+[![Test](https://github.com/lanl/pyxDamerauLevenshtein/actions/workflows/test.yml/badge.svg)](https://github.com/lanl/pyxDamerauLevenshtein/actions/workflows/test.yml)
 
 ## LICENSE
 This software is licensed under the [BSD 3-Clause License](http://opensource.org/licenses/BSD-3-Clause). Please refer to the separate [LICENSE](LICENSE) file for the exact text of the license. You are obligated to give attribution if you use this code.
