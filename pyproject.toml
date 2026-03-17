@@ -1,2 +1,45 @@
 [build-system]
 requires = ["setuptools>=40.8.0", "wheel>=0.33.1", "cython"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyxDamerauLevenshtein"
+version = "1.9.0"
+description = "pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance."
+readme = "README.md"
+license = { text = "BSD 3-Clause License" }
+authors = [
+    { name = "Geoffrey Fairchild", email = "mail@gfairchild.com" }
+]
+maintainers = [
+    { name = "Geoffrey Fairchild", email = "mail@gfairchild.com" }
+]
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Cython",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Text Processing :: Linguistic",
+]
+
+[project.urls]
+Homepage = "https://github.com/lanl/pyxDamerauLevenshtein"
+
+[tool.setuptools.packages.find]
+include = ["pyxdameraulevenshtein*"]
+
+[tool.setuptools.package-data]
+pyxdameraulevenshtein = ["*.pyi", "py.typed", "*.pyx"]
