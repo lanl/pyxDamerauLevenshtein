@@ -143,7 +143,6 @@ class TestDamerauLevenshtien(unittest.TestCase):
         # non-string sequences
         assert normalized_damerau_levenshtein_distance_seqs([1, 2, 3], [[1, 2, 3], [1, 3, 2]]) == [0.0, pytest.approx(1.0 / 3.0, rel=1e-5)]
 
-
     def test_damerau_levenshtein_distance_max_distance(self):
         # distance within threshold returns exact distance
         assert damerau_levenshtein_distance('smtih', 'smith', max_distance=2) == 1

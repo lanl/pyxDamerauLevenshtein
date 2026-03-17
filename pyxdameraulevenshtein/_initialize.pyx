@@ -26,7 +26,7 @@
 from libc.stdlib cimport calloc, free
 
 
-# these guys are used to index into storage inside damerau_levenshtein_distance()
+# row indices used to index into storage inside damerau_levenshtein_distance()
 cdef Py_ssize_t TWO_AGO = 0
 cdef Py_ssize_t ONE_AGO = 1
 cdef Py_ssize_t THIS_ROW = 2
@@ -74,7 +74,7 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
     if seq2 is None:
         return len(seq1)
 
-    # Fix bug where the second sequence is one shorter than the first (#22).
+    # ensure seq2 is the longer sequence to fix a bug with length-1 differences (#22)
     if len(seq2) < len(seq1):
         seq1, seq2 = seq2, seq1
 
@@ -94,12 +94,12 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
         raise MemoryError()
 
     try:
-        # initialize THIS_ROW
+        # THIS_ROW represents the cost of transforming an empty seq1 into each prefix of seq2 (pure insertions)
         for i in range(1, offset):
             storage[THIS_ROW * offset + (i - 1)] = i
 
         for i in range(len(seq1)):
-            # swap/initialize vectors
+            # rotate rows: THIS_ROW becomes ONE_AGO, ONE_AGO becomes TWO_AGO
             for j in range(offset):
                 storage[TWO_AGO * offset + j] = storage[ONE_AGO * offset + j]
                 storage[ONE_AGO * offset + j] = storage[THIS_ROW * offset + j]
@@ -107,7 +107,7 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
                 storage[THIS_ROW * offset + j] = 0
             storage[THIS_ROW * offset + len(seq2)] = i + 1
 
-            # now compute costs
+            # compute the cost of each edit operation and take the minimum
             for j in range(len(seq2)):
                 delete_cost = storage[ONE_AGO * offset + j] + 1
                 add_cost = storage[THIS_ROW * offset + (j - 1 if j > 0 else len(seq2))] + 1
@@ -161,7 +161,7 @@ cpdef float normalized_damerau_levenshtein_distance(seq1, seq2, max_distance=Non
         >>> normalized_damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4])
         1.0
         >>> normalized_damerau_levenshtein_distance('saturday', 'sunday', max_distance=0.2)
-        0.375
+        0.25
     """
     cdef unsigned long int_max_distance
     # prevent division by zero for empty inputs
@@ -184,9 +184,9 @@ cpdef list damerau_levenshtein_distance_seqs(seq, seqs, max_distance=None):
         If `max_distance` is provided, it is forwarded to each individual distance computation. See
         `damerau_levenshtein_distance` for details on its behavior.
 
-        Example:
+        Examples:
 
-        >>> damerau_levenshtein_distance_list('Sjöstedt', ['Sjöstedt', 'Sjostedt', 'Söstedt', 'Sjöedt'])
+        >>> damerau_levenshtein_distance_seqs('Sjöstedt', ['Sjöstedt', 'Sjostedt', 'Söstedt', 'Sjöedt'])
         [0, 1, 1, 2]
     """
     return [damerau_levenshtein_distance(seq, x, max_distance) for x in seqs]
@@ -204,7 +204,7 @@ cpdef list normalized_damerau_levenshtein_distance_seqs(seq, seqs, max_distance=
         If `max_distance` is provided, it is forwarded to each individual distance computation. See
         `normalized_damerau_levenshtein_distance` for details on its behavior.
 
-        Example:
+        Examples:
 
         >>> normalized_damerau_levenshtein_distance_seqs('Sjöstedt', ['Sjöstedt', 'Sjostedt', 'Söstedt', 'Sjöedt'])
         [0.0, 0.125, 0.125, 0.25]
