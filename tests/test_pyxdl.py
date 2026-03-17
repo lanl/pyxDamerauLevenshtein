@@ -144,5 +144,52 @@ class TestDamerauLevenshtien(unittest.TestCase):
         assert normalized_damerau_levenshtein_distance_seqs([1, 2, 3], [[1, 2, 3], [1, 3, 2]]) == [0.0, pytest.approx(1.0 / 3.0, rel=1e-5)]
 
 
+    def test_damerau_levenshtein_distance_max_distance(self):
+        # distance within threshold returns exact distance
+        assert damerau_levenshtein_distance('smtih', 'smith', max_distance=2) == 1
+        assert damerau_levenshtein_distance('saturday', 'sunday', max_distance=3) == 3
+
+        # distance at threshold returns exact distance
+        assert damerau_levenshtein_distance('smtih', 'smith', max_distance=1) == 1
+
+        # distance exceeds threshold returns max_distance + 1
+        assert damerau_levenshtein_distance('saturday', 'sunday', max_distance=2) == 3
+        assert damerau_levenshtein_distance('orange', 'pumpkin', max_distance=3) == 4
+
+        # max_distance=0 with identical sequences
+        assert damerau_levenshtein_distance('abc', 'abc', max_distance=0) == 0
+
+        # max_distance=0 with non-identical sequences
+        assert damerau_levenshtein_distance('abc', 'abd', max_distance=0) == 1
+
+        # non-string sequences
+        assert damerau_levenshtein_distance([1, 2, 3], [1, 3, 2], max_distance=1) == 1
+        assert damerau_levenshtein_distance([1, 2, 3], [1, 3, 2], max_distance=0) == 1
+
+    def test_normalized_damerau_levenshtein_distance_max_distance(self):
+        # distance within threshold returns exact normalized distance
+        assert normalized_damerau_levenshtein_distance('smtih', 'smith', max_distance=0.5) == 0.20000000298023224
+
+        # distance exceeds threshold returns value > max_distance
+        assert normalized_damerau_levenshtein_distance('saturday', 'sunday', max_distance=0.2) > 0.2
+        assert normalized_damerau_levenshtein_distance('orange', 'pumpkin', max_distance=0.5) > 0.5
+
+    def test_damerau_levenshtein_distance_seqs_max_distance(self):
+        # distances within threshold return exact values; those exceeding return max_distance + 1
+        # 'saturday' vs 'sunday'=3, 'monday'=5, 'saturday'=0
+        assert damerau_levenshtein_distance_seqs(
+            'Saturday', ['Sunday', 'Monday', 'Saturday'], max_distance=3
+        ) == [3, 4, 0]
+
+    def test_normalized_damerau_levenshtein_distance_seqs_max_distance(self):
+        # distance within threshold returns exact value; distance exceeding returns value > max_distance
+        results = normalized_damerau_levenshtein_distance_seqs(
+            'Saturday', ['Saturday', 'Sunday', 'Monday'], max_distance=0.2
+        )
+        assert results[0] == 0.0   # identical, within threshold
+        assert results[1] > 0.2   # exceeds threshold
+        assert results[2] > 0.2   # exceeds threshold
+
+
 if __name__ == '__main__':
     unittest.main()
