@@ -18,6 +18,8 @@ Rebuilding after changes to `_initialize.pyx` requires re-running `pip install .
 pytest tests/
 ```
 
+Coverage runs automatically via `pytest-cov`. Note that `_initialize.pyx` does not appear in coverage reports — `Cython.Coverage` is incompatible with coverage 7.x on Python 3.12+.
+
 ## Releasing
 
 Releases are triggered by pushing a tag (e.g. `1.10.0`). The **Publish** GitHub Actions workflow builds wheels for Linux/macOS/Windows across all supported Python versions, creates a GitHub release, and publishes to PyPI.
