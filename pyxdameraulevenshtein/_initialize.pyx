@@ -119,7 +119,7 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
                 # deal with transpositions
                 if i > 0 and j > 0 and seq1[i] == seq2[j - 1] and seq1[i - 1] == seq2[j] and seq1[i] != seq2[j]:
                     storage[THIS_ROW * offset + j] = min(storage[THIS_ROW * offset + j],
-                                                         storage[TWO_AGO * offset + j - 2 if j > 1 else seq2_len] + 1)
+                                                         storage[(TWO_AGO * offset + j - 2) if j > 1 else seq2_len] + 1)
 
             # early termination: if the minimum value in this row already exceeds max_distance,
             # the final distance will also exceed it
@@ -141,7 +141,7 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
         free(storage)
 
 
-cpdef float normalized_damerau_levenshtein_distance(seq1, seq2, max_distance=None):
+cpdef double normalized_damerau_levenshtein_distance(seq1, seq2, max_distance=None):
     """
         Return a real number between 0.0 and 1.0, indicating the edit distance as a fraction of the longer sequence.
         0.0 means that the sequences are identical, while 1.0 means they have nothing in common.

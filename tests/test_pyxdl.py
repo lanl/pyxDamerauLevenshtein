@@ -22,7 +22,6 @@
 """
 
 import unittest
-import math
 import pytest
 
 from pyxdameraulevenshtein import damerau_levenshtein_distance
@@ -88,16 +87,12 @@ class TestDamerauLevenshtein(unittest.TestCase):
             normalized_damerau_levenshtein_distance(None, None)
 
     def test_normalized_damerau_levenshtein_distance(self):
-        # note: the normalized functions use a 32-bit C float (cpdef float in Cython), not a Python float
-        # (64-bit). some expected values look unusual (e.g., 0.20000000298023224 instead of 0.2) due to
-        # IEEE 754 float32 representation — this is intentional and expected.
-
         # basic string examples
-        assert normalized_damerau_levenshtein_distance('smtih', 'smith') == 0.20000000298023224
-        assert normalized_damerau_levenshtein_distance('snapple', 'apple') == 0.2857142984867096
-        assert normalized_damerau_levenshtein_distance('testing', 'testtn') == 0.2857142984867096
+        assert normalized_damerau_levenshtein_distance('smtih', 'smith') == 0.2
+        assert normalized_damerau_levenshtein_distance('snapple', 'apple') == 2 / 7
+        assert normalized_damerau_levenshtein_distance('testing', 'testtn') == 2 / 7
         assert normalized_damerau_levenshtein_distance('saturday', 'sunday') == 0.375
-        assert normalized_damerau_levenshtein_distance('gifts', 'profit') == 0.8333333134651184
+        assert normalized_damerau_levenshtein_distance('gifts', 'profit') == 5 / 6
 
         # case sensitivity
         assert normalized_damerau_levenshtein_distance('Saturday', 'saturday') == 0.125
@@ -122,9 +117,9 @@ class TestDamerauLevenshtein(unittest.TestCase):
         assert normalized_damerau_levenshtein_distance('abc', '') == 1.0
 
         # non-string sequence types (list, range)
-        assert math.isclose(normalized_damerau_levenshtein_distance([1, 2, 3], [1, 3, 2]), 1.0 / 3.0, rel_tol=1e-05)
+        assert normalized_damerau_levenshtein_distance([1, 2, 3], [1, 3, 2]) == 1 / 3
         assert normalized_damerau_levenshtein_distance([], []) == 0.0
-        assert math.isclose(normalized_damerau_levenshtein_distance(range(10), range(1, 11)), 0.2, rel_tol=1e-05)
+        assert normalized_damerau_levenshtein_distance(range(10), range(1, 11)) == 0.2
         assert normalized_damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4]) == 1.0
 
     def test_damerau_levenshtein_distance_seqs(self):
@@ -148,7 +143,7 @@ class TestDamerauLevenshtein(unittest.TestCase):
         # basic string examples including identical match (0.0) at end
         assert normalized_damerau_levenshtein_distance_seqs(
             'Saturday', ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-        ) == [0.375, 0.625, 0.625, 0.6666666865348816, 0.5, 0.625, 0.0]
+        ) == [0.375, 0.625, 0.625, 2 / 3, 0.5, 0.625, 0.0]
 
         # unicode
         assert normalized_damerau_levenshtein_distance_seqs(
@@ -159,7 +154,7 @@ class TestDamerauLevenshtein(unittest.TestCase):
         assert normalized_damerau_levenshtein_distance_seqs('abc', []) == []
 
         # non-string sequences
-        assert normalized_damerau_levenshtein_distance_seqs([1, 2, 3], [[1, 2, 3], [1, 3, 2]]) == [0.0, pytest.approx(1.0 / 3.0, rel=1e-5)]
+        assert normalized_damerau_levenshtein_distance_seqs([1, 2, 3], [[1, 2, 3], [1, 3, 2]]) == [0.0, 1 / 3]
 
     def test_damerau_levenshtein_distance_max_distance(self):
         # distance within threshold returns exact distance
@@ -185,12 +180,12 @@ class TestDamerauLevenshtein(unittest.TestCase):
 
     def test_normalized_damerau_levenshtein_distance_max_distance(self):
         # distance within threshold returns exact normalized distance
-        assert normalized_damerau_levenshtein_distance('smtih', 'smith', max_distance=0.5) == 0.20000000298023224
+        assert normalized_damerau_levenshtein_distance('smtih', 'smith', max_distance=0.5) == 0.2
 
         # distance exceeds threshold: n=8, int_max=1, raw returns 2, result=2/8=0.25
         assert normalized_damerau_levenshtein_distance('saturday', 'sunday', max_distance=0.2) == 0.25
         # distance exceeds threshold: n=7, int_max=3, raw returns 4, result=4/7
-        assert math.isclose(normalized_damerau_levenshtein_distance('orange', 'pumpkin', max_distance=0.5), 4.0 / 7.0, rel_tol=1e-05)
+        assert normalized_damerau_levenshtein_distance('orange', 'pumpkin', max_distance=0.5) == 4 / 7
 
     def test_damerau_levenshtein_distance_seqs_max_distance(self):
         # distances within threshold return exact values; those exceeding return max_distance + 1
