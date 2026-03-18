@@ -2,7 +2,7 @@
 
 ## 1.10.0 (2026-03-17)
 * Add `max_distance` parameter to all four functions. When provided, computation terminates early and `max_distance + 1` (or a value greater than `max_distance` for normalized functions) is returned if the true distance exceeds the threshold. Closes #16.
-* **Breaking change**: normalized distance functions now return a 64-bit `float` (Python's native `float`) instead of a 32-bit C float. Return values are now more precise (e.g., `0.2` instead of `0.20000000298023224`).
+* **Note**: normalized distance functions now return a 64-bit `float` (Python's native `float`) instead of a 32-bit C float. Return values are now more precise (e.g., `0.2` instead of `0.20000000298023224`). Code that relies on exact float32 values may need to be updated.
 * Raise `TypeError` with a clear message when `None` is passed as an input sequence, rather than a generic Python error.
 * Update type stubs (`__init__.pyi`) with modern typing syntax and `max_distance` parameters.
 * Migrate CI from Travis CI to GitHub Actions.
