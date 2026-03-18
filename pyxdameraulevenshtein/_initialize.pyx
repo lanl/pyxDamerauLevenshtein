@@ -73,8 +73,9 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
           seq1[first_differing_index] == seq2[first_differing_index]:
         first_differing_index += 1
 
-    seq1 = seq1[first_differing_index:]
-    seq2 = seq2[first_differing_index:]
+    if first_differing_index > 0:
+        seq1 = seq1[first_differing_index:]
+        seq2 = seq2[first_differing_index:]
 
     # ensure seq2 is the longer sequence to fix a bug with length-1 differences (#22)
     if len(seq2) < len(seq1):
