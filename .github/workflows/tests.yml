@@ -34,7 +34,7 @@ jobs:
           pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
           pip install -r dev-requirements.txt
-          pip install .
+          CYTHON_TRACE=1 pip install .
 
       - name: Run tests
         run: pytest tests/
