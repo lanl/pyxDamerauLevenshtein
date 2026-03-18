@@ -78,12 +78,11 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
     if len(seq2) < len(seq1):
         seq1, seq2 = seq2, seq1
 
-    # Py_ssize_t should be used wherever we're dealing with an array index or length
     cdef Py_ssize_t i, j, k
     cdef Py_ssize_t seq1_len = len(seq1)
     cdef Py_ssize_t seq2_len = len(seq2)
     cdef Py_ssize_t offset = seq2_len + 1
-    cdef unsigned long delete_cost, add_cost, subtract_cost, edit_distance
+    cdef unsigned long delete_cost, add_cost, substitution_cost, edit_distance
     cdef bint has_max_distance = max_distance is not None
     cdef unsigned long _max_distance = 0, row_min
 
@@ -113,8 +112,8 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
             for j in range(seq2_len):
                 delete_cost = storage[ONE_AGO * offset + j] + 1
                 add_cost = storage[THIS_ROW * offset + (j - 1 if j > 0 else seq2_len)] + 1
-                subtract_cost = storage[ONE_AGO * offset + (j - 1 if j > 0 else seq2_len)] + (seq1[i] != seq2[j])
-                storage[THIS_ROW * offset + j] = min(delete_cost, add_cost, subtract_cost)
+                substitution_cost = storage[ONE_AGO * offset + (j - 1 if j > 0 else seq2_len)] + (seq1[i] != seq2[j])
+                storage[THIS_ROW * offset + j] = min(delete_cost, add_cost, substitution_cost)
                 # deal with transpositions
                 if i > 0 and j > 0 and seq1[i] == seq2[j - 1] and seq1[i - 1] == seq2[j] and seq1[i] != seq2[j]:
                     storage[THIS_ROW * offset + j] = min(storage[THIS_ROW * offset + j],
@@ -166,6 +165,11 @@ cpdef float normalized_damerau_levenshtein_distance(seq1, seq2, max_distance=Non
         >>> normalized_damerau_levenshtein_distance('saturday', 'sunday', max_distance=0.2)
         0.25
     """
+    if seq1 is None:
+        raise TypeError('seq1 must be a sequence, got None')
+    if seq2 is None:
+        raise TypeError('seq2 must be a sequence, got None')
+
     cdef unsigned long int_max_distance
     # prevent division by zero for empty inputs
     cdef Py_ssize_t n = max(len(seq1), len(seq2))

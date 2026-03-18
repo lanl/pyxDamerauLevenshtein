@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     Copyright (c) 2013, Triad National Security, LLC
     All rights reserved.
@@ -33,7 +31,7 @@ from pyxdameraulevenshtein import normalized_damerau_levenshtein_distance
 from pyxdameraulevenshtein import normalized_damerau_levenshtein_distance_seqs
 
 
-class TestDamerauLevenshtien(unittest.TestCase):
+class TestDamerauLevenshtein(unittest.TestCase):
     def test_damerau_levenshtein_distance(self):
         # basic string examples
         assert damerau_levenshtein_distance('smtih', 'smith') == 1
@@ -80,6 +78,14 @@ class TestDamerauLevenshtien(unittest.TestCase):
             damerau_levenshtein_distance('abc', None)
         with pytest.raises(TypeError):
             damerau_levenshtein_distance(None, None)
+
+    def test_normalized_damerau_levenshtein_distance_none_inputs(self):
+        with pytest.raises(TypeError):
+            normalized_damerau_levenshtein_distance(None, 'abc')
+        with pytest.raises(TypeError):
+            normalized_damerau_levenshtein_distance('abc', None)
+        with pytest.raises(TypeError):
+            normalized_damerau_levenshtein_distance(None, None)
 
     def test_normalized_damerau_levenshtein_distance(self):
         # note: the normalized functions use a 32-bit C float (cpdef float in Cython), not a Python float
