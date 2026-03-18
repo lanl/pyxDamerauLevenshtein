@@ -73,6 +73,14 @@ class TestDamerauLevenshtien(unittest.TestCase):
         assert damerau_levenshtein_distance(range(10), range(1, 11)) == 2
         assert damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4]) == 7
 
+    def test_damerau_levenshtein_distance_none_inputs(self):
+        with pytest.raises(TypeError):
+            damerau_levenshtein_distance(None, 'abc')
+        with pytest.raises(TypeError):
+            damerau_levenshtein_distance('abc', None)
+        with pytest.raises(TypeError):
+            damerau_levenshtein_distance(None, None)
+
     def test_normalized_damerau_levenshtein_distance(self):
         # note: the normalized functions use a 32-bit C float (cpdef float in Cython), not a Python float
         # (64-bit). some expected values look unusual (e.g., 0.20000000298023224 instead of 0.2) due to

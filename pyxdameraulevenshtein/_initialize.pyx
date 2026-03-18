@@ -59,6 +59,11 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
         >>> damerau_levenshtein_distance('saturday', 'sunday', max_distance=2)
         3
     """
+    if seq1 is None:
+        raise TypeError('seq1 must be a sequence, got None')
+    if seq2 is None:
+        raise TypeError('seq2 must be a sequence, got None')
+
     # possible short-circuit if sequences have a lot in common at the beginning (or are identical)
     cdef Py_ssize_t first_differing_index = 0
     while first_differing_index < len(seq1) and \
