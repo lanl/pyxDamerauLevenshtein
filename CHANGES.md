@@ -1,5 +1,15 @@
 # Changes
 
+## 1.10.0 (2026-03-17)
+* Add `max_distance` parameter to all four functions. When provided, computation terminates early and `max_distance + 1` (or a value greater than `max_distance` for normalized functions) is returned if the true distance exceeds the threshold. Closes #16.
+* **Breaking change**: normalized distance functions now return a 64-bit `float` (Python's native `float`) instead of a 32-bit C float. Return values are now more precise (e.g., `0.2` instead of `0.20000000298023224`).
+* Raise `TypeError` with a clear message when `None` is passed as an input sequence, rather than a generic Python error.
+* Add `py.typed` marker for PEP 561 compliance, enabling type checking for downstream users.
+* Update type stubs (`__init__.pyi`) with modern typing syntax and `max_distance` parameters.
+* Migrate CI from Travis CI to GitHub Actions.
+* Modernize `pyproject.toml` with full PEP 621 metadata.
+* Add Python 3.14 support.
+
 ## 1.9.0 (2025-07-29)
 * Add Python wheel support (#8). (courtesy @jianlins)
 * Drop Python 3.8 support.
