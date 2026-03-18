@@ -54,6 +54,9 @@ class TestDamerauLevenshtein(unittest.TestCase):
         # identical non-empty sequences
         assert damerau_levenshtein_distance('abc', 'abc') == 0
 
+        # both empty sequences
+        assert damerau_levenshtein_distance('', '') == 0
+
         # one empty, one non-empty (both argument orderings)
         assert damerau_levenshtein_distance('', 'abc') == 3
         assert damerau_levenshtein_distance('abc', '') == 3
@@ -61,6 +64,9 @@ class TestDamerauLevenshtein(unittest.TestCase):
         # commutativity
         assert damerau_levenshtein_distance('saturday', 'sunday') == damerau_levenshtein_distance('sunday', 'saturday')
         assert damerau_levenshtein_distance('smtih', 'smith') == damerau_levenshtein_distance('smith', 'smtih')
+
+        # transposition at the start of the sequence (exercises i=1, j=1 boundary in transposition check)
+        assert damerau_levenshtein_distance('ba', 'ab') == 1
 
         # non-string sequence types (list, tuple, mixed, range)
         assert damerau_levenshtein_distance([1, 2, 3], [1, 3, 2]) == 1
@@ -85,6 +91,18 @@ class TestDamerauLevenshtein(unittest.TestCase):
             normalized_damerau_levenshtein_distance('abc', None)
         with pytest.raises(TypeError):
             normalized_damerau_levenshtein_distance(None, None)
+
+    def test_damerau_levenshtein_distance_seqs_none_inputs(self):
+        with pytest.raises(TypeError):
+            damerau_levenshtein_distance_seqs(None, ['abc'])
+        with pytest.raises(TypeError):
+            damerau_levenshtein_distance_seqs('abc', None)
+
+    def test_normalized_damerau_levenshtein_distance_seqs_none_inputs(self):
+        with pytest.raises(TypeError):
+            normalized_damerau_levenshtein_distance_seqs(None, ['abc'])
+        with pytest.raises(TypeError):
+            normalized_damerau_levenshtein_distance_seqs('abc', None)
 
     def test_normalized_damerau_levenshtein_distance(self):
         # basic string examples
@@ -195,13 +213,11 @@ class TestDamerauLevenshtein(unittest.TestCase):
         ) == [3, 4, 0]
 
     def test_normalized_damerau_levenshtein_distance_seqs_max_distance(self):
-        # distance within threshold returns exact value; distance exceeding returns value > max_distance
-        results = normalized_damerau_levenshtein_distance_seqs(
+        # 'Saturday' vs 'Saturday': exact distance 0.0, within threshold
+        # 'Saturday' vs 'Sunday'/'Monday': n=8, int_max=1, raw returns 2, result=2/8=0.25, exceeds threshold
+        assert normalized_damerau_levenshtein_distance_seqs(
             'Saturday', ['Saturday', 'Sunday', 'Monday'], max_distance=0.2
-        )
-        assert results[0] == 0.0   # identical, within threshold
-        assert results[1] > 0.2   # exceeds threshold
-        assert results[2] > 0.2   # exceeds threshold
+        ) == [0.0, 0.25, 0.25]
 
 
 if __name__ == '__main__':
