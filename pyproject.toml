@@ -43,6 +43,7 @@ addopts = "--cov=pyxdameraulevenshtein --cov-report=term-missing"
 
 [tool.coverage.run]
 plugins = ["Cython.Coverage"]
+core = "pytrace"
 
 [tool.setuptools.packages.find]
 include = ["pyxdameraulevenshtein*"]
