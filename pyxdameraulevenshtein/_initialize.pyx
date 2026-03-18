@@ -57,7 +57,7 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
         >>> damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4])
         7
         >>> damerau_levenshtein_distance('saturday', 'sunday', max_distance=2)
-        3  # max_distance + 1, indicating the true distance exceeds 2
+        3
     """
     if seq1 is None:
         raise TypeError('seq1 must be a sequence, got None')
@@ -99,7 +99,7 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
     try:
         # THIS_ROW represents the cost of transforming an empty seq1 into each prefix of seq2 (pure insertions)
         for i in range(1, offset):
-            storage[THIS_ROW * offset + (i - 1)] = i
+            storage[THIS_ROW * offset + i - 1] = i
 
         for i in range(seq1_len):
             # rotate rows: THIS_ROW becomes ONE_AGO, ONE_AGO becomes TWO_AGO

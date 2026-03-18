@@ -24,10 +24,12 @@
 import unittest
 import pytest
 
-from pyxdameraulevenshtein import damerau_levenshtein_distance
-from pyxdameraulevenshtein import damerau_levenshtein_distance_seqs
-from pyxdameraulevenshtein import normalized_damerau_levenshtein_distance
-from pyxdameraulevenshtein import normalized_damerau_levenshtein_distance_seqs
+from pyxdameraulevenshtein import (
+    damerau_levenshtein_distance,
+    damerau_levenshtein_distance_seqs,
+    normalized_damerau_levenshtein_distance,
+    normalized_damerau_levenshtein_distance_seqs,
+)
 
 
 class TestDamerauLevenshtein(unittest.TestCase):
@@ -207,7 +209,7 @@ class TestDamerauLevenshtein(unittest.TestCase):
 
     def test_damerau_levenshtein_distance_seqs_max_distance(self):
         # distances within threshold return exact values; those exceeding return max_distance + 1
-        # 'saturday' vs 'sunday'=3, 'monday'=5, 'saturday'=0
+        # 'Saturday' vs 'Sunday'=3, 'Monday'=5, 'Saturday'=0
         assert damerau_levenshtein_distance_seqs(
             'Saturday', ['Sunday', 'Monday', 'Saturday'], max_distance=3
         ) == [3, 4, 0]
