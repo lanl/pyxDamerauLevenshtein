@@ -1,5 +1,4 @@
 # cython: language_level=3
-# cython: linetrace=True
 
 """
     Copyright (c) 2013, Triad National Security, LLC

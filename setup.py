@@ -21,20 +21,9 @@
     OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-import os
-
-from setuptools import Extension, setup
+from setuptools import setup
 from Cython.Build import cythonize
 
-linetrace = os.environ.get("CYTHON_TRACE", "0") == "1"
-
 setup(
-    ext_modules=cythonize(
-        Extension(
-            "pyxdameraulevenshtein._initialize",
-            sources=["pyxdameraulevenshtein/_initialize.pyx"],
-            define_macros=[("CYTHON_TRACE", "1")] if linetrace else [],
-        ),
-        compiler_directives={"linetrace": linetrace},
-    ),
+    ext_modules=cythonize("pyxdameraulevenshtein/_initialize.pyx"),
 )
