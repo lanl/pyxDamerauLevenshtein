@@ -148,7 +148,8 @@ cpdef float normalized_damerau_levenshtein_distance(seq1, seq2, max_distance=Non
 
         If `max_distance` is provided and the true normalized distance exceeds it, a value greater than `max_distance`
         is returned immediately. This enables early termination and avoids computing the full distance when only a
-        threshold check is needed.
+        threshold check is needed. `max_distance` is a float (e.g., 0.3) to match the normalized return value;
+        it is converted to an integer threshold internally before being passed to the underlying distance computation.
 
         Examples:
 
@@ -202,7 +203,8 @@ cpdef list normalized_damerau_levenshtein_distance_seqs(seq, seqs, max_distance=
         a data structure like a `set` because order is not guaranteed.
 
         If `max_distance` is provided, it is forwarded to each individual distance computation. See
-        `normalized_damerau_levenshtein_distance` for details on its behavior.
+        `normalized_damerau_levenshtein_distance` for details on its behavior, including why `max_distance`
+        is a float.
 
         Examples:
 
