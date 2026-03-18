@@ -54,6 +54,10 @@ damerau_levenshtein_distance('smtih', 'smith')  # expected result: 1
 normalized_damerau_levenshtein_distance('smtih', 'smith')  # expected result: 0.2
 damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4])  # expected result: 7
 
+# max_distance short-circuits when the true distance exceeds the threshold
+damerau_levenshtein_distance('saturday', 'sunday', max_distance=2)  # expected result: 3 (max_distance + 1)
+normalized_damerau_levenshtein_distance('smtih', 'smith', max_distance=0.5)  # expected result: 0.2 (within threshold)
+
 from pyxdameraulevenshtein import damerau_levenshtein_distance_seqs, normalized_damerau_levenshtein_distance_seqs
 array = ['test1', 'test12', 'test123']
 damerau_levenshtein_distance_seqs('test', array)  # expected result: [1, 2, 3]
