@@ -66,8 +66,10 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
 
     # possible short-circuit if sequences have a lot in common at the beginning (or are identical)
     cdef Py_ssize_t first_differing_index = 0
-    while first_differing_index < len(seq1) and \
-          first_differing_index < len(seq2) and \
+    cdef Py_ssize_t seq1_len_orig = len(seq1)
+    cdef Py_ssize_t seq2_len_orig = len(seq2)
+    while first_differing_index < seq1_len_orig and \
+          first_differing_index < seq2_len_orig and \
           seq1[first_differing_index] == seq2[first_differing_index]:
         first_differing_index += 1
 
