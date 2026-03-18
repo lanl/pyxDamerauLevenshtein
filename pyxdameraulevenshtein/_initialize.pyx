@@ -69,18 +69,15 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
     seq1 = seq1[first_differing_index:]
     seq2 = seq2[first_differing_index:]
 
-    if seq1 is None:
-        return len(seq2)
-    if seq2 is None:
-        return len(seq1)
-
     # ensure seq2 is the longer sequence to fix a bug with length-1 differences (#22)
     if len(seq2) < len(seq1):
         seq1, seq2 = seq2, seq1
 
     # Py_ssize_t should be used wherever we're dealing with an array index or length
     cdef Py_ssize_t i, j, k
-    cdef Py_ssize_t offset = len(seq2) + 1
+    cdef Py_ssize_t seq1_len = len(seq1)
+    cdef Py_ssize_t seq2_len = len(seq2)
+    cdef Py_ssize_t offset = seq2_len + 1
     cdef unsigned long delete_cost, add_cost, subtract_cost, edit_distance
     cdef bint has_max_distance = max_distance is not None
     cdef unsigned long _max_distance = 0, row_min
@@ -98,38 +95,38 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
         for i in range(1, offset):
             storage[THIS_ROW * offset + (i - 1)] = i
 
-        for i in range(len(seq1)):
+        for i in range(seq1_len):
             # rotate rows: THIS_ROW becomes ONE_AGO, ONE_AGO becomes TWO_AGO
             for j in range(offset):
                 storage[TWO_AGO * offset + j] = storage[ONE_AGO * offset + j]
                 storage[ONE_AGO * offset + j] = storage[THIS_ROW * offset + j]
-            for j in range(len(seq2)):
+            for j in range(seq2_len):
                 storage[THIS_ROW * offset + j] = 0
-            storage[THIS_ROW * offset + len(seq2)] = i + 1
+            storage[THIS_ROW * offset + seq2_len] = i + 1
 
             # compute the cost of each edit operation and take the minimum
-            for j in range(len(seq2)):
+            for j in range(seq2_len):
                 delete_cost = storage[ONE_AGO * offset + j] + 1
-                add_cost = storage[THIS_ROW * offset + (j - 1 if j > 0 else len(seq2))] + 1
-                subtract_cost = storage[ONE_AGO * offset + (j - 1 if j > 0 else len(seq2))] + (seq1[i] != seq2[j])
+                add_cost = storage[THIS_ROW * offset + (j - 1 if j > 0 else seq2_len)] + 1
+                subtract_cost = storage[ONE_AGO * offset + (j - 1 if j > 0 else seq2_len)] + (seq1[i] != seq2[j])
                 storage[THIS_ROW * offset + j] = min(delete_cost, add_cost, subtract_cost)
                 # deal with transpositions
                 if i > 0 and j > 0 and seq1[i] == seq2[j - 1] and seq1[i - 1] == seq2[j] and seq1[i] != seq2[j]:
                     storage[THIS_ROW * offset + j] = min(storage[THIS_ROW * offset + j],
-                                                         storage[TWO_AGO * offset + j - 2 if j > 1 else len(seq2)] + 1)
+                                                         storage[TWO_AGO * offset + j - 2 if j > 1 else seq2_len] + 1)
 
             # early termination: if the minimum value in this row already exceeds max_distance,
             # the final distance will also exceed it
             if has_max_distance:
-                row_min = storage[THIS_ROW * offset + 0]
-                for k in range(1, len(seq2)):
+                row_min = storage[THIS_ROW * offset]
+                for k in range(1, seq2_len):
                     if storage[THIS_ROW * offset + k] < row_min:
                         row_min = storage[THIS_ROW * offset + k]
                 if row_min > _max_distance:
                     return _max_distance + 1
 
         # compute and return the final edit distance
-        edit_distance = storage[THIS_ROW * offset + (len(seq2) - 1)]
+        edit_distance = storage[THIS_ROW * offset + (seq2_len - 1)]
         if has_max_distance and edit_distance > _max_distance:
             return _max_distance + 1
         return edit_distance
@@ -166,11 +163,12 @@ cpdef float normalized_damerau_levenshtein_distance(seq1, seq2, max_distance=Non
     """
     cdef unsigned long int_max_distance
     # prevent division by zero for empty inputs
-    n = max(len(seq1), len(seq2))
+    cdef Py_ssize_t n = max(len(seq1), len(seq2))
+    cdef Py_ssize_t divisor = max(n, 1)
     if max_distance is not None:
-        int_max_distance = <unsigned long>(max_distance * max(n, 1))
-        return float(damerau_levenshtein_distance(seq1, seq2, int_max_distance)) / max(n, 1)
-    return float(damerau_levenshtein_distance(seq1, seq2)) / max(n, 1)
+        int_max_distance = <unsigned long>(max_distance * divisor)
+        return float(damerau_levenshtein_distance(seq1, seq2, int_max_distance)) / divisor
+    return float(damerau_levenshtein_distance(seq1, seq2)) / divisor
 
 
 cpdef list damerau_levenshtein_distance_seqs(seq, seqs, max_distance=None):
