@@ -1,11 +1,8 @@
 name: Publish
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Release version (e.g., 1.8.0)'
-        required: true
-        default: ''
+  push:
+    tags:
+      - '*'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -17,8 +14,6 @@ permissions:
 jobs:
   build_wheels:
     name: Build wheel for ${{ matrix.python }}-${{ matrix.buildplat[1] }}
-    if: >-
-      github.event_name == 'workflow_dispatch'
     runs-on: ${{ matrix.buildplat[0] }}
     timeout-minutes: 50
     strategy: &build_wheels_strategy
@@ -109,13 +104,13 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.event.inputs.version }}
-          name: pyxDamerauLevenshtein ${{ github.event.inputs.version }}
+          tag_name: ${{ github.ref_name }}
+          name: pyxDamerauLevenshtein ${{ github.ref_name }}
           draft: false
           prerelease: false
           files: release_files/*
           body: |
-            # pyxDamerauLevenshtein ${{ github.event.inputs.version }}
+            # pyxDamerauLevenshtein ${{ github.ref_name }}
             
             This release includes built wheels for Python 3.9, 3.10, 3.11, 3.12, 3.13, and 3.14 on the following platforms:
             - Linux (manylinux, musllinux)
