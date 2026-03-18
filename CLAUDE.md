@@ -20,4 +20,4 @@ pytest tests/
 
 ## Releasing
 
-Releases are triggered manually via the **Build_and_Release** GitHub Actions workflow. Provide the version number (e.g. `1.10.0`) as input. The workflow builds wheels for Linux/macOS/Windows across all supported Python versions, creates a GitHub release, and publishes to PyPI.
+Releases are triggered manually via the **Publish** GitHub Actions workflow. Provide the version number (e.g. `1.10.0`) as input. The workflow builds wheels for Linux/macOS/Windows across all supported Python versions, creates a GitHub release, and publishes to PyPI.
