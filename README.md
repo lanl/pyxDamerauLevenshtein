@@ -62,20 +62,6 @@ Other Python DL implementations:
 
 * [Michael Homer's native Python code](https://web.archive.org/web/20150909134357/http://mwh.geek.nz:80/2009/04/26/python-damerau-levenshtein-distance/)
 * [jellyfish](https://github.com/jamesturk/jellyfish)
+* [RapidFuzz](https://github.com/rapidfuzz/RapidFuzz)
 
-pyxDamerauLevenshtein differs from other Python implementations in that it is both fast via Cython *and* supports unicode. Michael Homer's implementation is fast for Python, but it is *two orders of magnitude* slower than this Cython implementation. jellyfish provides C implementations for a variety of string comparison metrics and is sometimes faster than pyxDamerauLevenshtein.
-
-Python's built-in [`difflib.SequenceMatcher.ratio()`](https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher.ratio) performs about an order of magnitude faster than Michael Homer's implementation but is still one order of magnitude slower than this DL implementation. difflib, however, uses a different algorithm (difflib uses the [Ratcliff/Obershelp algorithm](http://www.drdobbs.com/database/pattern-matching-the-gestalt-approach/184407970)).
-
-Performance differences (on Intel i7-2600 running at 3.4Ghz):
-
-    >>> import timeit
-    >>> #this implementation:
-    ... timeit.timeit("damerau_levenshtein_distance('e0zdvfb840174ut74j2v7gabx1 5bs', 'qpk5vei 4tzo0bglx8rl7e 2h4uei7')", 'from pyxdameraulevenshtein import damerau_levenshtein_distance', number=500000)
-    7.417556047439575
-    >>> #Michael Homer's native Python implementation:
-    ... timeit.timeit("dameraulevenshtein('e0zdvfb840174ut74j2v7gabx1 5bs', 'qpk5vei 4tzo0bglx8rl7e 2h4uei7')", 'from dameraulevenshtein import dameraulevenshtein', number=500000)
-    667.0276439189911
-    >>> #difflib
-    ... timeit.timeit("difflib.SequenceMatcher(None, 'e0zdvfb840174ut74j2v7gabx1 5bs', 'qpk5vei 4tzo0bglx8rl7e 2h4uei7').ratio()", 'import difflib', number=500000)
-    135.41051697731018
+When pyxDamerauLevenshtein was initially released in 2013, it was the fastest DL implementation available for Python and the only one with unicode support, and it remained the fastest for many years. Since then, libraries like [RapidFuzz](https://github.com/rapidfuzz/RapidFuzz) have eclipsed it in performance. pyxDamerauLevenshtein still offers respectable performance via Cython and is a solid choice if absolute maximum speed is not a requirement.
