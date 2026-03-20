@@ -64,4 +64,4 @@ Other Python DL implementations:
 * [jellyfish](https://github.com/jamesturk/jellyfish)
 * [RapidFuzz](https://github.com/rapidfuzz/RapidFuzz)
 
-When pyxDamerauLevenshtein was initially released in 2013, it was the fastest DL implementation available for Python and the only one with unicode support, and it remained the fastest for many years. Since then, libraries like [RapidFuzz](https://github.com/rapidfuzz/RapidFuzz) have eclipsed it in performance. pyxDamerauLevenshtein still offers respectable performance via Cython and is a solid choice if absolute maximum speed is not a requirement.
+When pyxDamerauLevenshtein was initially released in 2013, it was the fastest DL implementation available for Python and the only one with unicode support, and it remained that way for many years. Since then, libraries like [RapidFuzz](https://github.com/rapidfuzz/RapidFuzz) have eclipsed it in performance. pyxDamerauLevenshtein still offers respectable performance via Cython and is a solid choice if absolute maximum speed is not a requirement.
