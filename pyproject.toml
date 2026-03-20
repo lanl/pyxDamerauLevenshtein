@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyxDamerauLevenshtein"
-version = "1.10.0"
+version = "1.10.1"
 description = "pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algorithm for Python in Cython for high performance."
 readme = "README.md"
 license = { text = "BSD 3-Clause License" }
