@@ -142,18 +142,13 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
         free(storage)
 
 
-cpdef double normalized_damerau_levenshtein_distance(seq1, seq2, max_distance=None):
+cpdef double normalized_damerau_levenshtein_distance(seq1, seq2):
     """
         Return a real number between 0.0 and 1.0, indicating the edit distance as a fraction of the longer sequence.
         0.0 means that the sequences are identical, while 1.0 means they have nothing in common.
 
         Note that this definition is the exact opposite of `difflib.SequenceMatcher.ratio()`. `difflib` outputs 1.0
         for identical sequences and 0.0 for unlike sequences.
-
-        If `max_distance` is provided and the true normalized distance exceeds it, a value greater than `max_distance`
-        is returned immediately. This enables early termination and avoids computing the full distance when only a
-        threshold check is needed. `max_distance` is a float (e.g., 0.3) to match the normalized return value;
-        it is converted to an integer threshold internally before being passed to the underlying distance computation.
 
         Examples:
 
@@ -165,21 +160,15 @@ cpdef double normalized_damerau_levenshtein_distance(seq1, seq2, max_distance=No
         1.0
         >>> normalized_damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4])
         1.0
-        >>> normalized_damerau_levenshtein_distance('saturday', 'sunday', max_distance=0.2)
-        0.25
     """
     if seq1 is None:
         raise TypeError('seq1 must be a sequence, got None')
     if seq2 is None:
         raise TypeError('seq2 must be a sequence, got None')
 
-    cdef unsigned long int_max_distance
     # prevent division by zero for empty inputs
     cdef Py_ssize_t n = max(len(seq1), len(seq2))
     cdef Py_ssize_t divisor = max(n, 1)
-    if max_distance is not None:
-        int_max_distance = <unsigned long>(max_distance * divisor)
-        return float(damerau_levenshtein_distance(seq1, seq2, int_max_distance)) / divisor
     return float(damerau_levenshtein_distance(seq1, seq2)) / divisor
 
 
@@ -203,7 +192,7 @@ cpdef list damerau_levenshtein_distance_seqs(seq, seqs, max_distance=None):
     return [damerau_levenshtein_distance(seq, x, max_distance) for x in seqs]
 
 
-cpdef list normalized_damerau_levenshtein_distance_seqs(seq, seqs, max_distance=None):
+cpdef list normalized_damerau_levenshtein_distance_seqs(seq, seqs):
     """
         For each sequence in `seqs`, compute the normalized DL distance between it and `seq`. A list of normalized
         distances will be returned, one for each element in `seqs`.
@@ -212,13 +201,9 @@ cpdef list normalized_damerau_levenshtein_distance_seqs(seq, seqs, max_distance=
         index of the element we encounter as we iterate through `seqs`, `seqs` must be ordered. That is, do not use
         a data structure like a `set` because order is not guaranteed.
 
-        If `max_distance` is provided, it is forwarded to each individual distance computation. See
-        `normalized_damerau_levenshtein_distance` for details on its behavior, including why `max_distance`
-        is a float.
-
         Examples:
 
         >>> normalized_damerau_levenshtein_distance_seqs('Sjöstedt', ['Sjöstedt', 'Sjostedt', 'Söstedt', 'Sjöedt'])
         [0.0, 0.125, 0.125, 0.25]
     """
-    return [normalized_damerau_levenshtein_distance(seq, x, max_distance) for x in seqs]
+    return [normalized_damerau_levenshtein_distance(seq, x) for x in seqs]

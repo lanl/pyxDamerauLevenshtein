@@ -198,15 +198,6 @@ class TestDamerauLevenshtein(unittest.TestCase):
         assert damerau_levenshtein_distance([1, 2, 3], [1, 3, 2], max_distance=1) == 1
         assert damerau_levenshtein_distance([1, 2, 3], [1, 3, 2], max_distance=0) == 1
 
-    def test_normalized_damerau_levenshtein_distance_max_distance(self):
-        # distance within threshold returns exact normalized distance
-        assert normalized_damerau_levenshtein_distance('smtih', 'smith', max_distance=0.5) == 0.2
-
-        # distance exceeds threshold: n=8, int_max=1, raw returns 2, result=2/8=0.25
-        assert normalized_damerau_levenshtein_distance('saturday', 'sunday', max_distance=0.2) == 0.25
-        # distance exceeds threshold: n=7, int_max=3, raw returns 4, result=4/7
-        assert normalized_damerau_levenshtein_distance('orange', 'pumpkin', max_distance=0.5) == 4 / 7
-
     def test_damerau_levenshtein_distance_seqs_max_distance(self):
         # distances within threshold return exact values; those exceeding return max_distance + 1
         # 'Saturday' vs 'Sunday'=3, 'Monday'=5, 'Saturday'=0
@@ -214,12 +205,6 @@ class TestDamerauLevenshtein(unittest.TestCase):
             'Saturday', ['Sunday', 'Monday', 'Saturday'], max_distance=3
         ) == [3, 4, 0]
 
-    def test_normalized_damerau_levenshtein_distance_seqs_max_distance(self):
-        # 'Saturday' vs 'Saturday': exact distance 0.0, within threshold
-        # 'Saturday' vs 'Sunday'/'Monday': n=8, int_max=1, raw returns 2, result=2/8=0.25, exceeds threshold
-        assert normalized_damerau_levenshtein_distance_seqs(
-            'Saturday', ['Saturday', 'Sunday', 'Monday'], max_distance=0.2
-        ) == [0.0, 0.25, 0.25]
 
 
 if __name__ == '__main__':

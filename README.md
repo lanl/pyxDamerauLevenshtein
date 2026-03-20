@@ -22,10 +22,6 @@ Install using [pip](https://pypi.org/project/pip/):
 
     pip install pyxDamerauLevenshtein
 
-Install from source:
-
-    pip install .
-
 ## USING THIS CODE
 The following methods are available:
 
@@ -36,7 +32,6 @@ The following methods are available:
 
 * **Normalized edit distance** (`normalized_damerau_levenshtein_distance`)
     * Compute the ratio of the edit distance to the length of `max(seq1, seq2)`. 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher.ratio).
-    * Optionally accepts a `max_distance` float threshold. If the true normalized distance exceeds it, a value greater than `max_distance` is returned immediately.
 
 * **Edit distance against a sequence of sequences** (`damerau_levenshtein_distance_seqs`)
     * Compute the raw distances between a sequence and each sequence within another sequence (e.g., `list`, `tuple`).
@@ -44,7 +39,6 @@ The following methods are available:
 
 * **Normalized edit distance against a sequence of sequences** (`normalized_damerau_levenshtein_distance_seqs`)
     * Compute the normalized distances between a sequence and each sequence within another sequence (e.g., `list`, `tuple`).
-    * Optionally accepts a `max_distance` threshold forwarded to each individual computation.
 
 Basic use:
 
@@ -56,7 +50,6 @@ damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4])  # exp
 
 # max_distance short-circuits when the true distance exceeds the threshold
 damerau_levenshtein_distance('saturday', 'sunday', max_distance=2)  # expected result: 3 (max_distance + 1)
-normalized_damerau_levenshtein_distance('smtih', 'smith', max_distance=0.5)  # expected result: 0.2 (within threshold)
 
 from pyxdameraulevenshtein import damerau_levenshtein_distance_seqs, normalized_damerau_levenshtein_distance_seqs
 array = ['test1', 'test12', 'test123']
