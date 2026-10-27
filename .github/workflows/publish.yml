@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.1.0
+        uses: pypa/cibuildwheel@b9e566a2b284570af229f6c2a33673410d0389a3  # v4.3.4
         env:
           CIBW_BEFORE_BUILD: pip install -r requirements.txt
           CIBW_BUILD: ${{ matrix.python }}-${{ matrix.buildplat[1] }}
