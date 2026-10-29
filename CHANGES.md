@@ -1,6 +1,6 @@
 # Changes
 
-## 1.11.0 (unreleased)
+## 1.11.0 (2026-10-29)
 * Drop Python 3.9 and 3.10 support (EOL).
 * Add Python 3.15 support.
 * **Behavior change**: a negative `max_distance` now raises `ValueError` (previously `OverflowError`), and a non-integer `max_distance` (e.g., `1.5`) now raises `TypeError` (previously it was silently truncated). Any object implementing `__index__` is accepted, and arbitrarily large values are treated as no threshold (previously values that didn't fit in a C `unsigned long`, i.e., 2**32 or more on Windows, raised `OverflowError`).
