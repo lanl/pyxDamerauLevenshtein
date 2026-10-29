@@ -9,10 +9,11 @@
 * Widen the `seqs` type stub to `Iterable[Sequence[Any]]` (generators were already accepted), add `__all__`, and replace the star import in `__init__.py` with explicit imports.
 * Publish Linux aarch64 wheels (manylinux and musllinux).
 * Use PEP 639 license metadata (`license = "BSD-3-Clause"`); require `setuptools>=77` and `Cython>=3.1` to build.
-* Replace `requirements.txt` and `dev-requirements.txt` with PEP 735 dependency groups (`test`, `lint`, `dev`); drop `pytest-cov`, which could not measure the compiled extension.
+* Replace `requirements.txt` and `dev-requirements.txt` with PEP 735 dependency groups (`test`, `coverage`, `lint`, `dev`).
 * Rewrite the test suite as parametrized pytest tests, including exhaustive and seeded-random cross-checks against a pure-Python reference implementation and the docstring examples.
+* Measure code coverage of the Cython extension (line coverage via a traced build, `PYXDL_COVERAGE=1`), enforced at 100% in CI.
 * Add ruff linting and formatting, enforced in CI.
-* Modernize GitHub Actions: pin all actions to commit SHAs, update cibuildwheel to v4.3.5, move cibuildwheel configuration into `pyproject.toml`, run tests on Linux, macOS and Windows, publish to PyPI before creating the GitHub release, and add Dependabot for action updates.
+* Modernize GitHub Actions: update all actions to their latest major versions, update cibuildwheel to v4.3, move cibuildwheel configuration into `pyproject.toml`, run tests on Linux, macOS and Windows, publish to PyPI before creating the GitHub release, and add Dependabot for action updates.
 * Fix README description of normalization (`max(len(seq1), len(seq2))`) and the `max_distance` example.
 * Replace `CLAUDE.md` with a tool-agnostic `AGENTS.md`.
 

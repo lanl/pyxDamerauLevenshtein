@@ -42,7 +42,9 @@ Issues = "https://github.com/lanl/pyxDamerauLevenshtein/issues"
 [dependency-groups]
 test = ["pytest>=8"]
 lint = ["ruff==0.17.3"]
-dev = [{ include-group = "test" }, { include-group = "lint" }]
+# building the traced extension in place (see setup.py) needs the build dependencies installed in the environment
+coverage = [{ include-group = "test" }, "pytest-cov>=7", "Cython>=3.1", "setuptools>=77"]
+dev = [{ include-group = "coverage" }, { include-group = "lint" }]
 
 [tool.setuptools.packages.find]
 include = ["pyxdameraulevenshtein*"]
@@ -56,6 +58,17 @@ testpaths = ["tests"]
 addopts = ["--strict-markers", "--strict-config", "-ra"]
 xfail_strict = true
 filterwarnings = ["error"]
+
+[tool.coverage.run]
+# the Cython.Coverage plugin only works with the C tracer, not with sys.monitoring (the default on Python 3.14+)
+core = "ctrace"
+plugins = ["Cython.Coverage"]
+source = ["pyxdameraulevenshtein"]
+
+[tool.coverage.report]
+fail_under = 100
+show_missing = true
+skip_covered = false
 
 [tool.cibuildwheel]
 environment = { CFLAGS = "-O3 -g0 -mtune=generic -pipe -fPIC", LDFLAGS = "-fPIC" }

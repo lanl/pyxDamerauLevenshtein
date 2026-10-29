@@ -62,3 +62,34 @@ jobs:
       # shadow the installed (compiled) package with the uncompiled source directory
       - name: Run tests
         run: pytest
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.x'
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install coverage dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --group coverage
+
+      # build the extension with line tracing in place so that coverage.py can map executed lines back to the .pyx
+      - name: Build traced extension
+        env:
+          PYXDL_COVERAGE: '1'
+        run: python setup.py build_ext --inplace
+
+      # unlike the test job, this deliberately uses `python -m pytest` so that the in-place build is imported
+      - name: Run tests with coverage
+        run: python -m pytest --cov --cov-report=term-missing

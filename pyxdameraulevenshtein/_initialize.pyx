@@ -105,7 +105,7 @@ cpdef Py_ssize_t damerau_levenshtein_distance(seq1, seq2, max_distance=None) exc
     # cost of deleting every element of seq1 seen so far), so j - 1 and j - 2 wrap around to it at the left edge
     cdef Py_ssize_t * storage = <Py_ssize_t *> calloc(3 * (m + 1), sizeof(Py_ssize_t))
     if not storage:
-        raise MemoryError()
+        raise MemoryError()  # pragma: no cover
     cdef Py_ssize_t * two_ago = storage
     cdef Py_ssize_t * one_ago = storage + (m + 1)
     cdef Py_ssize_t * this_row = storage + 2 * (m + 1)
@@ -162,8 +162,8 @@ cpdef Py_ssize_t damerau_levenshtein_distance(seq1, seq2, max_distance=None) exc
             return limit + 1
         return best
     finally:
-        # free dynamically-allocated memory
-        free(storage)
+        # free dynamically-allocated memory (Cython's line tracing never reports this line, even though it always runs)
+        free(storage)  # pragma: no cover
 
 
 cpdef double normalized_damerau_levenshtein_distance(seq1, seq2):

@@ -21,9 +21,22 @@ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWIS
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
+import os
+
 from Cython.Build import cythonize
-from setuptools import setup
+from setuptools import Extension, setup
+
+# PYXDL_COVERAGE=1 builds the extension with line tracing so that coverage.py (with the Cython.Coverage plugin) can
+# measure _initialize.pyx; tracing slows the extension down considerably, so never use it for release builds
+coverage = os.environ.get('PYXDL_COVERAGE') == '1'
+
+extension = Extension(
+    'pyxdameraulevenshtein._initialize',
+    ['pyxdameraulevenshtein/_initialize.pyx'],
+    # Cython.Coverage cannot read sys.monitoring events (Python 3.12+), so fall back to the legacy tracing API
+    define_macros=[('CYTHON_TRACE_NOGIL', '1'), ('CYTHON_USE_SYS_MONITORING', '0')] if coverage else [],
+)
 
 setup(
-    ext_modules=cythonize('pyxdameraulevenshtein/_initialize.pyx'),
+    ext_modules=cythonize([extension], compiler_directives={'linetrace': coverage}, force=coverage),
 )
