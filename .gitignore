@@ -64,3 +64,10 @@ target/
 
 # cython output
 pyxdameraulevenshtein/*.c
+
+# cibuildwheel output
+wheelhouse/
+
+# tool caches
+.pytest_cache/
+.ruff_cache/

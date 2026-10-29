@@ -13,7 +13,7 @@ pyxDamerauLevenshtein implements the Damerau-Levenshtein (DL) edit distance algo
 This implementation is based on [Michael Homer's pure Python implementation](https://web.archive.org/web/20150909134357/http://mwh.geek.nz:80/2009/04/26/python-damerau-levenshtein-distance/), which implements the [optimal string alignment distance algorithm](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance). It runs in `O(N*M)` time using `O(M)` space. It supports unicode characters.
 
 ## REQUIREMENTS
-This code requires Python 3.9+, C compiler such as GCC, and Cython.
+This code requires Python 3.11+. Prebuilt wheels are published to PyPI for Linux (x86_64 and aarch64), macOS (x86_64 and arm64), and Windows (x86_64), so most users don't need anything else. Building from source requires a C compiler such as GCC; Cython is installed automatically as a build dependency.
 
 ## INSTALL
 pyxDamerauLevenshtein is available on PyPI at https://pypi.org/project/pyxDamerauLevenshtein/.
@@ -27,34 +27,39 @@ The following methods are available:
 
 * **Edit distance** (`damerau_levenshtein_distance`)
     * Compute the raw distance between two sequences (i.e., the minimum number of operations necessary to transform one sequence into the other).
-    * Supports any sequence type: `str`, `list`, `tuple`, `range`, and more.
-    * Optionally accepts a `max_distance` integer threshold. If the true distance exceeds it, `max_distance + 1` is returned immediately, avoiding unnecessary computation.
+    * Supports any sequence type that supports `len()` and integer indexing: `str`, `bytes`, `list`, `tuple`, `range`, and more. Elements are compared with `==`.
+    * Optionally accepts a non-negative integer `max_distance` threshold. If the true distance exceeds it, `max_distance + 1` is returned instead, and the computation stops as soon as the threshold is known to be exceeded.
 
 * **Normalized edit distance** (`normalized_damerau_levenshtein_distance`)
-    * Compute the ratio of the edit distance to the length of `max(seq1, seq2)`. 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher.ratio).
+    * Compute the ratio of the edit distance to the length of the longer sequence (`max(len(seq1), len(seq2))`). 0.0 means that the sequences are identical, while 1.0 means that they have nothing in common. Note that this definition is the exact opposite of [`difflib.SequenceMatcher.ratio()`](https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher.ratio).
 
 * **Edit distance against a sequence of sequences** (`damerau_levenshtein_distance_seqs`)
-    * Compute the raw distances between a sequence and each sequence within another sequence (e.g., `list`, `tuple`).
+    * Compute the raw distances between a sequence and each sequence within an iterable of sequences (e.g., `list`, `tuple`, generator).
     * Optionally accepts a `max_distance` threshold forwarded to each individual computation.
 
 * **Normalized edit distance against a sequence of sequences** (`normalized_damerau_levenshtein_distance_seqs`)
-    * Compute the normalized distances between a sequence and each sequence within another sequence (e.g., `list`, `tuple`).
+    * Compute the normalized distances between a sequence and each sequence within an iterable of sequences (e.g., `list`, `tuple`, generator).
 
 Basic use:
 
 ```python
-from pyxdameraulevenshtein import damerau_levenshtein_distance, normalized_damerau_levenshtein_distance
+from pyxdameraulevenshtein import (
+    damerau_levenshtein_distance,
+    damerau_levenshtein_distance_seqs,
+    normalized_damerau_levenshtein_distance,
+    normalized_damerau_levenshtein_distance_seqs,
+)
+
 damerau_levenshtein_distance('smtih', 'smith')  # expected result: 1
 normalized_damerau_levenshtein_distance('smtih', 'smith')  # expected result: 0.2
 damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4])  # expected result: 7
 
-# max_distance short-circuits when the true distance exceeds the threshold
-damerau_levenshtein_distance('saturday', 'sunday', max_distance=2)  # expected result: 3 (max_distance + 1)
+# max_distance short-circuits when the true distance (7) exceeds the threshold
+damerau_levenshtein_distance('orange', 'pumpkin', max_distance=3)  # expected result: 4 (max_distance + 1)
 
-from pyxdameraulevenshtein import damerau_levenshtein_distance_seqs, normalized_damerau_levenshtein_distance_seqs
 array = ['test1', 'test12', 'test123']
 damerau_levenshtein_distance_seqs('test', array)  # expected result: [1, 2, 3]
-normalized_damerau_levenshtein_distance_seqs('test', array)  # expected result: [0.2, 0.3333333333333333, 0.42857142857142855]
+normalized_damerau_levenshtein_distance_seqs('test', array)  # expected result: [0.2, 0.333..., 0.428...]
 ```
 
 ## DIFFERENCES

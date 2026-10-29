@@ -2,7 +2,9 @@ name: Tests
 
 on:
   push:
+    branches: [master]
   pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -12,29 +14,51 @@ permissions:
   contents: read
 
 jobs:
-  test:
-    name: Test (Python ${{ matrix.python-version }})
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      # the ruff version is read from the `lint` dependency group in pyproject.toml
+      - name: Ruff check
+        uses: astral-sh/ruff-action@v4.1.0
+
+      - name: Ruff format
+        uses: astral-sh/ruff-action@v4.1.0
+        with:
+          args: format --check --diff
+
+  test:
+    name: Test (Python ${{ matrix.python-version }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13', '3.14']
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ['3.11', '3.12', '3.13', '3.14', '3.15']
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
-          allow-prereleases: true
+          cache: pip
+          cache-dependency-path: pyproject.toml
 
-      - name: Install dependencies
+      - name: Install package and test dependencies
         run: |
-          pip install --upgrade pip setuptools wheel
-          pip install -r requirements.txt
-          pip install -r dev-requirements.txt
-          pip install .
+          python -m pip install --upgrade pip
+          python -m pip install . --group test
 
+      # invoke pytest directly rather than `python -m pytest`, which would put the repository root on sys.path and
+      # shadow the installed (compiled) package with the uncompiled source directory
       - name: Run tests
-        run: pytest tests/
+        run: pytest

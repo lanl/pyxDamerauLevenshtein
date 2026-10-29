@@ -1,38 +1,39 @@
-# cython: language_level=3
-
 """
-    Copyright (c) 2013, Triad National Security, LLC
-    All rights reserved.
+Copyright (c) 2013, Triad National Security, LLC
+All rights reserved.
 
-    Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
-    following conditions are met:
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:
 
-    * Redistributions of source code must retain the above copyright notice, this list of conditions and the following
-      disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
-      following disclaimer in the documentation and/or other materials provided with the distribution.
-    * Neither the name of Triad National Security, LLC nor the names of its contributors may be used to endorse or
-      promote products derived from this software without specific prior written permission.
+* Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+  disclaimer.
+* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+  following disclaimer in the documentation and/or other materials provided with the distribution.
+* Neither the name of Triad National Security, LLC nor the names of its contributors may be used to endorse or
+  promote products derived from this software without specific prior written permission.
 
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
+
+from operator import index
 
 from libc.stdlib cimport calloc, free
 
+__all__ = [
+    'damerau_levenshtein_distance',
+    'damerau_levenshtein_distance_seqs',
+    'normalized_damerau_levenshtein_distance',
+    'normalized_damerau_levenshtein_distance_seqs',
+]
 
-# row indices used to index into storage inside damerau_levenshtein_distance()
-cdef Py_ssize_t TWO_AGO = 0
-cdef Py_ssize_t ONE_AGO = 1
-cdef Py_ssize_t THIS_ROW = 2
 
-
-cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
+cpdef Py_ssize_t damerau_levenshtein_distance(seq1, seq2, max_distance=None) except -1:
     """
         Return the edit distance. This implementation is based on Michael Homer's implementation
         (https://web.archive.org/web/20150909134357/http://mwh.geek.nz:80/2009/04/26/python-damerau-levenshtein-distance/)
@@ -40,11 +41,12 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
         algorithm, as described in Wikipedia here:
         https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance#Optimal_string_alignment_distance
 
-        Note that `seq1` and `seq2` can be any sequence type. This not only includes `str` but also includes `list`,
-        `tuple`, `range`, and more.
+        Note that `seq1` and `seq2` can be any sequence type that supports `len()` and integer indexing. This not only
+        includes `str` but also includes `bytes`, `list`, `tuple`, `range`, and more. Elements are compared with `==`.
 
-        If `max_distance` is provided and the true distance exceeds it, `max_distance + 1` is returned immediately.
-        This enables early termination and avoids computing the full distance when only a threshold check is needed.
+        If `max_distance` is provided and the true distance exceeds it, `max_distance + 1` is returned instead. The
+        computation stops as soon as the threshold is known to be exceeded, which avoids computing the full distance
+        when only a threshold check is needed. `max_distance` must be a non-negative integer.
 
         Examples:
 
@@ -56,87 +58,109 @@ cpdef unsigned long damerau_levenshtein_distance(seq1, seq2, max_distance=None):
         7
         >>> damerau_levenshtein_distance([1, 2, 3, 4, 5, 6], [7, 8, 9, 7, 10, 11, 4])
         7
-        >>> damerau_levenshtein_distance('saturday', 'sunday', max_distance=2)
-        3
+        >>> damerau_levenshtein_distance('orange', 'pumpkin', max_distance=3)
+        4
     """
     if seq1 is None:
         raise TypeError('seq1 must be a sequence, got None')
     if seq2 is None:
         raise TypeError('seq2 must be a sequence, got None')
 
-    # possible short-circuit if sequences have a lot in common at the beginning (or are identical)
-    cdef Py_ssize_t first_differing_index = 0
-    cdef Py_ssize_t seq1_len_orig = len(seq1)
-    cdef Py_ssize_t seq2_len_orig = len(seq2)
-    while first_differing_index < seq1_len_orig and \
-          first_differing_index < seq2_len_orig and \
-          seq1[first_differing_index] == seq2[first_differing_index]:
-        first_differing_index += 1
-
-    if first_differing_index > 0:
-        seq1 = seq1[first_differing_index:]
-        seq2 = seq2[first_differing_index:]
-
-    # ensure seq2 is the longer sequence to fix a bug with length-1 differences (#22)
-    if len(seq2) < len(seq1):
-        seq1, seq2 = seq2, seq1
-
-    cdef Py_ssize_t i, j, k
     cdef Py_ssize_t seq1_len = len(seq1)
     cdef Py_ssize_t seq2_len = len(seq2)
-    cdef Py_ssize_t offset = seq2_len + 1
-    cdef unsigned long delete_cost, add_cost, substitution_cost, edit_distance
-    cdef bint has_max_distance = max_distance is not None
-    cdef unsigned long _max_distance = 0, row_min
 
-    if has_max_distance:
-        _max_distance = max_distance
+    # a threshold at or above the longer length can never be exceeded, so it is equivalent to no threshold (this also
+    # keeps arbitrarily large Python ints from overflowing a C integer)
+    cdef bint has_max_distance = False
+    cdef Py_ssize_t limit = 0
+    if max_distance is not None:
+        max_distance = index(max_distance)
+        if max_distance < 0:
+            raise ValueError(f'max_distance must be non-negative, got {max_distance}')
+        if max_distance < max(seq1_len, seq2_len):
+            has_max_distance = True
+            limit = max_distance
 
-    # storage is a 3 x (len(seq2) + 1) array that stores TWO_AGO, ONE_AGO, and THIS_ROW
-    cdef unsigned long * storage = <unsigned long * >calloc(3 * offset, sizeof(unsigned long))
+    # possible short-circuit if sequences have a lot in common at the beginning (or are identical); the common prefix is
+    # skipped by offsetting indices rather than slicing to avoid copying
+    cdef Py_ssize_t start = 0
+    while start < seq1_len and start < seq2_len and seq1[start] == seq2[start]:
+        start += 1
+
+    # ensure seq2 is the longer sequence so that the row buffer is never empty while rows remain to be computed
+    if seq2_len < seq1_len:
+        seq1, seq2 = seq2, seq1
+        seq1_len, seq2_len = seq2_len, seq1_len
+
+    cdef Py_ssize_t n = seq1_len - start
+    cdef Py_ssize_t m = seq2_len - start
+
+    # the distance is at least the length difference, which is exactly the distance when seq1 has been exhausted
+    if has_max_distance and m - n > limit:
+        return limit + 1
+    if n == 0:
+        return m
+
+    # three rolling rows of m + 1 entries each; the extra entry at index m holds the value for "column -1" (i.e., the
+    # cost of deleting every element of seq1 seen so far), so j - 1 and j - 2 wrap around to it at the left edge
+    cdef Py_ssize_t * storage = <Py_ssize_t *> calloc(3 * (m + 1), sizeof(Py_ssize_t))
     if not storage:
         raise MemoryError()
+    cdef Py_ssize_t * two_ago = storage
+    cdef Py_ssize_t * one_ago = storage + (m + 1)
+    cdef Py_ssize_t * this_row = storage + 2 * (m + 1)
+    cdef Py_ssize_t * tmp
+
+    cdef Py_ssize_t i, j, cost, best, row_min
+    cdef object a, b, a_prev = None, b_prev = None
 
     try:
-        # THIS_ROW represents the cost of transforming an empty seq1 into each prefix of seq2 (pure insertions)
-        for i in range(1, offset):
-            storage[THIS_ROW * offset + i - 1] = i
+        # this_row represents the cost of transforming an empty seq1 into each prefix of seq2 (pure insertions)
+        for j in range(m):
+            this_row[j] = j + 1
 
-        for i in range(seq1_len):
-            # rotate rows: THIS_ROW becomes ONE_AGO, ONE_AGO becomes TWO_AGO
-            for j in range(offset):
-                storage[TWO_AGO * offset + j] = storage[ONE_AGO * offset + j]
-                storage[ONE_AGO * offset + j] = storage[THIS_ROW * offset + j]
-            for j in range(seq2_len):
-                storage[THIS_ROW * offset + j] = 0
-            storage[THIS_ROW * offset + seq2_len] = i + 1
+        for i in range(n):
+            # rotate rows: this_row becomes one_ago, one_ago becomes two_ago, and two_ago is reused as this_row
+            tmp = two_ago
+            two_ago = one_ago
+            one_ago = this_row
+            this_row = tmp
+            this_row[m] = i + 1
 
-            # compute the cost of each edit operation and take the minimum
-            for j in range(seq2_len):
-                delete_cost = storage[ONE_AGO * offset + j] + 1
-                add_cost = storage[THIS_ROW * offset + (j - 1 if j > 0 else seq2_len)] + 1
-                substitution_cost = storage[ONE_AGO * offset + (j - 1 if j > 0 else seq2_len)] + (seq1[i] != seq2[j])
-                storage[THIS_ROW * offset + j] = min(delete_cost, add_cost, substitution_cost)
-                # deal with transpositions
-                if i > 0 and j > 0 and seq1[i] == seq2[j - 1] and seq1[i - 1] == seq2[j] and seq1[i] != seq2[j]:
-                    storage[THIS_ROW * offset + j] = min(storage[THIS_ROW * offset + j],
-                                                         storage[(TWO_AGO * offset + j - 2) if j > 1 else seq2_len] + 1)
+            a = seq1[start + i]
+            row_min = this_row[m]
+            for j in range(m):
+                b = seq2[start + j]
+                cost = 0 if a == b else 1
 
-            # early termination: if the minimum value in this row already exceeds max_distance,
+                # take the cheapest of substitution, deletion, and insertion
+                best = one_ago[j - 1 if j > 0 else m] + cost
+                if one_ago[j] + 1 < best:
+                    best = one_ago[j] + 1
+                if this_row[j - 1 if j > 0 else m] + 1 < best:
+                    best = this_row[j - 1 if j > 0 else m] + 1
+
+                # deal with transpositions of adjacent elements
+                if cost and i > 0 and j > 0 and a == b_prev and a_prev == b:
+                    if two_ago[j - 2 if j > 1 else m] + 1 < best:
+                        best = two_ago[j - 2 if j > 1 else m] + 1
+
+                this_row[j] = best
+                if best < row_min:
+                    row_min = best
+                b_prev = b
+            a_prev = a
+
+            # early termination: row minimums never decrease, so if this row's minimum already exceeds max_distance,
             # the final distance will also exceed it
-            if has_max_distance:
-                row_min = storage[THIS_ROW * offset]
-                for k in range(1, seq2_len):
-                    if storage[THIS_ROW * offset + k] < row_min:
-                        row_min = storage[THIS_ROW * offset + k]
-                if row_min > _max_distance:
-                    return _max_distance + 1
+            if has_max_distance and row_min > limit:
+                return limit + 1
 
         # compute and return the final edit distance
-        edit_distance = storage[THIS_ROW * offset + (seq2_len - 1)]
-        if has_max_distance and edit_distance > _max_distance:
-            return _max_distance + 1
-        return edit_distance
+        best = this_row[m - 1]
+        if has_max_distance and best > limit:
+            return limit + 1
+        return best
     finally:
         # free dynamically-allocated memory
         free(storage)
@@ -168,8 +192,9 @@ cpdef double normalized_damerau_levenshtein_distance(seq1, seq2):
 
     # prevent division by zero for empty inputs
     cdef Py_ssize_t n = max(len(seq1), len(seq2))
-    cdef Py_ssize_t divisor = max(n, 1)
-    return float(damerau_levenshtein_distance(seq1, seq2)) / divisor
+    if n == 0:
+        return 0.0
+    return <double> damerau_levenshtein_distance(seq1, seq2) / n
 
 
 cpdef list damerau_levenshtein_distance_seqs(seq, seqs, max_distance=None):
@@ -177,9 +202,9 @@ cpdef list damerau_levenshtein_distance_seqs(seq, seqs, max_distance=None):
         For each sequence in `seqs`, compute the DL distance between it and `seq`. A list of distances will be
         returned, one for each element in `seqs`.
 
-        Because this code generates a list of distances, where each element's position corresponds to the index
-        of the element we encounter as we iterate through `seqs`, `seqs` must be ordered. That is, do not use
-        a data structure like a `set` because order is not guaranteed.
+        `seqs` can be any iterable of sequences (including a generator). Each element's position in the returned list
+        corresponds to the order in which it is encountered while iterating through `seqs`, so `seqs` should be
+        ordered. That is, do not use a data structure like a `set` because order is not guaranteed.
 
         If `max_distance` is provided, it is forwarded to each individual distance computation. See
         `damerau_levenshtein_distance` for details on its behavior.
@@ -197,9 +222,9 @@ cpdef list normalized_damerau_levenshtein_distance_seqs(seq, seqs):
         For each sequence in `seqs`, compute the normalized DL distance between it and `seq`. A list of normalized
         distances will be returned, one for each element in `seqs`.
 
-        Because this code generates a list of normalized distances, where each element's position corresponds to the
-        index of the element we encounter as we iterate through `seqs`, `seqs` must be ordered. That is, do not use
-        a data structure like a `set` because order is not guaranteed.
+        `seqs` can be any iterable of sequences (including a generator). Each element's position in the returned list
+        corresponds to the order in which it is encountered while iterating through `seqs`, so `seqs` should be
+        ordered. That is, do not use a data structure like a `set` because order is not guaranteed.
 
         Examples:
 

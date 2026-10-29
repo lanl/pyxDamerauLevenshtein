@@ -1,5 +1,21 @@
 # Changes
 
+## 1.11.0 (unreleased)
+* Drop Python 3.9 and 3.10 support (EOL).
+* Add Python 3.15 support.
+* **Behavior change**: a negative `max_distance` now raises `ValueError` (previously `OverflowError`), and a non-integer `max_distance` (e.g., `1.5`) now raises `TypeError` (previously it was silently truncated). Any object implementing `__index__` is accepted, and arbitrarily large values are treated as no threshold (previously values that didn't fit in a C `unsigned long`, i.e., 2**32 or more on Windows, raised `OverflowError`).
+* `damerau_levenshtein_distance` is roughly 2–3x faster: the inner loop now uses C integer arithmetic, rows are rotated by pointer swaps instead of copies, and `max_distance` short-circuits immediately when the length difference alone exceeds it.
+* The common prefix is now skipped by index offset rather than slicing, so sequences that support indexing but not slicing (e.g., `collections.deque`) work.
+* Widen the `seqs` type stub to `Iterable[Sequence[Any]]` (generators were already accepted), add `__all__`, and replace the star import in `__init__.py` with explicit imports.
+* Publish Linux aarch64 wheels (manylinux and musllinux).
+* Use PEP 639 license metadata (`license = "BSD-3-Clause"`); require `setuptools>=77` and `Cython>=3.1` to build.
+* Replace `requirements.txt` and `dev-requirements.txt` with PEP 735 dependency groups (`test`, `lint`, `dev`); drop `pytest-cov`, which could not measure the compiled extension.
+* Rewrite the test suite as parametrized pytest tests, including exhaustive and seeded-random cross-checks against a pure-Python reference implementation and the docstring examples.
+* Add ruff linting and formatting, enforced in CI.
+* Modernize GitHub Actions: pin all actions to commit SHAs, update cibuildwheel to v4.3.5, move cibuildwheel configuration into `pyproject.toml`, run tests on Linux, macOS and Windows, publish to PyPI before creating the GitHub release, and add Dependabot for action updates.
+* Fix README description of normalization (`max(len(seq1), len(seq2))`) and the `max_distance` example.
+* Replace `CLAUDE.md` with a tool-agnostic `AGENTS.md`.
+
 ## 1.10.1 (2026-03-19)
 * Remove `max_distance` parameter from `normalized_damerau_levenshtein_distance` and `normalized_damerau_levenshtein_distance_seqs`. The parameter was a leaky abstraction: the return value when the threshold was exceeded was neither a consistent sentinel nor the true normalized distance, and varied with sequence length.
 

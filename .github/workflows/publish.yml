@@ -1,156 +1,136 @@
 name: Publish
+
 on:
   push:
     tags:
       - '*'
 
+# never cancel a release that is already in progress
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 permissions:
   contents: read
 
 jobs:
   build_wheels:
-    name: Build wheel for ${{ matrix.python }}-${{ matrix.buildplat[1] }}
+    name: Build wheels (${{ matrix.python }}-${{ matrix.buildplat[1] }})
     runs-on: ${{ matrix.buildplat[0] }}
-    timeout-minutes: 50
-    strategy: &build_wheels_strategy
-      # Ensure that a wheel builder finishes even if another fails
+    strategy:
+      # ensure that a wheel builder finishes even if another fails
       fail-fast: false
       matrix:
-        # GitHub Actions doesn't support pairing matrix values together, let's improvise
+        # GitHub Actions doesn't support pairing matrix values together, so pair them manually
         buildplat:
-        - [ubuntu-latest, manylinux_x86_64]
-        - [ubuntu-latest, musllinux_x86_64]
-        - [macos-latest, macosx_*]
-        - [windows-latest, win_amd64]
-        python: ['cp39', 'cp310', 'cp311', 'cp312', 'cp313', 'cp314']
+          - [ubuntu-latest, manylinux_x86_64]
+          - [ubuntu-latest, musllinux_x86_64]
+          - [ubuntu-24.04-arm, manylinux_aarch64]
+          - [ubuntu-24.04-arm, musllinux_aarch64]
+          - [macos-latest, macosx_*]
+          - [windows-latest, win_amd64]
+        python: [cp311, cp312, cp313, cp314, cp315]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Build wheels
-        uses: pypa/cibuildwheel@b9e566a2b284570af229f6c2a33673410d0389a3  # v4.3.4
-        env:
-          CIBW_BEFORE_BUILD: pip install -r requirements.txt
-          CIBW_BUILD: ${{ matrix.python }}-${{ matrix.buildplat[1] }}
-          CIBW_ARCHS_MACOS: x86_64 arm64
-          CIBW_ENVIRONMENT: CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC' LDFLAGS='-fPIC'
-          CIBW_BEFORE_TEST: pip install -r dev-requirements.txt
-          CIBW_TEST_COMMAND: pytest {package}/tests
-
-      - name: check build
-        run: |
-          ls -l wheelhouse
-
-      - uses: actions/upload-artifact@v4
+        uses: actions/checkout@v7
         with:
-          name: ${{ matrix.python }}-${{ startsWith(matrix.buildplat[1], 'macosx') && 'macosx' || matrix.buildplat[1] }}
+          persist-credentials: false
+
+      # remaining cibuildwheel configuration lives in [tool.cibuildwheel] in pyproject.toml
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v4.3
+        env:
+          CIBW_BUILD: ${{ matrix.python }}-${{ matrix.buildplat[1] }}
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v7
+        with:
+          name: wheels-${{ matrix.python }}-${{ startsWith(matrix.buildplat[1], 'macosx') && 'macosx' || matrix.buildplat[1] }}
           path: ./wheelhouse/*.whl
+          if-no-files-found: error
 
   build_sdist:
     name: Build sdist
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@v7
         with:
-          python-version: '3.10'
-          
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install build -r requirements.txt
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.x'
 
       - name: Build sdist
         run: |
+          python -m pip install --upgrade pip build twine
           python -m build --sdist
-          
-      - uses: actions/upload-artifact@v4
+          python -m twine check --strict dist/*
+
+      - name: Upload sdist
+        uses: actions/upload-artifact@v7
         with:
           name: sdist
           path: ./dist/*.tar.gz
+          if-no-files-found: error
 
-  create_github_release:
-    needs: [build_wheels, build_sdist]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: dist/
-
-      - name: Prepare release files
-        run: |
-          mkdir -p release_files
-          cp dist/sdist/*.tar.gz release_files/
-          find dist -name '*.whl' -exec cp {} release_files/ \;
-          ls -la release_files/
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: pyxDamerauLevenshtein ${{ github.ref_name }}
-          draft: false
-          prerelease: false
-          files: release_files/*
-          body: |
-            # pyxDamerauLevenshtein ${{ github.ref_name }}
-            
-            This release includes built wheels for Python 3.9, 3.10, 3.11, 3.12, 3.13, and 3.14 on the following platforms:
-            - Linux (manylinux, musllinux)
-            - macOS
-            - Windows
-            
-            And a source distribution for manual installation.
-            
-            ## Installation
-            
-            ```
-            pip install pyxDamerauLevenshtein
-            ```
-            
-            For more information, see the [README](https://github.com/lanl/pyxDamerauLevenshtein/blob/main/README.md).
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish-to-pypi:
+  publish_to_pypi:
     name: Publish to PyPI
-    needs:
-    - create_github_release
+    needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
     environment:
       name: pypi
       url: https://pypi.org/p/pyxDamerauLevenshtein
     permissions:
-      id-token: write  # IMPORTANT: mandatory for trusted publishing
-    strategy: *build_wheels_strategy
-
+      id-token: write  # mandatory for trusted publishing
     steps:
-    - name: Download the sdist
-      uses: actions/download-artifact@v4
-      with:
-        name: sdist
-        path: dist/
-    - name: Download the wheels
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ matrix.python }}-${{ startsWith(matrix.buildplat[1], 'macosx') && 'macosx' || matrix.buildplat[1] }}
-        path: dist/
-    - name: Publish distribution 📦 to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Download all distributions
+        uses: actions/download-artifact@v8
+        with:
+          path: dist/
+          merge-multiple: true
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+  create_github_release:
+    name: Create GitHub release
+    needs: [publish_to_pypi]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # needed to create the release and upload assets
+    steps:
+      - name: Download all distributions
+        uses: actions/download-artifact@v8
+        with:
+          path: dist/
+          merge-multiple: true
+
+      # the tag name is passed through the environment rather than interpolated into the script to avoid injection
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          cat > notes.md <<'EOF'
+          This release includes built wheels for Python 3.11, 3.12, 3.13, 3.14, and 3.15 on the following platforms:
+          - Linux (manylinux and musllinux; x86_64 and aarch64)
+          - macOS (x86_64 and arm64)
+          - Windows (x86_64)
+
+          And a source distribution for manual installation.
+
+          See [CHANGES.md](https://github.com/lanl/pyxDamerauLevenshtein/blob/master/CHANGES.md) for what's new.
+
+          ## Installation
+
+          ```
+          pip install pyxDamerauLevenshtein
+          ```
+
+          For more information, see the [README](https://github.com/lanl/pyxDamerauLevenshtein/blob/master/README.md).
+          EOF
+          gh release create "$TAG" dist/* --title "pyxDamerauLevenshtein $TAG" --notes-file notes.md --verify-tag
